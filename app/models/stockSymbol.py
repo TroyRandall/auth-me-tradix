@@ -8,3 +8,5 @@ class StockSymbol(db.Model):
     symbol = db.Column(db.String(5), nullable=False, unique=True)
     company = db.Column(db.String(50), nullable = False, unique = True)
     curr_price = db.Column(db.Float, nullable = False)
+    created_at = db.Column(db.Date, default = datetime.now)
+    updated_at = db.Column(db.Date, default = datetime.now)
