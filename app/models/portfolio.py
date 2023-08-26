@@ -9,6 +9,7 @@ class Portfolio(db.Model):
                         db.ForeignKey(add_prefix_for_prod("users.id")),
                         nullable=False)
     symbol = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable = False)
     quantity = db.Column(db.Float, nullable=False)
     avg_price = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.Date, default = datetime.now)
