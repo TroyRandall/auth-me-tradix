@@ -10,7 +10,7 @@ class Watchlist_Stock(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    watchlist = db.relationship("WatchList", back_populates="watchlist_stocks")
+    watchlist = db.relationship("WatchList", back_populates="watchlist_stocks", cascade='all, delete-orphan')
 
 
     def to_dict(self):
