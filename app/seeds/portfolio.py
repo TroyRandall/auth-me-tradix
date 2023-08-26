@@ -44,7 +44,7 @@ def seed_portfolios():
 
 def undo_portfolios():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.portfolios RESTART IDENTITY CASCADE;")
     else:
         db.session.execute("DELETE FROM portfolios")
 
