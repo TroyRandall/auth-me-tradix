@@ -23,8 +23,9 @@ class User(db.Model, UserMixin):
 
 
 
-    watchlist=db.relationship('watchlists', back_populates='user')
-    transaction = db.relationship('transactions', back_populates='user')
+    watchlists=db.relationship('Watchlist', back_populates='user', cascade='all, delete-orphan')
+    transactions = db.relationship('Transaction', back_populates='user', cascade='all, delete-orphan')
+    portfolios = db.relationship('Portfolio', back_populates='user', cascade='all, delete-orphan')
 
     @property
     def password(self):
