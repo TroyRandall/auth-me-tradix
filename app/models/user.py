@@ -14,8 +14,8 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     buying_power = db.Column(db.Float, default=0.00)
@@ -44,8 +44,8 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'firstName': self.first_name,
-            'lastName': self.last_name,
+            # 'firstName': self.first_name,
+            # 'lastName': self.last_name,
             'email': self.email,
             'buyingPower': self.buying_power,
             'imageUrl': self.image_url

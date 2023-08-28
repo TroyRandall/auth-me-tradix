@@ -11,6 +11,6 @@ class Watchlist(db.Model):
     updated_at = db.Column(db.Date, default = datetime.now)
 
     user=db.relationship('User', back_populates='watchlists')
-    watchlist_stocks = db.relationship("WatchList_Stock",
+    watchlist_stocks = db.relationship("Watchlist_Stock",
                              back_populates="watchlist",
                              cascade="all, delete-orphan")
