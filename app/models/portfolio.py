@@ -1,8 +1,11 @@
-from .db import db, add_prefix_for_prod
+from .db import db, add_prefix_for_prod, SCHEMA, environment
 from datetime import datetime
 
 class Portfolio(db.Model):
     __tablename__ = "portfolios"
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,
@@ -16,3 +19,11 @@ class Portfolio(db.Model):
     updated_at = db.Column(db.Date, default = datetime.now)
 
     user = db.relationship("User", back_populates="portfolios", cascade='all, delete-orphan')
+
+    def to_dict(self):
+        return {
+            'symbol': self.symbol,
+            'name': self.name,
+            'quantity': self.quantity,
+            'avgPrice': self.avg_price
+        }

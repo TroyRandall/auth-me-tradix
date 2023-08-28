@@ -1,8 +1,11 @@
-from .db import db, add_prefix_for_prod
+from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime
 
 class News(db.Model):
     __tablename__ = 'news'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,
