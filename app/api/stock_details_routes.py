@@ -9,5 +9,7 @@ def stock_details(ticker):
 
     url =f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={key}'
     r = requests.get(url)
+    print(url, r)
     data = r.json()
-    print(r)
+    print(data)
+    return data
