@@ -10,7 +10,7 @@ class Watchlist(db.Model):
     created_at = db.Column(db.Date, default = datetime.now)
     updated_at = db.Column(db.Date, default = datetime.now)
 
-    user=db.relationship('User', back_populates='watchlists', cascade='all, delete-orphan')
+    user=db.relationship('User', back_populates='watchlists')
     watchlist_stocks = db.relationship("WatchList_Stock",
                              back_populates="watchlist",
                              cascade="all, delete-orphan")
