@@ -1,8 +1,11 @@
-from .db import db, add_prefix_for_prod
+from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime
 
 class Watchlist_Stock(db.Model):
     __tablename__ : 'watchlist_stocks'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("watchlists.id")), nullable=False)
