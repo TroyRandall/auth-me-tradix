@@ -4,6 +4,5 @@ from wtforms.validators import DataRequired
 
 
 class WatchlistAddForm(FlaskForm):
-    add_to_watchlist = BooleanField('add',validators=[DataRequired()] )
-    watchlist_name = StringField('Watchlist', validators=[DataRequired()])
+    watchlist_name = StringField('Watchlist name', validators=[DataRequired()])
     Submit = SubmitField("Submit")
