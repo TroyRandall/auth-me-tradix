@@ -18,7 +18,7 @@ class Portfolio(db.Model):
     created_at = db.Column(db.Date, default = datetime.now)
     updated_at = db.Column(db.Date, default = datetime.now)
 
-    user = db.relationship("User", back_populates="portfolios", cascade='all, delete-orphan')
+    user = db.relationship("User", back_populates="portfolios")
 
     def to_dict(self):
         return {

@@ -26,5 +26,5 @@ class SignUpForm(FlaskForm):
     username = StringField(
         'username', validators=[DataRequired(), username_exists])
     email = StringField('email', validators=[DataRequired(), user_exists])
-    buy_power = FloatField('Buying Power', [DataRequired(), NumberRange(max=1000000)])
+    buying_power = FloatField('Buying Power', [DataRequired(), NumberRange(max=1000000)])
     password = StringField('password', validators=[DataRequired()])

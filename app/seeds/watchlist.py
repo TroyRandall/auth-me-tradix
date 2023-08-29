@@ -31,6 +31,7 @@ def seed_watchlists():
     db.session.add(watchlist4)
     db.session.add(watchlist5)
     db.session.add(watchlist6)
+    db.session.commit()
 
 def undo_watchlists():
     if environment == "production":

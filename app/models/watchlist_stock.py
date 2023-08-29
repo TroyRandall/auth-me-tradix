@@ -2,7 +2,7 @@ from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime
 
 class Watchlist_Stock(db.Model):
-    __tablename__ : 'watchlist_stocks'
+    __tablename__ = 'watchlist_stocks'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -13,7 +13,7 @@ class Watchlist_Stock(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    watchlist = db.relationship("WatchList", back_populates="watchlist_stocks", cascade='all, delete-orphan')
+    watchlist = db.relationship("Watchlist", back_populates="watchlist_stocks")
 
 
     def to_dict(self):
