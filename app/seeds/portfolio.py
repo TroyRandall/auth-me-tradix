@@ -41,6 +41,7 @@ def seed_portfolios():
     db.session.add(portfolio3)
     db.session.add(portfolio4)
     db.session.add(portfolio5)
+    db.session.commit()
 
     db.session.commit()
 

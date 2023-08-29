@@ -13,6 +13,7 @@ class Transaction(db.Model):
     price = db.Column(db.Float, nullable=False)
     quantity = db.Column(db.Float, nullable=False)
     symbol = db.Column(db.String, nullable=False)
+    transaction_time = db.Column(db.Date,  default = datetime.now, nullable=False)
     created_at = db.Column(db.Date, default = datetime.now)
     updated_at = db.Column(db.Date, default = datetime.now)
 

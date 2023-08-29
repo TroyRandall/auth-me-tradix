@@ -4,7 +4,7 @@ import requests
 
 stock_routes = Blueprint('stocks', __name__)
 
-stock_routes.route('/<str:ticker>')
+stock_routes.route('/<ticker>')
 def stock_details(ticker):
 
     url =f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={key}'
@@ -12,4 +12,4 @@ def stock_details(ticker):
     print(url, r)
     data = r.json()
     print(data)
-    return data
+    return {data}

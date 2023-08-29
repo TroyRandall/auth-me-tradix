@@ -12,25 +12,25 @@ def seed_stock_symbols():
         symbol='AAPL',
         company='Apple',
         curr_price=178.61,
-    ),
+    )
 
-    TSLA = StockSymbol(
+    Tesla = StockSymbol(
         symbol='TSLA',
         company='Tesla',
         curr_price=238.59,
-    ),
+    )
 
     MSFT = StockSymbol(
         symbol='MSFT',
         company='Microsoft',
         curr_price=322.88,
-    ),
+    )
 
     GOOG = StockSymbol(
         symbol = 'GOOG',
         company = 'Google',
         curr_price = 130.69
-    ),
+    )
 
     AMZN = StockSymbol(
         symbol='AMZN',
@@ -38,13 +38,11 @@ def seed_stock_symbols():
         curr_price=133.21
     )
 
-    db.session.add(TSLA)
+    db.session.add(Tesla)
     db.session.add(MSFT)
     db.session.add(AAPL)
     db.session.add(GOOG)
     db.session.add(AMZN)
-
-
     db.session.commit()
 
 def undo_stock_symbol():
