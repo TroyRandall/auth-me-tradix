@@ -10,7 +10,7 @@ watchlist_routes = Blueprint('watchlists', __name__)
 @login_required
 def get_all_watchlist():
     watchlists = Watchlist.query.all()
-    print(watchlists)
+    print( watchlists)
 
     if watchlists is not None:
         return {'watchlists': [watchlist.to_dict() for watchlist in watchlists]}
@@ -84,3 +84,45 @@ def delete_watchlist(watchlist_id):
             'message': 'Can not find watchlist',
             'statusCode': 404
         }}, 404
+
+#add a stock to wathclist
+@watchlist_routes.route('<int:wathclist_id>/stocks', methods=['POST'])
+@login_required
+def add_stock_to_watchlist(watchlist_id):
+    current_user_info = current_user.to_dict()
+    current_user_id = current_user_info['id']
+    watchlist = Watchlist.query.get(watchlist_id)
+    if not watchlist:
+        return {'error': {
+            'message': 'Cannot find watchlist',
+            'statusCode': 404
+        }}
+    if watchlist.user_id != current_user_id:
+        return {'error': {
+            'message': 'Forbidden',
+            'statusCode': 403
+        }}
+    form = AddStockForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate():
+        symbol = form.data['symbol']
+        if symbol in [i.stock_symbol for i in watchlist.watchlist_stocks]:
+            return {
+                'error': {
+                    'message': 'Stock already exist in this list',
+                    'statusCode': 403
+                }
+            }, 403
+        try:
+            new_stock = Watchlist_Stock(
+                watchlist_id = watchlist_id,
+                stock_symbol = form.data['symbol']
+            )
+            db.session.add(new_stock)
+            db.session.commit()
+            return new_stock.to_dict(), 200
+        except Exception:
+            return {'error': 'there is an error'}
+    if form.errors:
+        return {'error': form.errors}
