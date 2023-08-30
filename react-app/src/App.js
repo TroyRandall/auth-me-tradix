@@ -5,7 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
-import APItest from './components/ApiTest'
+import StockDetails from './components/StockDetails'
 
 function App() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route path='/stocks/:ticker'>
-            <APItest />
+            <StockDetails />
           </Route>
 
         </Switch>

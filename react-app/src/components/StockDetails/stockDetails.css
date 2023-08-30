@@ -1,0 +1,35 @@
+body {
+  margin-left: 150px;
+  margin-right: 150px;
+  font-family: 'Avenir black', 'Arial'
+}
+
+#lineChart {
+  height: 286.048px;
+  width: 986px;
+}
+
+h1 {
+  letter-spacing: -0.33px;
+  font-size: 32px;
+  line-height: 40px;
+  margin: 0px;
+  max-width: 497px;
+}
+
+#stock_details_price {
+    font-size: 32px;
+    margin: 0px
+}
+
+#stock_details_percent_change_plus {
+    font-size: 18px;
+    margin: 0px;
+    color: green
+}
+
+#stock_details_percent_change_minus {
+    font-size: 18px;
+    margin: 0px;
+    color: red
+}
