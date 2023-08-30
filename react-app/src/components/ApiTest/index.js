@@ -16,10 +16,12 @@ function APItest() {
     const stockInfo = useSelector((state) => state.stocks)
 
     useEffect(() => {
-        dispatch(stockActions.stockData(ticker)).then(() => setIsLoaded(true))
+        dispatch(stockActions.stockDataDaily(ticker)).then(() => setIsLoaded(true))
+        dispatch(stockActions.stockTickerInfo(ticker))
     }, [dispatch, ticker])
 
     const formattedLabels = () => {
+        console.log(stockInfo[ticker])
         return Object.keys(stockInfo[ticker]['Time Series (Daily)'])
     }
 
