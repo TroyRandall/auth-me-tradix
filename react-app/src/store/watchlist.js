@@ -1,8 +1,15 @@
 const LOAD_WATCHLISTS = 'watchlist/loadWatchlists';
+const CREATE_WATCHLISTS = 'watchlist/createWatchlists';
 
 export function loadWatchlists(watchlists) {
     return {
         type: LOAD_WATCHLISTS,
+        watchlists
+    }
+}
+export function createWatchlists(watchlists){
+    return {
+        type: CREATE_WATCHLISTS,
         watchlists
     }
 }
@@ -16,6 +23,37 @@ export const fetchUserWatchlists = () => async dispatch => {
         return response
     }
 }
+export const createWatchlist = () => async dispatch => {
+    try {
+        const response = await fetch(`api/watchlists/`,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name: watchlist })
+        });
+        if (response.ok) {
+            const data = await response.json();
+            dispatch(createWatchlist(data));
+            return response;
+        } else {
+            const data = await response.json();
+            if(data) {
+                throw data.error.name;
+            } else {
+                const data = await response.json();
+                if(data){
+                    throw data.error.name;
+                } else {
+                    throw ['Error! try again later']
+                }
+            }
+        }
+
+        } catch(err){
+            throw err
+        }
+    }
 
 
 const watchlistReducer = (state = {}, action) => {
