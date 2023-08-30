@@ -34,7 +34,7 @@ def seed():
     seed_stock_symbols()
     seed_transactions()
     seed_watchlists()
-    seed_watchlist_stocks
+    seed_watchlist_stocks()
     # Add other seed functions here
 
 

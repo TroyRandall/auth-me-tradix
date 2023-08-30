@@ -77,7 +77,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
-    op.create_table('watchlist__stock',
+    op.create_table('watchlist_stocks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('watchlist_id', sa.Integer(), nullable=False),
     sa.Column('stock_symbol', sa.String(length=10), nullable=False),
@@ -107,7 +107,7 @@ def downgrade():
     #     batch_op.drop_column('last_name')
     #     batch_op.drop_column('first_name')
 
-    op.drop_table('watchlist__stock')
+    op.drop_table('watchlist_stocks')
     op.drop_table('watchlists')
     op.drop_table('transactions')
     op.drop_table('portfolios')
