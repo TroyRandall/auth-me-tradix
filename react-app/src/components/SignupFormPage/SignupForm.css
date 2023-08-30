@@ -17,6 +17,16 @@
 #signup-image {
     left: 100%
 }
+.landing-page-logo > .fa-rocket {
+    display: flex;
+    align-items: right;
+    padding-right: 100%;
+    padding-left: 0.8rem;
+}
+.landing-page-logo {
+    display: flex;
+    align-items: center;
+}
 
 .signup-page-left-top {
     display: flex;
