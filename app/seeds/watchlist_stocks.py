@@ -26,6 +26,8 @@ def seed_watchlist_stocks():
     db.session.add(stock3)
     db.session.add(stock4)
     db.session.add(stock5)
+
+
     db.session.commit()
 
 def undo_watchlist_stocks():
