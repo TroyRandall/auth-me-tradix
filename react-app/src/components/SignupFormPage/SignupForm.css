@@ -14,6 +14,9 @@
     background-color: #002615;
     overflow: hidden;
 }
+#signup-image {
+    left: 100%
+}
 
 .signup-page-left-top {
     display: flex;
@@ -47,7 +50,7 @@
 
 #signup-disclosure {
     color: black;
-    padding: 3rem 6.4rem;
+    /* padding: 3rem 6.4rem; */
     font-size: 1.45rem
 }
 
