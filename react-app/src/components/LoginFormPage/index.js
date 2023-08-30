@@ -60,7 +60,7 @@ function LoginFormPage() {
       </div>
       <div className='login-page-right'>
         <div className='login-form-container'>
-          <h1 id="login-title">Log in to Rockethood</h1>
+          <h1 id="login-title">Log in to Tradix </h1>
           <form id="login-form" onSubmit={onLogin}>
             <div className='login-form-input'>
               <label htmlFor='email'>Email</label>
