@@ -22,7 +22,7 @@ function LoginFormPage() {
   };
 
   const demoLogin = async (e) => {
-    const email = "demo@aa.io";
+    const email = "john@smith.com";
     const password = "password";
     e.preventDefault();
     const data = await dispatch(login(email, password));
