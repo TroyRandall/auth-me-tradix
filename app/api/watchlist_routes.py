@@ -17,6 +17,14 @@ def get_all_watchlist():
     else:
         return {'message': 'No watchlists found'}
 
+@watchlist_routes.route('/current')
+@login_required
+def user_watchlists():
+    current_user_info = current_user.to_dict()
+    current_user_id = current_user_info['id']
+    user_watchlists = Watchlist.query.filter(Watchlist.user_id == current_user_id ).all()
+    return {'watchlists': [watchlist.to_dict() for watchlist in user_watchlists]}
+
 #create a watchlist
 @watchlist_routes.route('/', methods=['POST'])
 @login_required
@@ -126,3 +134,25 @@ def add_stock_to_watchlist(watchlist_id):
             return {'error': 'there is an error'}
     if form.errors:
         return {'error': form.errors}
+
+#delete a stock from watchlist
+@watchlist_routes.route('/stocks/<int:stock_id>', methods=['DELETE'])
+@login_required
+def delete_stock(stock_id):
+    current_user_info = current_user.to_dict()
+    current_user_id = current_user_info['id']
+    delete_stock = Watchlist_Stock.query.get(stock_id)
+    if not delete_stock:
+        return {'error': {
+            'message': 'Cannot find this stock in this watchlist',
+            'statusCode': 404
+        }}, 404
+    watchlist = Watchlist.query.get(delete_stock.watchlist_id)
+    if watchlist.user_id != current_user_id:
+        return{'error': {
+            'message': 'Forbidden',
+            'statusCode': 403
+        }}, 403
+    db.session.delete(delete_stock)
+    db.session.commit()
+    return {'message': 'Stock has been deleted successfully'}
