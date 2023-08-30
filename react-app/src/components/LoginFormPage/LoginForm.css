@@ -110,7 +110,7 @@
 }
 
 #login-failed-text {
-    color: var(--rockethood-sell-red);
+    color: #FF6600;
     animation: shake-login-text .05s 3;
 }
 
