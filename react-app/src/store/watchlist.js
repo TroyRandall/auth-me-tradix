@@ -31,7 +31,7 @@ export const fetchUserWatchlists = () => async dispatch => {
         return response
     }
 }
-export const createWatchlist = () => async dispatch => {
+export const createWatchlist = (watchlist) => async dispatch => {
     try {
         const response = await fetch(`api/watchlists/`,{
             method:'POST',
