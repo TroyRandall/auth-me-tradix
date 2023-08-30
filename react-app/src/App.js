@@ -8,6 +8,8 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import StockDetails from './components/StockDetails'
+import LandingHomePage from "./components/LandingPage/LandingHomePage";
+import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +23,10 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route path='/' exact={true}>
+            <LandingHomePage />
+
+          </Route>
           <Route path="/login" exact={true} >
             <LoginFormPage />
           </Route>
