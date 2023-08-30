@@ -143,7 +143,6 @@ function SignupFormPage() {
 
       <div className='signup-page-left-bottom'>
         <img src="https://tradix.s3.us-east-2.amazonaws.com/rocket-signup.png" id="signup-image" alt="rocket-signup"/>
-        <p id="signup-disclosure"> HIHIHIHIHICrypto is currently not offered through Tradix Crypto. Tradix is not a real company. Please do not treat this app as a real banking app.</p>
       </div>
     </div>
     <div className='signup-page-right'>
@@ -339,6 +338,7 @@ function SignupFormPage() {
             {signupStage === 1 && <button form='signup-form' className='signup-button-bottom' type='submit'>{loading ? spinner : "Continue"}</button>}
             {signupStage === 2 && <button form='signup-form' className='signup-button-bottom' type='submit'>{loading ? spinner : "Continue"}</button>}
             {signupStage === 3 && <button form='signup-form' className='signup-button-bottom' type='submit'>{loading ? spinner : "Complete"}</button>}
+            {/* need to handle the click button when complete. go to a user profile home page */}
           </div>
         </div>
       </div>
