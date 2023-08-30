@@ -1,5 +1,15 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+<<<<<<< HEAD
+import stocksReducer from './stocks'
+import sessionReducer from './session';
+import tickersReducer from './tickers'
+
+const rootReducer = combineReducers({
+  session: sessionReducer,
+  stocks: stocksReducer,
+  tickers: tickersReducer
+=======
 import session from './session'
 import watchlistReducer from './watchlist';
 
@@ -7,6 +17,7 @@ const rootReducer = combineReducers({
   session,
   watchlists: watchlistReducer
 
+>>>>>>> 84324cda2c39153bd9113d1b25a68816d5e247cc
 });
 
 

@@ -97,7 +97,7 @@ export const signUp = (username, email, password, first_name, last_name, buying_
 	}
 };
 
-export default function reducer(state = initialState, action) {
+export default function sessionReducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
 			return { user: action.payload };
