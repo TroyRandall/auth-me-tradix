@@ -50,17 +50,30 @@ def create_watchlist():
 
 
 
-#update wathclist
+#update wathclist(done)
 @watchlist_routes.route('/<int:watchlist_id>', methods=['PUT'])
 @login_required
 def update_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
     current_user_id = current_user_info['id']
     update_watchlist = Watchlist.query.get(watchlist_id)
-    if update_watchlist:
+    form = WatchlistAddForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
         if update_watchlist.user_id == current_user_id:
-            data = request.get_json()
-            update_watchlist.name = data['name']
+            new_name = form.data['name']
+
+            # Check if the new name is already used by another watchlist
+            existing_watchlist = Watchlist.query.filter(
+                Watchlist.name == new_name,
+                Watchlist.id != watchlist_id
+            ).first()
+
+            if existing_watchlist:
+                return {'error': 'Watchlist name already exists'}, 400
+
+            update_watchlist.name = new_name
             db.session.commit()
             return update_watchlist.to_dict(), 200
         else:
@@ -69,10 +82,12 @@ def update_watchlist(watchlist_id):
                 'statusCode': 403
             }}, 403
 
+    if form.errors:
+        return {'error': form.errors}, 400
 
 
 
-#delete a wathclist
+#delete a wathclist(done)
 @watchlist_routes.route('/<int:watchlist_id>', methods=['DELETE'])
 def delete_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
@@ -94,8 +109,8 @@ def delete_watchlist(watchlist_id):
             'statusCode': 404
         }}, 404
 
-#add a stock to wathclist
-@watchlist_routes.route('<int:wathclist_id>/stocks', methods=['POST'])
+#add a stock to wathclist(done)
+@watchlist_routes.route('<int:watchlist_id>/stocks', methods=['POST'])
 @login_required
 def add_stock_to_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
