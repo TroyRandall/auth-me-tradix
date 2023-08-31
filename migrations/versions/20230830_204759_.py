@@ -21,7 +21,7 @@ def upgrade():
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.alter_column('image_url',
                existing_type=sa.VARCHAR(),
-               nullable=False)
+               nullable=True)
 
     # ### end Alembic commands ###
 
