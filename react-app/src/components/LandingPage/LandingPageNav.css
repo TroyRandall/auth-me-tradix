@@ -98,24 +98,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-color:#c3f53c;
+    border-color:#50680f;
     color:#c3f53c ;
 
 }
-#landing-page-login:hover {
-    color: white
-}
-#landing-page-signup:hover {
-    color: #c3f53c
-}
+
 
 #landing-page-signup {
     display: flex;
     justify-content: center;
     align-items: center;
     border-color: var(--landing-page-accent-color);
-    /* background-color: var(--landing-page-accent-color); */
-    color: white
+
 }
 
 @media screen and (max-width: 750px) {
