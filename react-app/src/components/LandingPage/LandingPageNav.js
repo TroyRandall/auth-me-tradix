@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, Redirect , useLocation} from 'react-router-dom';
 import './LandingPageNav.css';
+import { Link } from 'react-router-dom';
 
 const LandingPageNav = () => {
 const currentuser = useSelector(state => state.session.user);
@@ -19,6 +20,7 @@ return (
             <div className={`landing-page ${current_url === "/" ? "landing-page-green" : "landing-page-white"}`}>
                 <NavLink exact to="/">
                     <div className="landing-page-logo">
+
                         <p className="landing-page-logo-text">Tradix</p>
                         <i className="fa-solid fa-rocket"></i>
                     </div>
@@ -42,7 +44,7 @@ return (
                                 Log in
                             </button>
                         </NavLink>
-                        <NavLink to="/signup" exact>
+                        <NavLink to="/sign-up" exact={true}>
                             <button id="landing-page-signup">
                                 Sign up
                             </button>
