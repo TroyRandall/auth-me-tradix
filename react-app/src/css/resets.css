@@ -50,10 +50,14 @@ ul {
 }
 
 img {
-    display: block;
+    display: flex;
     height: auto;
     width: 100%;
+
 }
+/* * {
+    box-sizing: border-box;
+} */
 
 button,
 input[type="email"],
