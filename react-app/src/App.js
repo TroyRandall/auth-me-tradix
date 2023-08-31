@@ -31,7 +31,7 @@ function App() {
           <Route path="/login" exact={true} >
             <LoginFormPage />
           </Route>
-          <Route path="/signup" exact={true}>
+          <Route path="/sign-up" exact={true}>
             <SignupFormPage />
           </Route>
           <Route path='/stocks/:ticker'>

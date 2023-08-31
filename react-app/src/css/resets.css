@@ -37,10 +37,11 @@ ul {
     text-align: inherit;
     text-decoration: inherit;
     vertical-align: inherit;
+
 }
 body{
     margin: 0;
-    width: 100%
+    padding: 0;
 
 }
 
