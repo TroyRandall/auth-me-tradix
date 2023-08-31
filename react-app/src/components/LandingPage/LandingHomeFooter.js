@@ -13,7 +13,7 @@ const LandingHomeFooter = () => {
                 </div>
                 <div id="footer-top-right-container">
                     <div id="footer-top-right-content">
-                        <div id="top-footer-text">Made with love</div>
+                        <div id="top-footer-text">Made with Python, Flask, JavaScript, Npm, React, HTML, CSS, SQL, Aws</div>
                     </div>
                 </div>
 
@@ -50,8 +50,7 @@ const LandingHomeFooter = () => {
                                 All investing involves risk, except for Tradix. No deposit needed. Any money in Tradix is virtual money.
                             </div>
                             <div id="disclaimer">
-                                This site is not Robinhood. Please do not provide your real personal information. We will not be responsible for any trades made!!!! All investing involves risk.
-                                Options trading entails significant risk and is not appropriate for all customers. Customers must read and understand the Characteristics and Risks of Standardized Options before engaging in any options trading strategies. Options transactions are often complex and may involve the potential of losing the entire investment in a relatively short period of time. Certain complex options strategies carry additional risk, including the potential for losses that may exceed the original investment amount.
+                             Adventures in Financial Rollercoasterism: The Hilarious Handbook to Risky Stock Trading! 🎢📈🤣
                             </div>
                             <div id="disclaimer">
                                 © 2023 Tradix. All rights reserved.
