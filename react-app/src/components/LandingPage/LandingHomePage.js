@@ -7,7 +7,7 @@ const LandingHomePage = () => {
         <div id='home-whole-container'>
             <div id="home-video-section">
                 <div id="video-container">
-                    <video className="video" controlsList="nodownload nofullscreen noremoteplayback" muted autoPlay playsInline src="https://tradix.s3.us-east-2.amazonaws.com/landingvideo.mp4" />
+                    <video className="video" controlsList="nodownload nofullscreen noremoteplayback" muted autoPlay playsInline src="https://tradix.s3.us-east-2.amazonaws.com/Tradixintro.mp4" />
 
                 </div>
                 <div id="under-video-container">

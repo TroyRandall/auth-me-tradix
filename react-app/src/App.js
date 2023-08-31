@@ -10,6 +10,7 @@ import Navigation from "./components/Navigation";
 import StockDetails from './components/StockDetails'
 import LandingHomePage from "./components/LandingPage/LandingHomePage";
 import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
+import LandingPageNav from "./components/LandingPage/LandingPageNav";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,12 +21,12 @@ function App() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
+      {/* <Navigation isLoaded={isLoaded} />
+      {isLoaded && ( */}
         <Switch>
           <Route path='/' exact={true}>
+            <LandingPageNav />
             <LandingHomePage />
-
           </Route>
           <Route path="/login" exact={true} >
             <LoginFormPage />
@@ -38,7 +39,7 @@ function App() {
           </Route>
 
         </Switch>
-      )}
+      {/* )} */}
     </>
   );
 }

@@ -53,13 +53,14 @@
     display: flex;
     justify-content: center;
     object-fit: contain;
+    width: 100%;
     overflow-clip-margin: content-box;
+
 }
 
-#video-container .video{
-    max-height: 77.5vh;
+#video-container .video {
     width: 100%;
-
+    max-width: 100%;
 }
 
 #under-video-container {
