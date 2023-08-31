@@ -24,7 +24,7 @@ const LearnHomePage = () => {
                 <div className="learn-page-bottom-container">
                     <div className="learn-page-bottom-investing">
                         <h2 className='invest101'>Investing 101</h2>
-                        <p className='invest-explain'>A good place to start. Get the low-down before you dive in.</p>
+                        <p className='invest-explain'>A good place to start. Get the low-down before you dive.</p>
 
                     </div>
                     <div className="what-is-section-container">
@@ -38,12 +38,12 @@ const LearnHomePage = () => {
                         </div>
                         <div className="what-is-section">
                             <div className="what-is-section-content">
-                                <h3>What is a Stock?</h3>
-
+                                <h3>What is a</h3>
+                                <h3>stock?</h3>
                                 <p>A stock is a unit of ownership in a company.</p>
 
                             </div>
-                            <img className='learn3' src="https://tradix.s3.us-east-2.amazonaws.com/whatisstock.png" />
+                            <img className='learn3' src="https://tradix.s3.us-east-2.amazonaws.com/whatisstock.png"/>
                         </div>
                         <div className="what-is-section">
                             <div className="what-is-section-content">
