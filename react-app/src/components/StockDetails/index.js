@@ -10,6 +10,7 @@ import { Line } from "react-chartjs-2";
 import * as stockActions from "../../store/stocks";
 import * as tickerActions from "../../store/tickers";
 import * as companyActions from "../../store/companyData";
+import PurchaseStockForm from "../StockPurchaseForm";
 import "./stockDetails.css";
 
 function StockDetails() {
@@ -20,6 +21,7 @@ function StockDetails() {
   const stockInfo = useSelector((state) => state.stocks);
   const tickerInfo = useSelector((state) => state.tickers[uppercaseTicker]);
   const companyInfo = useSelector((state) => state.companies[uppercaseTicker]);
+  const currentUser = useSelector((state) => state.session);
 
   useEffect(() => {
     const loadData = async () => {
@@ -121,6 +123,17 @@ function StockDetails() {
     isLoaded && (
       <>
         <div id="company-grid-container">
+          <PurchaseStockForm
+            average={
+              Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                Object.values(stockInfo[ticker]["Time Series (Daily)"]).length -
+                  1
+              ]["4. close"]
+            }
+            isLoaded={isLoaded}
+            change={formattedChange > 0 ? "+" : "-"}
+          />
+
           <div id="company-info-container">
             {
               <h1>
@@ -165,7 +178,8 @@ function StockDetails() {
             <p id="avg-volume-data">{formattedVolume()}</p>
             <label id="high-today-label">High Today</label>
             <p id="high-today-data">
-              ${
+              $
+              {
                 Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])
                     .length - 1
@@ -173,28 +187,38 @@ function StockDetails() {
               }
             </p>
             <label id="low-today-label">Low Today</label>
-            <p id='low-today-data'>
-              ${
+            <p id="low-today-data">
+              $
+              {
                 Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])
                     .length - 1
                 ]["3. low"]
               }
             </p>
-            <label id='open-price-label'>Open Price</label>
-            <p id='open-price-data'>${ (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+            <label id="open-price-label">Open Price</label>
+            <p id="open-price-data">
+              $
+              {
+                Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])
                     .length - 1
-                ]["1. open"])}</p>
-            <label id='daily-volume-label'>Volume</label>
-            <p id='daily-volume-data'>{ (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                ]["1. open"]
+              }
+            </p>
+            <label id="daily-volume-label">Volume</label>
+            <p id="daily-volume-data">
+              {
+                Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])
                     .length - 1
-                ]["5. volume"])}</p>
-                <label id='fiftytwo-week-low-label'>52 Week Low</label>
-                <p id='fiftytwo-week-low-data'>{companyInfo['52WeekLow']}</p>
-                <label id='fiftytwo-week-high-label'>52 Week High</label>
-                <p id='fiftytwo-week-high-data'>{companyInfo['52WeekHigh']}</p>
+                ]["5. volume"]
+              }
+            </p>
+            <label id="fiftytwo-week-low-label">52 Week Low</label>
+            <p id="fiftytwo-week-low-data">{companyInfo["52WeekLow"]}</p>
+            <label id="fiftytwo-week-high-label">52 Week High</label>
+            <p id="fiftytwo-week-high-data">{companyInfo["52WeekHigh"]}</p>
           </div>
         </div>
       </>

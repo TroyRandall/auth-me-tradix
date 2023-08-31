@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField
+from wtforms import StringField, FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
 
 def checkValidAmount():
@@ -14,3 +14,5 @@ class PortfolioForm(FlaskForm):
     symbol = StringField('Symbol', [DataRequired()])
     quantity = FloatField('Quantity', [checkValidAmount()])
     avg_price = FloatField('Average Price', [DataRequired()])
+    purchaseIn = SelectField('Purchase In', [DataRequired()])
+    submit = SubmitField('Submit')
