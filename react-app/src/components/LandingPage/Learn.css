@@ -88,7 +88,7 @@
 }
 
 .learn-page-bottom {
-    width: 1280px;
+    /* width: 1280px; */
     border-bottom: 1.75px solid black;
     align-items: center;
     display: flex;

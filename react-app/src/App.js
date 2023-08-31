@@ -12,6 +12,7 @@ import LandingHomePage from "./components/LandingPage/LandingHomePage";
 import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
 import LandingPageNav from "./components/LandingPage/LandingPageNav";
 import LearnHomePage from "./components/LandingPage/Learn";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <>
+
       {/* <Navigation isLoaded={isLoaded} />
       {isLoaded && ( */}
         <Switch>
@@ -45,6 +47,7 @@ function App() {
 
         </Switch>
       {/* )} */}
+
     </>
   );
 }

@@ -121,10 +121,17 @@ function SignupFormPage() {
     }
 
     setLoading(true);
+    if(password === confirmPassword){
     const data = await dispatch(signUp(firstName, lastName, email, password, buyingPower, username));
-    setLoading(false);
-    setErrors(errors);
-    setSignupStage(3);
+    if(data) {
+      setLoading(false);
+      setErrors(errors);
+      setSignupStage(3);
+    }
+    }
+    // setLoading(false);
+    // setErrors(errors);
+    // setSignupStage(3);
   }
 
 
