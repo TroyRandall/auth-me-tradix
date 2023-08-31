@@ -1,12 +1,15 @@
 body {
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 250px;
+  margin-right: 250px;
   font-family: 'Avenir black', 'Arial'
 }
 
 #lineChart {
   height: 286.048px;
   width: 986px;
+  grid-row: 2/4;
+  grid-column: 1/3;
+
 }
 
 h1 {
@@ -25,11 +28,238 @@ h1 {
 #stock_details_percent_change_plus {
     font-size: 18px;
     margin: 0px;
-    color: green
+    color: rgb(0, 243, 0)
 }
 
 #stock_details_percent_change_minus {
     font-size: 18px;
     margin: 0px;
     color: red
+}
+
+#company-grid-container {
+    display: grid;
+    grid-template-rows: repeat(10, 150px);
+    grid-template-columns: repeat(2, 50%);
+}
+
+#company-description-title {
+    font-size: 32px;
+    grid-row: 5/7;
+    grid-column: 1/3;
+    align-self: center;
+    border-top: 1px solid rgb(131, 131, 131);
+    border-bottom: 1px solid rgb(131, 131, 131);
+    margin-right: 300px;
+    padding-top: 50px;
+    padding-bottom: 15px;
+}
+
+#company-description {
+    grid-row: 6/8;
+    grid-column: 1/3;
+    justify-self: center;
+    align-self: center;
+    margin-right: 300px;
+    border-bottom: 1px solid rgb(131, 131, 131);
+    padding-bottom: 55px;
+    padding-top: 25px;
+}
+
+
+#company-info-container {
+    grid-row: 1/3;
+    grid-column: 1/2;
+}
+
+#market-share-label {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    font-weight: 700;
+    font-size: 20px;
+    align-self: start;
+}
+
+#market-cap-data {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#company-financial-data-container {
+    grid-row: 8/10;
+    grid-column: 1/3;
+    display: grid;
+    grid-template-rows: repeat(3, 50%);
+    grid-template-columns: repeat(4, 25%);
+    margin-right: 250px;
+    margin-left: 70px;
+}
+
+#PEratio-label {
+    grid-row: 1/2;
+    grid-column: 2/3;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+
+}
+
+#PEratio-data {
+    grid-row: 1/2;
+    grid-column: 2/3;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#dividend-yield-label {
+    grid-row: 1/2;
+    grid-column: 3/4;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#dividend-yield-data {
+    grid-row: 1/2;
+    grid-column: 3/4;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#avg-volume-label {
+    grid-row: 1/2;
+    grid-column: 4/5;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#avg-volume-data {
+    grid-row: 1/2;
+    grid-column: 4/5;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#high-today-label {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#high-today-data {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#low-today-label {
+    grid-row: 2/3;
+    grid-column: 2/3;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#low-today-data {
+    grid-row: 2/3;
+    grid-column: 2/3;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#open-price-label {
+    grid-row: 2/3;
+    grid-column: 3/4;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#open-price-data {
+    grid-row: 2/3;
+    grid-column: 3/4;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#daily-volume-label {
+    grid-row: 2/3;
+    grid-column: 4/5;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#daily-volume-data {
+    grid-row: 2/3;
+    grid-column: 4/5;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+
+}
+
+#fiftytwo-week-low-label {
+    grid-row: 3/4;
+    grid-column: 1/2;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#fiftytwo-week-low-data {
+    grid-row: 3/4;
+    grid-column: 1/2;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
+}
+
+#fiftytwo-week-high-label {
+    grid-row: 3/4;
+    grid-column: 2/3;
+    font-weight: 700;
+    font-size: 18px;
+    align-self: start;
+}
+
+#fiftytwo-week-high-data {
+    grid-row: 3/4;
+    grid-column: 2/3;
+    font-size: 18px;
+    align-self: center;
+    position: relative;
+    bottom: 35px;
+    left: 25px;
 }
