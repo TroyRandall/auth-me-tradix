@@ -4,13 +4,15 @@ import stocksReducer from './stocks'
 import sessionReducer from './session';
 import tickersReducer from './tickers'
 import companiesReducer from './companyData'
+import watchlistReducer from './watchlist'
 
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   stocks: stocksReducer,
   tickers: tickersReducer,
-  companies: companiesReducer
+  companies: companiesReducer,
+  watchlists: watchlistReducer
 });
 
 
