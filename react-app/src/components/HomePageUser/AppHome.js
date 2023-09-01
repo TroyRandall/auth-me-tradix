@@ -1,6 +1,7 @@
 import React from 'react';
 import AppMainNavBar from '../MainUserNav/MainUserNav';
 import { useSelector } from 'react-redux';
+import Watchlist from '../Watchlist';
 import './AppHome.css'
 
 const AppHome = () => {
@@ -23,7 +24,7 @@ const AppHome = () => {
                     </div>
                 </div>
                 <div className="app-home-right">
-                    {/* will put wathclist here */}
+                    <Watchlist />
                 </div>
             </div>
         </div>
