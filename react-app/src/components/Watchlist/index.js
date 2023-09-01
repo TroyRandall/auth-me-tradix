@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NewWatchlist from './watchlist_form';
 import Modal from '../OpenModalButton';
+import UpdateButton from './Update/UpdateButton';
+import DeleteStockButton from './Delete/DeleteStock';
 import { Link } from 'react-router-dom';
 import './index.css'
 
@@ -59,7 +61,7 @@ const Watchlist = () => {
                                             {modalInfo.content}
                                         </Modal>
                                     )}
-                                    {/* <UpdateButton i={i} watchlist={watchlist} openModal={(content) => setModalInfo({ show: true, content })} closeModal={() => setModalInfo({ show: false })} /> */}
+                                    <UpdateButton i={i} watchlist={watchlist} openModal={(content) => setModalInfo({ show: true, content })} closeModal={() => setModalInfo({ show: false })} />
                                     <button className='btn-openstock watchlist-btn'>
                                         <i className={`fa-solid fa-angle-up ${openings[i] ? "watchlist-opening" : "watchlist-closing"}`}></i>
                                     </button>
@@ -73,7 +75,7 @@ const Watchlist = () => {
                                                 {/* <Link to={`/stocks/${stock.stock_symbol}`}> */}
                                                     {/* <SmallChart symbol={stock.stock_symbol} /> */}
                                                 {/* </Link> */}
-                                                {/* <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} /> */}
+                                                <DeleteStockButton symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
                                             </div>
                                         ))
                                     }

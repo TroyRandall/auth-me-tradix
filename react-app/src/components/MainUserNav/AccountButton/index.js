@@ -42,7 +42,9 @@ function AccountButton() {
             {showAccount &&
                 <div ref={ref} id="app-nav-bar-account-submenu">
                     <div id="submenu-account-information">
-                        {user.username || user.email}
+
+                        {user.username ? user.username : user.email}
+
                     </div>
                     <Link to="/profile"><div id="submenu-profile-container">
                         <i className="fa-solid fa-face-smile" />

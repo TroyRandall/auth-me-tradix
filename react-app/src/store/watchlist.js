@@ -52,36 +52,19 @@ export const fetchUserWatchlists = () => async dispatch => {
         return response
     }
 }
-export const addWatchlist = (watchlist) => async dispatch => {
-    try {
-        const response = await fetch(`api/watchlists/`,{
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: watchlist })
-        });
-        if (response.ok) {
-            const data = await response.json();
-            dispatch(createWatchlists(data));
-            return response;
-        } else {
-            const data = await response.json();
-            if(data) {
-                throw data.error.name;
-            } else {
-                const data = await response.json();
-                if(data){
-                    throw data.error.name;
-                } else {
-                    throw ['Error! try again later']
-                }
-            }
-        }
-
-        } catch(err){
-            throw err
-        }
+export const addWatchlist = (name,userId) => async dispatch => {
+    const response = await fetch(`/api/watchlists/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, user_id: userId }),
+      });
+      if (response.ok){
+        const data = await response.json();
+        dispatch(createWatchlists(data));
+        return response
+      }
     }
 
 export const removeWatchlist = (watchlistId) => async dispatch => {
@@ -129,20 +112,20 @@ export const editWatchlist = (watchlist) => async dispatch => {
     }
 }
 export const addStockToWatchlist = (info) => async dispatch => {
-    const { watchlistId, symbol } = info;
+    const { watchlist_id, stock_symbol } = info;
 
     try {
-        const response = await fetch(`/api/watchlists/${watchlistId}/stocks`, {
+        const response = await fetch(`/api/watchlists/${watchlist_id}/stocks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({symbol})
+            body: JSON.stringify({stock_symbol})
         });
 
         if (response.ok) {
             const data = await response.json();
-            dispatch(fetchUserWatchlists())
+            dispatch(fetchUserWatchlists(data))
             return response;
         } else {
             const data = await response.json();
@@ -155,7 +138,7 @@ export const addStockToWatchlist = (info) => async dispatch => {
     }
 }
 export const deleteStockFromWatchlist = (stock) => async dispatch => {
-    const { watchlistId, stockId } = stock;
+    const { watchlist_id, stockId } = stock;
     try {
         const response = await fetch(`/api/watchlists/stocks/${stockId}`, {
             method: 'DELETE',
@@ -167,7 +150,7 @@ export const deleteStockFromWatchlist = (stock) => async dispatch => {
 
         if (response.ok) {
             const data = response.json();
-            dispatch(deleteStock({watchlistId, stockId }));
+            dispatch(deleteStock({watchlist_id, stockId }));
             return response;
         } else {
             const data = await response.json();
@@ -214,6 +197,7 @@ const watchlistReducer = (state = {}, action) => {
             }
 
         case CREATE_WATCHLISTS:
+            // return { ...state, watchlists: action.payload };
             newState = copyState(state);
             newState.watchlists[action.watchlist.id] = action.watchlist;
             return newState

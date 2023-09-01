@@ -1,10 +1,11 @@
 import * as watchlistAction from '../../store/watchlist';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 
 const NewWatchlist = ({openForm, setOpenForm}) => {
     const [name, setName] = useState('');
     const [validationError, setValidationError] = useState('');
+    const newlist = useSelector((state)=> state.watchlists)
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,18 +17,26 @@ const NewWatchlist = ({openForm, setOpenForm}) => {
         if (name.trim() === "") {
             return setValidationError('List name can not be empty')
         }
+        try{
+        await dispatch(watchlistAction.addWatchlist(name));
+        await dispatch(watchlistAction.fetchUserWatchlists());
 
-        const response = await dispatch(watchlistAction.addWatchlist(name))
-            .catch(async (err) => {
-                setValidationError(err[0])
-                if (err.response) {
-                    const data = await err.response.json();
-                }
-            });
+
+
+        // const response = await dispatch(watchlistAction.addWatchlist(name))
+        //     .catch(async (err) => {
+        //         setValidationError(err[0])
+        //         if (err.response) {
+        //             const data = await err.response.json();
+        //         }
+        //     });
         setName('');
         setOpenForm(false)
 
+    } catch (err){
+        setValidationError(err);
     }
+}
 
     const handleCancelButton = (e) => {
         openForm === false ? setOpenForm(true):setOpenForm(false)
