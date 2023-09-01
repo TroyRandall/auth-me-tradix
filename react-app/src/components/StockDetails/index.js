@@ -21,7 +21,6 @@ function StockDetails() {
   const stockInfo = useSelector((state) => state.stocks);
   const tickerInfo = useSelector((state) => state.tickers[uppercaseTicker]);
   const companyInfo = useSelector((state) => state.companies[uppercaseTicker]);
-  const currentUser = useSelector((state) => state.session);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,8 +35,6 @@ function StockDetails() {
   }, [dispatch, ticker]);
 
   const formattedLabels = () => {
-    console.log(companyInfo);
-    console.log(stockInfo[ticker]);
     return Object.keys(stockInfo[ticker]["Time Series (Daily)"]);
   };
 
@@ -62,8 +59,7 @@ function StockDetails() {
       avg += dataPoint;
       count++;
     });
-    console.log(avg / count);
-    return avg / count + "M";
+    return ( avg/count > 1000000000 ? 'NAN' : avg/count + 'M');
   };
 
   const formattedChange =
@@ -107,7 +103,8 @@ function StockDetails() {
       : "stock_details_percent_change_minus");
 
   const formattedMarketCap = () => {
-    if (
+    if(companyInfo !== undefined ){
+       if (
       companyInfo["MarketCapitalization"].length > 9 &&
       companyInfo["MarketCapitalization"].length < 13
     ) {
@@ -117,6 +114,8 @@ function StockDetails() {
     } else {
       return `${companyInfo["MarketCapitalization"].slice(0, 3)}T`;
     }
+    }
+      return
   };
 
   return (
@@ -165,15 +164,15 @@ function StockDetails() {
           </div>
 
           <h3 id="company-description-title">About</h3>
-          <p id="company-description">{companyInfo["Description"]}</p>
+          <p id="company-description">{companyInfo !== undefined ? companyInfo["Description"] : ''}</p>
 
           <div id="company-financial-data-container">
             <label id="market-share-label">Market cap </label>{" "}
             <p id="market-cap-data"> {formattedMarketCap()}</p>
             <label id="PEratio-label">Price-Earnings Ratio</label>
-            <p id="PEratio-data">{companyInfo["PERatio"]}</p>
+            <p id="PEratio-data">{companyInfo !== undefined ? companyInfo["PERatio"] : ''}</p>
             <label id="dividend-yield-label">Dividend Yield</label>
-            <p id="dividend-yield-data">{companyInfo["DividendYield"]}%</p>
+            <p id="dividend-yield-data">{companyInfo !== undefined ? ["DividendYield"] : ''}%</p>
             <label id="avg-volume-label">Average Volume</label>
             <p id="avg-volume-data">{formattedVolume()}</p>
             <label id="high-today-label">High Today</label>
@@ -216,9 +215,9 @@ function StockDetails() {
               }
             </p>
             <label id="fiftytwo-week-low-label">52 Week Low</label>
-            <p id="fiftytwo-week-low-data">{companyInfo["52WeekLow"]}</p>
+            <p id="fiftytwo-week-low-data">{companyInfo !== undefined ? companyInfo["52WeekLow"] : ''}</p>
             <label id="fiftytwo-week-high-label">52 Week High</label>
-            <p id="fiftytwo-week-high-data">{companyInfo["52WeekHigh"]}</p>
+            <p id="fiftytwo-week-high-data">{companyInfo !== undefined ? ["52WeekHigh"] : ''}</p>
           </div>
         </div>
       </>

@@ -3,7 +3,7 @@
     grid-column: 1/3;
   display: grid;
   grid-template-columns: repeat(1, 100%);
-  grid-template-rows: repeat(9, 40px);
+  grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(11%/9, max(40px, 10%/10)), 1fr));
   box-sizing: content-box;
   color: rgb(0, 0, 0);
   color-scheme: light;
@@ -14,7 +14,6 @@
     sans-serif;
   font-size: 13px;
   font-weight: 400;
-  height: 350px;
   letter-spacing: -0.1px;
   line-height: 20px;
   margin-left: -12px;
@@ -31,6 +30,50 @@
   top: 64px;
   visibility: visible;
   width: 312.5px;
+  min-height: 430px;
+  max-height: 470px;
+  left: 1400px;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-width: 320px;
+  border-radius: 20px;
+}
+
+#purchase-form-errors {
+    grid-row: 1/2;
+    grid-column: 1/3;
+  display: grid;
+  grid-template-columns: repeat(1, 100%);
+  grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(10%/10, max(40px, 8%/13)), 1fr));
+  box-sizing: content-box;
+  color: rgb(0, 0, 0);
+  color-scheme: light;
+  flex-basis: calc(25% - 24px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-family: "Capsule Sans Text", -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  line-height: 20px;
+  margin-left: -12px;
+  margin-right: -12px;
+  outline-color: rgb(51, 160, 206);
+  outline-style: solid;
+  outline-width: 1px;
+  padding-bottom: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 36px;
+  position: sticky;
+  text-size-adjust: 100%;
+  top: 64px;
+  visibility: visible;
+  width: 312.5px;
+  min-height: 430px;
+  max-height: 470px;
   left: 1400px;
   padding: 1rem;
   background-color: #fff;
@@ -316,6 +359,145 @@
     grid-row: 9/10;
     grid-column: 1/2;
     justify-self: center;
-    align-self: center;
+    align-self: flex-end;
     font-size: 18px;
   }
+
+  .form-add-to-watchlist {
+    --color: #00bb1f;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 17px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+    grid-row: 10/12;
+    grid-column: 1/2;
+    justify-self: center;
+    align-self: start;
+    width: 150px;
+    height: 35px;
+   }
+
+   .form-add-to-watchlist::before, .form-add-to-watchlist::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: var(--color);
+    transition: 1s ease;
+   }
+
+   .form-add-to-watchlist::before {
+    top: -1em;
+    left: -1em;
+   }
+
+   .form-add-to-watchlist::after {
+    left: calc(100% + 1em);
+    top: calc(100% + 1em);
+   }
+
+   .form-add-to-watchlist:hover::before, .form-add-to-watchlist:hover::after {
+    height: 410px;
+    width: 410px;
+   }
+
+   .form-add-to-watchlist:hover {
+    color: rgb(255, 255, 255);
+   }
+
+   .form-add-to-watchlist:active {
+    filter: brightness(.8);
+   }
+
+   .form-add-to-watchlist-minus {
+    --color: #ff2d2d;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 17px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+    grid-row: 10/12;
+    grid-column: 1/2;
+    justify-self: center;
+    align-self: start;
+    height: 25px;
+   }
+
+   .form-add-to-watchlist-minus::before, .form-add-to-watchlist-minus::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: var(--color);
+    transition: 1s ease;
+   }
+
+   .form-add-to-watchlist-minus::before {
+    top: -1em;
+    left: -1em;
+   }
+
+   .form-add-to-watchlist-minus::after {
+    left: calc(100% + 1em);
+    top: calc(100% + 1em);
+   }
+
+   .form-add-to-watchlist-minus:hover::before, .form-add-to-watchlist-minus:hover::after {
+    height: 410px;
+    width: 410px;
+   }
+
+   .form-add-to-watchlist-minus:hover {
+    color: rgb(255, 255, 255);
+   }
+
+   .form-add-to-watchlist-minus:active {
+    filter: brightness(.8);
+   }
+
+   #form-estimated-price {
+    align-self: start;
+    justify-self: center;
+    grid-row: 9/10;
+    grid-column: 1/2;
+    font-size: 18px;
+   }
+
+   #errors-errors {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    justify-self: center;
+    display: grid;
+    justify-items: end;
+    font-size: 12px;
+    align-items: inherit;
+    color: red;
+    list-style-type: none
+   }

@@ -38,6 +38,7 @@ h1 {
     grid-template-columns: repeat(2, 50%);
     margin-left: 250px;
     margin-right: 350px;
+    margin-top: 50px;
     font-family: 'Avenir black', 'Arial'
 }
 
