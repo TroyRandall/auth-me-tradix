@@ -10,6 +10,8 @@ import { Line } from "react-chartjs-2";
 import * as stockActions from "../../store/stocks";
 import * as tickerActions from "../../store/tickers";
 import * as companyActions from "../../store/companyData";
+import * as monthlyActions from '../../store/monthly'
+import * as weeklyActions from '../../store/weekly'
 import PurchaseStockForm from "../StockPurchaseForm";
 import "./stockDetails.css";
 
@@ -19,17 +21,22 @@ function StockDetails() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoverPrice, setHoverPrice] = useState(false);
+  const [daily, setDaily] = useState(true);
+  const [monthly, setMonthly] = useState(false);
+  const [weekly, setWeekly] = useState(false);
   const stockInfo = useSelector((state) => state.stocks);
   const tickerInfo = useSelector((state) => state.tickers[uppercaseTicker]);
   const companyInfo = useSelector((state) => state.companies[uppercaseTicker]);
+  const monthlyInfo = useSelector((state) => state.monthly[ticker]);
+  const weeklyInfo = useSelector((state) => state.weekly[ticker]);
 
   useEffect(() => {
     const loadData = async () => {
       await dispatch(stockActions.stockDataDaily(ticker));
       await dispatch(companyActions.companyDataFetch(ticker));
-      await dispatch(tickerActions.stockTickerInfo(ticker)).then(() =>
-        setIsLoaded(true)
-      );
+      await dispatch(tickerActions.stockTickerInfo(ticker))
+      await dispatch(monthlyActions.stockDataMonthly(ticker))
+      await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() => setIsLoaded(true));
     };
 
     loadData();
@@ -42,8 +49,11 @@ function StockDetails() {
   }, [dispatch, ticker]);
 
   const formattedLabels = () => {
-    return Object.keys(stockInfo[ticker]["Time Series (Daily)"]);
+    if (daily) return Object.keys(stockInfo[ticker]["Time Series (Daily)"]);
+    else if (weekly) return Object.keys(weeklyInfo['Weekly Time Series']);
+    else return Object.keys(monthlyInfo['Monthly Time Series']);
   };
+
 
   const formattedData = () => {
     data = Object.values(stockInfo[ticker]["Time Series (Daily)"]);
@@ -54,6 +64,24 @@ function StockDetails() {
     return newData;
   };
 
+  const formattedDataMonthly = () => {
+    console.log(monthlyInfo)
+    data = Object.values(monthlyInfo["Monthly Time Series"]);
+    const newData = [];
+    data.forEach((dataPoint) => {
+      newData.push(dataPoint["4. close"]);
+    });
+    return newData;
+  };
+
+  const formattedDataWeekly = () => {
+    data = Object.values(weeklyInfo["Weekly Time Series"]);
+    const newData = [];
+    data.forEach((dataPoint) => {
+      newData.push(dataPoint["4. close"]);
+    });
+    return newData;
+  };
   const formattedVolume = () => {
     data = Object.values(stockInfo[ticker]["Time Series (Daily)"]);
     const newData = [];
@@ -68,6 +96,9 @@ function StockDetails() {
     });
     return avg / count > 1000000000 ? "N/A" : avg / count + "M";
   };
+
+
+
 
   const formattedChange =
     isLoaded &&
@@ -88,7 +119,7 @@ function StockDetails() {
         label: `${ticker} Daily Price`,
         backgroundColor: graphColor,
         borderColor: graphColor,
-        data: formattedData(),
+        data: (daily ? formattedData() : (weekly ? formattedDataWeekly() : formattedDataMonthly())),
         pointHoverRadius: 8,
         fill: false,
         pointBorderColor: "rgba(0, 0, 0, 0)",
@@ -175,7 +206,17 @@ function StockDetails() {
     }
     return;
   };
+const dailyToggle = () =>{
+         return setDaily(true), setWeekly(false), setMonthly(false)
+}
 
+const weeklyToggle = () => {
+  return setWeekly(true), setDaily(false), setMonthly(false)
+}
+
+const monthlyToggle = () => {
+  return setMonthly(true), setWeekly(false), setDaily(false)
+}
   return (
     isLoaded && (
       <>
@@ -190,7 +231,6 @@ function StockDetails() {
             isLoaded={isLoaded}
             change={formattedChange > 0 ? "+" : "-"}
           />
-
           <div id="company-info-container">
             {
               <h1>
@@ -222,43 +262,82 @@ function StockDetails() {
           <div id="lineChart">
             <Line data={data} options={options} />
           </div>
+          <div id="chart-buttons">
+            <label className="chart-radio" >
+              <input type="radio" name="radio" onClick={dailyToggle}/>
+              <span className="name">Daily</span>
+            </label>
+            <label className="chart-radio">
+              <input
+                type="radio"
+                name="radio"
+                onClick={weeklyToggle}
+              />
+              <span className="name">Weekly</span>
+            </label>
 
-          <h3 id="stock-lending-title" className='info-div-title'>Stock Lending</h3>
-          <p id="stock-lending-info">
+            <label className="chart-radio">
+              <input
+                type="radio"
+                name="radio"
+                onClick={monthlyToggle}
+              />
+              <span className="name">Monthly</span>
+            </label>
+          </div>
+          <h3 id="stock-lending-title" className="info-div-title">
+            Stock Lending
+          </h3>
+          <p id="stock-lending-info" className="info-div-data">
             You're currently not taking advantage of an income opportunity. You
             could change that today.
           </p>
-
-          <h3 id="company-description-title" className='info-div-title'>About</h3>
-          <p id="company-description">
+          <h3 id="company-description-title" className="info-div-title">
+            About
+          </h3>
+          <p id="company-description" className="info-div-data">
             {companyInfo !== undefined ? companyInfo["Description"] : ""}
           </p>
-
           <div id="company-financial-data-container">
-            <div className='info-div'>
-              <label id="market-share-label" className='info-div-title'>Market cap </label>{" "}
-              <p id="market-cap-data"> {formattedMarketCap()}</p>
+            <div className="info-div">
+              <label id="market-share-label" className="info-div-title">
+                Market cap{" "}
+              </label>{" "}
+              <p id="market-cap-data" className="info-div-data">
+                {" "}
+                {formattedMarketCap()}
+              </p>
             </div>
-            <div className='info-div'>
-              <label id="PEratio-label" className='info-div-title'>Price-Earnings Ratio</label>
-              <p id="PEratio-data">
+            <div className="info-div">
+              <label id="PEratio-label" className="info-div-title">
+                Price-Earnings Ratio
+              </label>
+              <p id="PEratio-data" className="info-div-data">
                 {" "}
                 {companyInfo !== undefined ? companyInfo["PERatio"] : ""}
               </p>
             </div>
-            <div className='info-div'>
-              <label id="dividend-yield-label" className='info-div-title'>Dividend Yield</label>
-              <p id="dividend-yield-data">
+            <div className="info-div">
+              <label id="dividend-yield-label" className="info-div-title">
+                Dividend Yield
+              </label>
+              <p id="dividend-yield-data" className="info-div-data">
                 {companyInfo !== undefined ? ["DividendYield"] : ""}%
               </p>
             </div>
-            <div className='info-div'>
-              <label id="avg-volume-label">Average Volume</label>
-              <p id="avg-volume-data">{formattedVolume()}</p>
+            <div className="info-div">
+              <label id="avg-volume-label" className="info-div-title">
+                Average Volume
+              </label>
+              <p id="avg-volume-data" className="info-div-data">
+                {formattedVolume()}
+              </p>
             </div>
-            <div className='info-div'>
-              <label id="high-today-label" className='info-div-title'>High Today</label>
-              <p id="high-today-data">
+            <div className="info-div">
+              <label id="high-today-label" className="info-div-title">
+                High Today
+              </label>
+              <p id="high-today-data" className="info-div-data">
                 $
                 {
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])[
@@ -268,9 +347,11 @@ function StockDetails() {
                 }
               </p>
             </div>
-            <div className='info-div'>
-              <label id="low-today-label" className='info-div-title'>Low Today</label>
-              <p id="low-today-data">
+            <div className="info-div">
+              <label id="low-today-label" className="info-div-title">
+                Low Today
+              </label>
+              <p id="low-today-data" className="info-div-data">
                 $
                 {
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])[
@@ -280,11 +361,11 @@ function StockDetails() {
                 }
               </p>
             </div>
-            <div className='info-div'>
-              <label label id="open-price-label" className='info-div-title'>
+            <div className="info-div">
+              <label label id="open-price-label" className="info-div-title">
                 Open Price
               </label>
-              <p id="open-price-data">
+              <p id="open-price-data" className="info-div-data">
                 $
                 {
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])[
@@ -294,9 +375,11 @@ function StockDetails() {
                 }
               </p>
             </div>
-            <div className='info-div'>
-              <label id="daily-volume-label" className='info-div-title'>Volume</label>
-              <p id="daily-volume-data">
+            <div className="info-div">
+              <label id="daily-volume-label" className="info-div-title">
+                Volume
+              </label>
+              <p id="daily-volume-data" className="info-div-data">
                 {
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                     Object.values(stockInfo[ticker]["Time Series (Daily)"])
@@ -305,16 +388,20 @@ function StockDetails() {
                 }
               </p>
             </div>
-            <div className='info-div'>
-              <label id="fiftytwo-week-low-label" className='info-div-title'>52 Week Low</label>
-              <p id="fiftytwo-week-low-data">
+            <div className="info-div">
+              <label id="fiftytwo-week-low-label" className="info-div-title">
+                52 Week Low
+              </label>
+              <p id="fiftytwo-week-low-data" className="info-div-data">
                 {companyInfo !== undefined ? companyInfo["52WeekLow"] : ""}
               </p>
             </div>
-            <div className='info-div'>
-              <label id="fiftytwo-week-high-label" className='info-div-title'>52 Week High</label>
-              <p id="fiftytwo-week-high-data">
-                {companyInfo !== undefined ? ["52WeekHigh"] : ""}
+            <div className="info-div">
+              <label id="fiftytwo-week-high-label" className="info-div-title">
+                52 Week High
+              </label>
+              <p id="fiftytwo-week-high-data" className="info-div-data">
+                {companyInfo !== undefined ? companyInfo["52WeekHigh"] : ""}
               </p>
             </div>
           </div>
