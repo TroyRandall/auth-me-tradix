@@ -2,6 +2,7 @@ import React from 'react';
 import AppMainNavBar from '../MainUserNav/MainUserNav';
 import { useSelector } from 'react-redux';
 import Watchlist from '../Watchlist';
+import AllNews from '../News/GetAllNews';
 import './AppHome.css'
 
 const AppHome = () => {
@@ -20,7 +21,7 @@ const AppHome = () => {
                         </div>
                     </div>
                     <div className="app-home-news-container">
-                        {/* will put news components here> */}
+                       <AllNews />
                     </div>
                 </div>
                 <div className="app-home-right">
