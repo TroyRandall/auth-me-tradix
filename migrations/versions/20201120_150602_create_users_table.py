@@ -30,7 +30,7 @@ def upgrade():
     sa.Column('first_name', sa.String(length=100)),
     sa.Column('last_name', sa.String(length=100)),
     sa.Column('buying_power', sa.Float()),
-    sa.Column('image_url', sa.String()),
+    sa.Column('image_url', sa.String(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
