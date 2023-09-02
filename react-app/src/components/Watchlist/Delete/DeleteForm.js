@@ -1,6 +1,6 @@
 import * as watchlistAction from '../../../store/watchlist';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState} from 'react';
 
 
 const DeleteWatchlist = ({ watchlist, onClose }) => {
@@ -8,9 +8,9 @@ const DeleteWatchlist = ({ watchlist, onClose }) => {
     const [validationError, setValidationError] = useState('');
 
     const handleDeletebtn = async (e) => {
-        e.stopPropagation();
+        e.stopPropagation()
         setValidationError('');
-        const response = await dispatch(watchlistAction.removeWatchlist(watchlist.id))
+        const response = await dispatch(watchlistAction.deleteWatchlist(watchlist.id))
             .catch(async (err) => {
                 return setValidationError(err[0])
             });

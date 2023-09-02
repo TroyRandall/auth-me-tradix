@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { logout } from "../../../store/session";
+import { Link} from "react-router-dom";
+import * as sessionActions from "../../../store/session";
 
 
 function AccountButton() {
@@ -35,6 +35,10 @@ function AccountButton() {
         document.addEventListener("click", onClick);
         return () => document.removeEventListener("click", onClick);
     }, [showAccount]);
+    const logout = e => {
+        e.preventDefault();
+        dispatch(sessionActions.logout())
+    }
 
     return (
         <div id="account-button-container">
@@ -43,14 +47,14 @@ function AccountButton() {
                 <div ref={ref} id="app-nav-bar-account-submenu">
                     <div id="submenu-account-information">
 
-                        {user.username ? user.username : user.email}
+                        {user.username || user.email}
 
                     </div>
                     <Link to="/profile"><div id="submenu-profile-container">
                         <i className="fa-solid fa-face-smile" />
                         <p>Profile</p>
                     </div></Link>
-                    <div id="submenu-logout-container" onClick={async (e) => await dispatch(logout())}>
+                    <div id="submenu-logout-container" onClick={logout}>
                         <i className="fa-solid fa-arrow-right-from-bracket" />
                         <p> Log Out </p>
                     </div>

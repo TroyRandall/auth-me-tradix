@@ -1,16 +1,19 @@
 import * as watchlistAction from '../../store/watchlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import NewWatchlist from './watchlist_form';
-import Modal from '../OpenModalButton';
+import NewWatchList from './watchlist_form';
 import UpdateButton from './Update/UpdateButton';
-import DeleteStockButton from './Delete/DeleteStock';
-import { Link } from 'react-router-dom';
-import './index.css'
+// import SmallChart from '../SmallChart';
+// import StockPrice from './StockPrice';
+// import { Modal } from '../../context/Modal'
 
-const Watchlist = () => {
+import RemoveStockBtn from './Delete/DeleteStock.js';
+import './index.css';
+
+const WatchList = () => {
     const dispatch = useDispatch();
-    const watchlists = useSelector(state => state.watchlists.watchlists)
+    // const data = useSelector(state => state.watchlists);
+    const watchlists = useSelector(state => state.watchlists.watchlists);
     const [openForm, setOpenForm] = useState(false);
     const [openings, setOpenings] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -18,13 +21,19 @@ const Watchlist = () => {
         show: false,
         content: <></>
     });
+
     useEffect(() => {
         dispatch(watchlistAction.fetchUserWatchlists())
-    },[dispatch])
+    }, [dispatch]);
 
     const createWatchlist = () => {
         setOpenForm(true);
     }
+    // if (!data.watchlists) {
+    //     return null;
+    // }
+
+    // const watchlists = Object.values(data.watchlists);
 
     const handleClickBtn = (i) => () => {
         const newOpenings = {
@@ -33,6 +42,8 @@ const Watchlist = () => {
         };
         setOpenings(newOpenings);
     };
+
+
     return (
         <div className='watchlist-container'>
             <header>
@@ -41,7 +52,7 @@ const Watchlist = () => {
                     <button className='btn-open btn-add watchlist-btn' onClick={createWatchlist}><i className="fa-solid fa-plus"></i></button>
                 </div>
             </header>
-            {openForm && <NewWatchlist openForm={openForm} setOpenForm={setOpenForm} />}
+            {openForm && <NewWatchList openForm={openForm} setOpenForm={setOpenForm} />}
             <div>
                 {watchlists && Object.values(watchlists).map(
                     (watchlist, i) => (
@@ -56,11 +67,11 @@ const Watchlist = () => {
                                     </div>
                                 </div>
                                 <div className='watchlist-btn-container'>
-                                    {modalInfo.show && (
+                                    {/* {modalInfo.show && (
                                         <Modal>
                                             {modalInfo.content}
                                         </Modal>
-                                    )}
+                                    )} */}
                                     <UpdateButton i={i} watchlist={watchlist} openModal={(content) => setModalInfo({ show: true, content })} closeModal={() => setModalInfo({ show: false })} />
                                     <button className='btn-openstock watchlist-btn'>
                                         <i className={`fa-solid fa-angle-up ${openings[i] ? "watchlist-opening" : "watchlist-closing"}`}></i>
@@ -75,7 +86,7 @@ const Watchlist = () => {
                                                 {/* <Link to={`/stocks/${stock.stock_symbol}`}> */}
                                                     {/* <SmallChart symbol={stock.stock_symbol} /> */}
                                                 {/* </Link> */}
-                                                <DeleteStockButton symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
+                                                <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
                                             </div>
                                         ))
                                     }
@@ -89,4 +100,4 @@ const Watchlist = () => {
     )
 }
 
-export default Watchlist;
+export default WatchList

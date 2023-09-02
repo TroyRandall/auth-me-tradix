@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UpdateFormModal from "./UpdateFormModal";
-import DeleteModal from '../Delete/DeleteFormModal';
+import DeleteModal from "../Delete/DeleteFormModal";
+
 const UpdateButton = ({watchlist, i, openModal, closeModal}) => {
     const [open, setOpen] = useState({});
 

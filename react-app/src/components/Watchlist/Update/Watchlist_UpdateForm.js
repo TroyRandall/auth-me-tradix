@@ -1,6 +1,7 @@
-import * as watchlistAction from '../../../store/watchlist'
+import * as watchlistAction from '../../../store/watchlist';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
+
 
 const UpdateWatchlistForm = ({watchlist, onClose}) => {
     const id = watchlist.id;
@@ -8,7 +9,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
     const [validationError, setValidationError] = useState([]);
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
         setValidationError('');
         if (name.length > 64) {
             return setValidationError('List name must be less than 64 characters.');

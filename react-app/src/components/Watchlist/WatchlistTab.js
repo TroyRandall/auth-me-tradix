@@ -1,13 +1,13 @@
-import * as watchlistAction from '../../store/watchlist'
 import { useEffect, useState } from "react";
+import * as watchlistAction from '../../store/watchlist';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import DeleteStockButton from './Delete/DeleteStock';
+// import StockPrice from "./StockPrice";
+import  RemoveStockBtn  from './Delete/DeleteStock'
 
 const WatchlistTab = () => {
     const dispatch = useDispatch();
     const watchlists = useSelector(state => state.watchlists.watchlists);
-    console.log('this is list--------------' + watchlists)
     const [isOpen, setIsOpen] = useState({});
     const watchlistPresent = watchlists ? Object.keys(watchlists).length > 0 : false;
     useEffect(() => {
@@ -47,11 +47,11 @@ const WatchlistTab = () => {
                                                 watchlist.watchlist_stocks.map(
                                                     stock => (
                                                         <div className="profile-page-watchlists-stocks-content" key={stock.id}>
-                                                            <Link to={`/stocks/${stock.symbol}`} className="tab-table-content tab-link">
-                                                                <div>{stock.symbol}</div>
+                                                            <Link to={`/stocks/${stock.stock_symbol}`} className="tab-table-content tab-link">
+                                                                <div>{stock.stock_symbol}</div>
                                                             </Link>
                                                             <>
-                                                                <StockPrice symbol={stock.symbol} />
+                                                                {/* <StockPrice symbol={stock.stock_symbol} /> */}
                                                             </>
                                                             <div className="tab-remove">
                                                                 <RemoveStockBtn watchlist={watchlist} stockId={stock.id} />

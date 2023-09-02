@@ -1,42 +1,33 @@
 import * as watchlistAction from '../../store/watchlist';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-const NewWatchlist = ({openForm, setOpenForm}) => {
+const NewWatchList = ({openForm, setOpenForm}) => {
     const [name, setName] = useState('');
     const [validationError, setValidationError] = useState('');
-    const newlist = useSelector((state)=> state.watchlists)
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
         setValidationError([]);
-        if (name.length > 50) {
-            return setValidationError('List name must be less than 50 characters')
+        if (name.length > 64) {
+            return setValidationError('List name must be less than 64 characters')
         }
 
         if (name.trim() === "") {
-            return setValidationError('List name can not be empty')
+            return setValidationError('List name can not be blank!!!')
         }
-        try{
-        await dispatch(watchlistAction.addWatchlist(name));
-        await dispatch(watchlistAction.fetchUserWatchlists());
 
-
-
-        // const response = await dispatch(watchlistAction.addWatchlist(name))
-        //     .catch(async (err) => {
-        //         setValidationError(err[0])
-        //         if (err.response) {
-        //             const data = await err.response.json();
-        //         }
-        //     });
+        const response = await dispatch(watchlistAction.createWatchlist(name))
+            .catch(async (err) => {
+                setValidationError(err[0])
+                if (err.response) {
+                    const data = await err.response.json();
+                }
+            });
         setName('');
         setOpenForm(false)
 
-    } catch (err){
-        setValidationError(err);
     }
-}
 
     const handleCancelButton = (e) => {
         openForm === false ? setOpenForm(true):setOpenForm(false)
@@ -71,4 +62,5 @@ const NewWatchlist = ({openForm, setOpenForm}) => {
         </div>
     )
 }
-export default NewWatchlist
+
+export default NewWatchList
