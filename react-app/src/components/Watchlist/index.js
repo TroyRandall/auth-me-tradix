@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NewWatchList from './watchlist_form';
 import UpdateButton from './Update/UpdateButton';
-// import SmallChart from '../SmallChart';
+import { Link } from 'react-router-dom';
+import SmallChart from './StockChart';
 // import StockPrice from './StockPrice';
 // import { Modal } from '../../context/Modal'
 
@@ -83,9 +84,9 @@ const WatchList = () => {
                                     {watchlist.watchlist_stocks.length > 0 &&
                                         watchlist.watchlist_stocks.map(stock => (
                                             <div className='watchlist-minigraph'>
-                                                {/* <Link to={`/stocks/${stock.stock_symbol}`}> */}
-                                                    {/* <SmallChart symbol={stock.stock_symbol} /> */}
-                                                {/* </Link> */}
+                                                <Link to={`/stocks/${stock.stock_symbol}`}>
+                                                    <SmallChart symbol={stock.stock_symbol} />
+                                                </Link>
                                                 <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
                                             </div>
                                         ))

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {Link} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
 import {getArticlesFromDb} from '../../store/news';
 import './GetAllNews.css'
 
@@ -25,9 +25,7 @@ const AllNews = () => {
                             <div id="all-news-inner-container">
                                 <div id="all-news-source-container">
                                     <div id="all-news-source">
-                                        {article.source}
-                                        {/* {article.url in likedArticles ? <i className="fa-solid fa-bookmark" id="news-saved" onClick={e => handleDeleteToggle(e, article)} /> : <i className="fa-regular fa-bookmark" id="news-not-saved" onClick={e => handleAddToggle(e, article)} />} */}
-                                    </div>
+                                        {article.source}                                    </div>
                                 </div>
                                 <div id="all-news-bottom-half">
                                     <div id="all-news-title-and-tickers">

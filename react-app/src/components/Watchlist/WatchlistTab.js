@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as watchlistAction from '../../store/watchlist';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import StockPrice from "./StockPrice";
+import StockPrice from "./StockPrice";
 import  RemoveStockBtn  from './Delete/DeleteStock'
 
 const WatchlistTab = () => {
@@ -51,7 +51,7 @@ const WatchlistTab = () => {
                                                                 <div>{stock.stock_symbol}</div>
                                                             </Link>
                                                             <>
-                                                                {/* <StockPrice symbol={stock.stock_symbol} /> */}
+                                                                <StockPrice symbol={stock.stock_symbol} />
                                                             </>
                                                             <div className="tab-remove">
                                                                 <RemoveStockBtn watchlist={watchlist} stockId={stock.id} />
