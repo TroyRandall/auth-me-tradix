@@ -10,7 +10,6 @@ export const companyDataFetch = (ticker) => async (dispatch) => {
     const response = await fetch(`/api/stocks/company/${ticker}`);
     if(response.ok){
         const data = await response.json();
-        console.log(data)
         dispatch(companyData(data));
     }
 };

@@ -14,5 +14,4 @@ class PortfolioForm(FlaskForm):
     symbol = StringField('Symbol', [DataRequired()])
     quantity = FloatField('Quantity', [checkValidAmount()])
     avg_price = FloatField('Average Price', [DataRequired()])
-    purchaseIn = SelectField('Purchase In', [DataRequired()])
     submit = SubmitField('Submit')
