@@ -244,7 +244,7 @@ function SignupFormPage() {
           <div>
             <input
               type='text'
-              // className={showUsernameError ? 'error-input' : null}
+              className={showUsernameError ? 'error-input' : null}
               value={address}
               onChange={(e) => {setAddress(e.target.value)}}
               placeholder='Address'
@@ -253,7 +253,7 @@ function SignupFormPage() {
           <div>
             <input
               type='text'
-              // className={showUsernameError ? 'error-input' : null}
+              className={showUsernameError ? 'error-input' : null}
               value={city}
               onChange={(e) => {setCity(e.target.value)}}
               placeholder='City'
@@ -262,7 +262,7 @@ function SignupFormPage() {
           <div>
             <input
               type='text'
-              // className={showUsernameError ? 'error-input' : null}
+              className={showUsernameError ? 'error-input' : null}
               value={state}
               onChange={(e) => {setState(e.target.value)}}
               placeholder='State'
@@ -271,7 +271,7 @@ function SignupFormPage() {
           <div>
             <input
               type='text'
-              // className={showUsernameError ? 'error-input' : null}
+              className={showUsernameError ? 'error-input' : null}
               value={phone}
               onChange={(e) => {setPhone(e.target.value)}}
               placeholder='Phone number'

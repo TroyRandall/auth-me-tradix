@@ -2,22 +2,22 @@ import * as watchlistAction from '../../store/watchlist';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-const NewWatchlist = ({openForm, setOpenForm}) => {
+const NewWatchList = ({openForm, setOpenForm}) => {
     const [name, setName] = useState('');
     const [validationError, setValidationError] = useState('');
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
         setValidationError([]);
-        if (name.length > 50) {
-            return setValidationError('List name must be less than 50 characters')
+        if (name.length > 64) {
+            return setValidationError('List name must be less than 64 characters')
         }
 
         if (name.trim() === "") {
-            return setValidationError('List name can not be empty')
+            return setValidationError('List name can not be blank!!!')
         }
 
-        const response = await dispatch(watchlistAction.addWatchlist(name))
+        const response = await dispatch(watchlistAction.createWatchlist(name))
             .catch(async (err) => {
                 setValidationError(err[0])
                 if (err.response) {
@@ -62,4 +62,5 @@ const NewWatchlist = ({openForm, setOpenForm}) => {
         </div>
     )
 }
-export default NewWatchlist
+
+export default NewWatchList
