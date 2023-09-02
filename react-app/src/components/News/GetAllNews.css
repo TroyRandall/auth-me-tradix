@@ -67,6 +67,7 @@
 #all-news-source-container {
     margin-bottom: 1.2rem;
     position: relative;
+
 }
 
 #all-news-bottom-half {
@@ -78,6 +79,11 @@
 #all-news-title-and-tickers {
     display: flex;
     flex-direction: column;
+}
+#all-news-ticker-container{
+    font-weight: 500;
+    font-size: 15px;
+    color:  #00C805
 }
 
 #all-news-source{
@@ -98,11 +104,6 @@
     font-size: 1.7rem;
 }
 
-.fa-heart{
-    position: absolute;
-    right: 0;
-    z-index: 5;
-}
 
 #profile-liked-news-remove-button:hover{
     color: var(--rockethood-sell-red);
