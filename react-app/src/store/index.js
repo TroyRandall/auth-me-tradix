@@ -6,6 +6,7 @@ import tickersReducer from './tickers'
 import companiesReducer from './companyData'
 import watchlistReducer from './watchlist'
 import newsReducer from './news';
+import priceReducer from './price';
 
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   tickers: tickersReducer,
   companies: companiesReducer,
   watchlists: watchlistReducer,
-  news: newsReducer
+  news: newsReducer,
+  price: priceReducer
 });
 
 
