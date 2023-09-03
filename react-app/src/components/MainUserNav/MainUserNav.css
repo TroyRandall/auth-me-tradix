@@ -2,7 +2,7 @@
     display: grid;
     align-items: center;
     height: 6.4rem;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     position: sticky;
     top: 0;
     width: 100%;

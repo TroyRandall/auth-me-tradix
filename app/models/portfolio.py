@@ -25,5 +25,7 @@ class Portfolio(db.Model):
             'symbol': self.symbol,
             'name': self.name,
             'quantity': self.quantity,
-            'avgPrice': self.avg_price
+            'avgPrice': self.avg_price,
+            'user_id': self.user_id,
+            'created_at': self.created_at
         }

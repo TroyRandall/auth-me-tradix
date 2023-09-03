@@ -169,3 +169,25 @@ h1 {
 .info-div-data {
   font-size: 1.2em;
 }
+
+.landing-page-green {
+    --landing-page-background-color: #002615;
+    --landing-page-accent-color: #c3f53c;
+    --landing-page-navlink-color: white;
+    --landing-page-navlink-hover-color: #c3f53c;
+    background-color: var(--landing-page-background-color);
+    color: var(--landing-page-accent-color);
+    border-bottom: 0.18rem var(--landing-page-accent-color) solid;
+  }
+
+  .landing-page {
+    display: flex;
+    padding: 0 2.4rem;
+    height: 6.4rem;
+    align-items: center;
+    font-size: 2.2rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+  }

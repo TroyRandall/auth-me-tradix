@@ -10,9 +10,9 @@ const location = useLocation();
 const current_url = location.pathname;
 
 
-if (currentuser) {
-    return <Redirect to='/' />;
-}
+// if (currentuser) {
+//     return <Redirect to='/' />;
+// }
 
 if (current_url === "/") document.querySelector('meta[name="theme-color"]').setAttribute('content', `#002615`);
 return (

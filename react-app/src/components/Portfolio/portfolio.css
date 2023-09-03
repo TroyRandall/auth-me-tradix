@@ -1,0 +1,56 @@
+body {
+    box-sizing: content-box;
+  }
+
+  #lineChart {
+    height: 320.048px;
+    width: 50vw;
+    grid-row: 2/4;
+    grid-column: 1/3;
+  }
+
+  #chart-buttons {
+    grid-row: 4/5;
+    grid-column: 1/2;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #eee;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 300px;
+    font-size: 14px;
+    width: 300px;
+    font-size: 14px;
+    justify-self: center;
+    height: 4vh;
+    right: 55px;
+  }
+
+  #chart-buttons .chart-radio {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  #chart-buttons .chart-radio input {
+    display: none;
+  }
+
+  #chart-buttons .chart-radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all 0.15s ease-in-out;
+  }
+
+  #chart-buttons .chart-radio input:checked + .name {
+    background-color: #fff;
+    font-weight: 600;
+  }
