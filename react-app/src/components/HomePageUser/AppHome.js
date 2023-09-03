@@ -3,9 +3,12 @@ import AppMainNavBar from '../MainUserNav/MainUserNav';
 import { useSelector } from 'react-redux';
 import Watchlist from '../Watchlist';
 import AllNews from '../News/GetAllNews';
+import UserChart from '../UserChat';
 import './AppHome.css'
 
 const AppHome = () => {
+    const buyingPower = useSelector(state => state.session.user?.buyingPower);
+    const usDollar = Intl.NumberFormat("en-us", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
     return (
         <>
         <AppMainNavBar />
@@ -13,11 +16,11 @@ const AppHome = () => {
             <div className="app-home">
                 <div className="app-home-left">
                     <div id="app-home-chart-container">
-                        {/*will put chart here */}
+                    <UserChart />
 
                         <div className="buying-power-section">
                             <p className="buying-power-section-label">Buying Power</p>
-                            {/* will put buying power herep> */}
+                            <p className="buying-power-section-content">${usDollar.format(buyingPower)}</p>
                         </div>
                     </div>
                     <div className="app-home-news-container">
