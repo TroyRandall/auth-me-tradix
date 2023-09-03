@@ -23,11 +23,11 @@
 }
 
 .navbar-green:hover {
-    color: var(--rockethood-green)
+    color: #00C805
 }
 
 .navbar-red:hover {
-    color: var(--rockethood-sell-red)
+    color:  #FF6600
 }
 
 #account-button-container {
@@ -46,11 +46,11 @@
 }
 
 .account-color-green:hover {
-    color: var(--rockethood-green);
+    color:  #00C805;
 }
 
 .account-color-red:hover {
-    color: var(--rockethood-sell-red);
+    color:  #FF6600;
 }
 
 /* #account-button:focus-within {
@@ -59,13 +59,13 @@
 } */
 
 #account-button.account-button-hold {
-    color: var(--rockethood-green);
-    border-bottom: 2px var(--rockethood-green) solid;
+    color:  #00C805;
+    border-bottom: 2px  #00C805 solid;
 }
 
 #account-button.account-color-red.account-button-hold {
-    color: var(--rockethood-sell-red);
-    border-bottom: 2px var(--rockethood-sell-red) solid;
+    color:  #FF6600;
+    border-bottom: 2px  #FF6600 solid;
 }
 
 #app-nav-bar-account-submenu {
@@ -74,7 +74,7 @@
     right: 2.4rem;
     line-height: 2rem;
     font-size: 1.5rem;
-    border: 1px solid var(--rockethood-border-lightgray);
+    border: 1px solid #E3E9ED;
     border-radius: .8rem;
     background-color: white;
     animation: submenu-opacity 200ms ease-in-out forwards;
@@ -96,13 +96,13 @@
     padding: 0 2.4rem;
     padding-top: 1.8rem;
     padding-bottom: 1.2rem;
-    border-bottom: 1px solid var(--rockethood-border-lightgray);
+    border-bottom: 1px solid #E3E9ED;
 }
 
 #submenu-profile-container {
     padding: 0 2.4rem;
     display: flex;
-    border-bottom: 1px solid var(--rockethood-border-lightgray);
+    border-bottom: 1px solid #E3E9ED;
     padding-top: 1.2rem;
     padding-bottom: 1.2rem;
     align-items: center;
@@ -111,7 +111,7 @@
 
 #submenu-profile-container:hover {
     cursor: pointer;
-    background-color: var(--rockethood-border-lightgray);
+    background-color:#E3E9ED;
     user-select: none;
 }
 
@@ -130,7 +130,7 @@
 
 #submenu-logout-container:hover {
     cursor: pointer;
-    background-color: var(--rockethood-border-lightgray);
+    background-color: #E3E9ED;
     user-select: none;
 }
 

@@ -7,6 +7,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 // import Navigation from "./components/Navigation";
+
 import StockDetails from './components/StockDetails'
 import LandingHomePage from "./components/LandingPage/LandingHomePage";
 import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
