@@ -370,7 +370,7 @@
   .form-add-to-watchlist {
     --color: #00bb1f;
     padding: 0.8em 1.7em;
-    background-color: transparent;
+    background-color: var(--color);
     border-radius: .3em;
     position: relative;
     overflow: hidden;
@@ -381,14 +381,14 @@
     border: 1px solid;
     font-family: inherit;
     text-transform: uppercase;
-    color: var(--color);
-    z-index: 1;
+    color: white;
+    z-index: 100;
     grid-row: 11/13;
     grid-column: 1/2;
     justify-self: center;
     align-self: center;
-    width: 13vw;
-    height: 10vh;
+    width: 10vw;
+    height: 5vh;
    }
 
    .form-add-to-watchlist::before, .form-add-to-watchlist::after {
@@ -430,7 +430,7 @@
    .form-add-to-watchlist-minus {
     --color: #ff2d2d;
     padding: 0.8em 1.7em;
-    background-color: transparent;
+    background-color: var(--color);
     border-radius: .3em;
     position: relative;
     overflow: hidden;
@@ -441,14 +441,14 @@
     border: 1px solid;
     font-family: inherit;
     text-transform: uppercase;
-    color: var(--color);
-    z-index: 1;
+    color: white;
+    z-index: 100;
     grid-row: 11/13;
     grid-column: 1/2;
     justify-self: center;
     align-self: center;
-    width: 13vw;
-    height: 10vh;
+    width: 10vw;
+    height: 5vh;
    }
 
    .form-add-to-watchlist-minus::before, .form-add-to-watchlist-minus::after {

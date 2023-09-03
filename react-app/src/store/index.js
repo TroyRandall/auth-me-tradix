@@ -5,6 +5,8 @@ import sessionReducer from './session';
 import tickersReducer from './tickers'
 import companiesReducer from './companyData'
 import watchlistReducer from './watchlist'
+import stocksMonthlyReducer from './monthly'
+import stocksWeeklyReducer from './weekly'
 import newsReducer from './news';
 import priceReducer from './price';
 
@@ -15,8 +17,14 @@ const rootReducer = combineReducers({
   tickers: tickersReducer,
   companies: companiesReducer,
   watchlists: watchlistReducer,
+<<<<<<< HEAD
   news: newsReducer,
   price: priceReducer
+=======
+  monthly: stocksMonthlyReducer,
+  weekly: stocksWeeklyReducer,
+  news: newsReducer
+>>>>>>> 6e72ecd9e23db732d02e9d5c2d505a6ba99b078d
 });
 
 
