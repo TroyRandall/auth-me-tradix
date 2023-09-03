@@ -1,0 +1,20 @@
+[33mcommit b3e16627f6f4c482492c4d0502b22655efe3d938[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Merge: 03a0c9c 7f177a4
+Author: Troy Randall <105599802+TroyRandall@users.noreply.github.com>
+Date:   Sat Sep 2 15:13:07 2023 -0400
+
+    Merge pull request #30 from TroyRandall/portfolio_backend_route
+    
+    Portfolio backend route
+
+[33mcommit 7f177a4a15af62846568de2fd97608229e728cf3[m[33m ([m[1;31morigin/portfolio_backend_route[m[33m)[m
+Author: TroyRandall <troyrandall18@gmail.com>
+Date:   Sat Sep 2 15:12:39 2023 -0400
+
+    added new route to tickers reducer to make search bar function work properly
+
+[33mcommit 03a0c9c81905d061915e15a7167e85e8d571889c[m[33m ([m[1;31morigin/user-check[m[33m, [m[1;32muser-check[m[33m)[m
+Author: vivitruong <vivitruong1506@gmail.com>
+Date:   Sat Sep 2 12:53:09 2023 -0500
+
+    need to ask for authorization user and wathclist, did add search bar
