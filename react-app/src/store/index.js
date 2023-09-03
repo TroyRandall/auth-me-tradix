@@ -17,14 +17,8 @@ const rootReducer = combineReducers({
   tickers: tickersReducer,
   companies: companiesReducer,
   watchlists: watchlistReducer,
-<<<<<<< HEAD
   news: newsReducer,
   price: priceReducer
-=======
-  monthly: stocksMonthlyReducer,
-  weekly: stocksWeeklyReducer,
-  news: newsReducer
->>>>>>> 6e72ecd9e23db732d02e9d5c2d505a6ba99b078d
 });
 
 
