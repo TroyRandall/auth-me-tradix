@@ -243,10 +243,11 @@ const getData = async (ticker, unit) => {
     return JSON.parse(sessionStorage.getItem('data'))[ticker][unit];
 };
 
-export const labelFormatter = value => {
-    if (!value) return;
+export const labelFormatter = (value) => {
+    if (typeof value !== 'string' || !value) return ''; // Check if value is not a string or is empty/undefined/null
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const [date, time] = value.split(' ');
+    if (!date) return ''; // Check if date is empty after splitting
     const [y, m, d] = date.split('-');
 
     let res = `${months[m - 1]} ${d}, `;

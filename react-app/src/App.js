@@ -7,6 +7,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 // import Navigation from "./components/Navigation";
+import CashCard from "./components/LandingPage/SupportCashCard";
 
 import StockDetails from './components/StockDetails'
 import LandingHomePage from "./components/LandingPage/LandingHomePage";
@@ -55,7 +56,23 @@ function App() {
         <Route path="/portfolios/:userId">
           <PortfolioPage />
         </Route>
-      </Switch>
+        <Route path='/support'>
+          <LandingPageNav />
+          <CashCard />
+          <LandingHomeFooter />
+        </Route>
+          <Route path="/login" exact={true} >
+            <LoginFormPage />
+          </Route>
+          <Route path="/sign-up" exact={true}>
+            <SignupFormPage />
+          </Route>
+          <Route path='/app' exact={true}>
+            <AppHome />
+          </Route>
+
+
+        </Switch>
       {/* )} */}
     </>
   );
