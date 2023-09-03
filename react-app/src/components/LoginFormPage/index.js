@@ -12,15 +12,15 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return  history.push('/');
+  if (sessionUser) return <Redirect to="/app" />;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = await dispatch(login(email, password));
-    if (data) {
-      setErrors(data);
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const data = await dispatch(login(email, password));
+  //   if (data) {
+  //     setErrors(data);
+  //   }
+  // };
 
   const demoLogin = async (e) => {
     const email = "john@smith.com";

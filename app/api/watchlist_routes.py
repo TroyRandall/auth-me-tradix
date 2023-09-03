@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, request
+from flask import Flask, Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from ..models import db, Watchlist, Watchlist_Stock
 from ..forms import WatchlistAddForm, AddStockForm
@@ -22,8 +22,10 @@ def get_all_watchlist():
 def user_watchlists():
     current_user_info = current_user.to_dict()
     current_user_id = current_user_info['id']
-    user_watchlists = Watchlist.query.filter(Watchlist.user_id == current_user_id ).all()
-    return {'watchlists': [watchlist.to_dict() for watchlist in user_watchlists]}
+    user_watchlists = Watchlist.query.filter(Watchlist.user_id == current_user_id).all()
+    watchlists_data = [watchlist.to_dict() for watchlist in user_watchlists]
+
+    return jsonify({'watchlists': watchlists_data})
 
 #create a watchlist(done)
 @watchlist_routes.route('/', methods=['POST'])

@@ -84,7 +84,7 @@ function SignupFormPage() {
       errors.email = 'Please provide a valid Email';
     }
 
-    if (password.length >= 10 === false) errors.password = "Password must be at least 10 characters long";
+    if (password.length >= 6 === false) errors.password = "Password must be at least 6 characters long";
     if (confirmPassword.length > 0 === false) errors.confirmPassword = "Please retype your password.";
     else if (confirmPassword !== password) errors.confirmPassword = "Passwords must match!";
 
@@ -204,7 +204,7 @@ function SignupFormPage() {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               className={errors.password ? "error-input" : null}
-              placeholder="Password (min. 10 characters)"
+              placeholder="Password (min. 6 characters)"
             ></input>
             <p className="error-label">
               {errors.password}
