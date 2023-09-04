@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -12,150 +12,120 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 
 function PortfolioPage() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [portfolioIsLoaded, setPortfolioIsLoaded] = useState(false);
+  const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const { userId } = useParams();
   const dispatch = useDispatch();
   const [hoverPrice, setHoverPrice] = useState(false);
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
+  const [stockData, setStockData] = useState({});
+  const [tickerData, setTickerData] = useState(false);
   const portfolios = useSelector((state) => state.portfolios);
   const stockInfo = useSelector((state) => state.stocks);
+  const weeklyInfo = useSelector((state) => state.weekly);
+  const monthlyInfo = useSelector((state) => state.monthly);
 
   useEffect(() => {
     const getData = async () => {
-      await dispatch(portfolioActions.getPortfoliosByUser(userId)).then(() =>
-        setIsLoaded(true)
-      );
+      const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
+      let tickers = Object.values(res);
+      setTickerData(tickers);
+      tickers.forEach(async (ticker) => {
+        await dispatch(stockActions.stockDataDaily(ticker.symbol));
+        await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
+        await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
+      });
     };
 
-    getData();
-    if (isLoaded) {
-    }
-  }, [userId, dispatch]);
+    getData().then(setTimeout(() => setStocksIsLoaded(true), 3000));
 
-  const data1 = isLoaded && Object.values(portfolios[userId]);
-  const tickerData = [];
-  isLoaded &&
-    data1.forEach((portfolio) => {
-      tickerData.push([
-        portfolio["symbol"],
-        portfolio["quantity"],
-        portfolio["avgPrice"],
-      ]);
-    });
+    console.log(tickerData);
+  }, [dispatch, userId, daily, monthly, weekly]);
 
-  function formattedData(ticker) {
-    if (isLoaded) {
-      data = isLoaded && Object.values(stockInfo[ticker]["Time Series (Daily)"]);
-      const newData = [];
-      console.log(data)
+  // const formatTickers = () => {
+  //     const data1 = portfolioIsLoaded && Object.values(portfolios[userId]);
+  //     const tickerData1 = [];
+  //     if (data1.length) {
+  //       data1?.forEach((portfolio) => {
+  //         tickerData1.push({
+  //           symbol: portfolio["symbol"],
+  //           quantity: portfolio["quantity"],
+  //           avgPrice: portfolio["avgPrice"],
+  //         });
+  //         setTickerData(tickerData1);
+  //         setToggle(true);
+  //         return tickerData;
+  //       });
+  //     }}
 
-      data.forEach((dataPoint) => {
-        newData.push(dataPoint);
+  function formattedData(ticker, state) {
+    let data2 =
+      stocksIsLoaded &&(daily ? Object.values(state[ticker]["Time Series (Daily)"]) : (weekly ? Object.values(state[ticker]['Weekly Time Series']) : Object.values(state[ticker]['Monthly Time Series'])))
+    const newData = [];
+    if (data2.length) {
+      data2.forEach((dataPoint) => {
+        newData.push(dataPoint["4. close"]);
       });
-      return newData;
     }
+    return newData;
   }
 
-  //   const formattedDataMonthly = () => {
-  //     console.log(monthlyInfo);
-  //     data = Object.values(monthlyInfo["Monthly Time Series"]);
-  //     const newData = [];
-  //     data.forEach((dataPoint) => {
-  //       newData.push(dataPoint["4. close"]);
-  //     });
-  //     return newData;
-  //   };
+  const formattedLabels = () => {
+    let ticker = stocksIsLoaded && tickerData[0]["symbol"];
+    return (
+      stocksIsLoaded && Object.keys(stockInfo[ticker]["Time Series (Daily)"])
+    );
+  };
 
-  //   const formattedDataWeekly = () => {
-  //     data = Object.values(weeklyInfo["Weekly Time Series"]);
-  //     const newData = [];
-  //     data.forEach((dataPoint) => {
-  //       newData.push(dataPoint["4. close"]);
-  //     });
-  //     return newData;
-  //   };
-  const formattedDailyData = async () => {
-    let ticker = tickerData[0];
+  const formattedDataPortfolio = (state) => {
     let newData = {};
-    tickerData.forEach((stock) => {
-      setIsLoaded(false);
-      dispatch(stockActions.stockDataDaily(ticker)).then(() =>
-        setIsLoaded(true)
-      );
-      let daily = formattedData(ticker);
-      let count = 0;
-      daily.forEach((stock) => {
-        if (newData.count === undefined) {
-          newData.count = stock * tickerData[1];
-        } else {
-          newData.count = newData.count + stock * tickerData[1];
-        }
+    let count;
+    Object.values(tickerData).forEach((stock) => {
+      let oldData = formattedData(stock.symbol, state);
+      count = 0;
+      oldData.forEach((data) => {
+        if (newData[`${count}`]) {
+          newData[`${count}`] = newData[`${count}`] + (data * stock.quantity);
+        } else newData[`${count}`] = data * stock.quantity;
         count++;
       });
     });
-    console.log(Object.values(newData));
     return Object.values(newData);
   };
 
-  const formattedNewWeekly = (ticker) => {
-    if (isLoaded) {
-      let ticker = tickerData[0];
-      let newData = {};
-      tickerData.forEach(() => {
-        setIsLoaded(false);
-        dispatch(weeklyActions.stockDataWeekly(ticker)).then(() =>
-          setIsLoaded(true)
-        );
-        let daily = formattedData(ticker);
-        let count = 0;
-        daily.forEach((stock) => {
-          if (newData.count === undefined) {
-            newData.count = stock * tickerData[1];
-          } else {
-            newData.count = newData.count + stock * tickerData[1];
-          }
-          count++;
-        });
-      });
-      console.log(Object.values(newData));
-      return Object.values(newData);
-    }
-  };
-  const newData = isLoaded && formattedDailyData();
-  const ticker = tickerData[0];
-  const formattedChange =
-    isLoaded;
-    // newData[newData.length - 1]["4. close"] -
-    //   newData[newData.length - 1]["1. open"];
+  // const formattedDataWeekly = (state) => {
+  //   let newData = {};
+  //   let count;
+  //   Object.values(tickerData).forEach((stock) => {
+  //     let oldData = formattedData(stock.symbol, monthlyInfo);
+  //     count = 0;
+  //     oldData.forEach((data) => {
+  //       if (newData.count) {
+  //         newData[`${count}`] = newData.count + data * stock.quantity;
+  //       } else newData.count = data * stock.quantity;
+  //       count++;
+  //     });
+  //   });
+  //   return Object.values(newData);
+  // };
 
-  const graphColor =
-    isLoaded && formattedChange > 0 ? "rgb(0, 243, 0)" : "rgb(255, 0, 0)";
-  //   (daily
-  //     ? formattedChange > 0
-  //       ? "rgb(0, 243, 0)"
-  //       : "rgb(255, 0, 0)"
-  //     : weekly
-  //     ? formattedChangeWeekly > 0
-  //       ? "rgb(0, 243, 0)"
-  //       : "rgb(255, 0, 0)"
-  //     : formattedChangeMonthly > 0
-  //     ? "rgb(0, 243, 0)"
-  //     : "rgb(255, 0, 0)")
+  const graphColor = formattedChange > 0 ? "rgb(0, 243, 0)" : "rgb(255, 0, 0)";
 
-  let data = isLoaded && {
-    labels: Object.keys(stockInfo[tickerData[0]]["Time Series (Daily)"]),
+  let data = {
+    labels: formattedLabels(),
     datasets: [
       {
-        label: `${ticker} Daily Price`,
+        label: `Daily Price`,
         backgroundColor: graphColor,
         borderColor: graphColor,
-        data: newData,
-        //   ? formattedData()
-        //   : weekly
-        //   ? formattedDataWeekly()
-        //   : formattedDataMonthly(),
+        data: daily
+          ? formattedDataPortfolio(stockInfo)
+          : (weekly
+          ? formattedDataPortfolio(weeklyInfo)
+          : formattedDataPortfolio(monthlyInfo)),
         pointHoverRadius: 8,
         fill: false,
         pointBorderColor: "rgba(0, 0, 0, 0)",
@@ -167,14 +137,17 @@ function PortfolioPage() {
     ],
   };
 
-  let options = isLoaded && {
+  // if(portfolioIsLoaded) {
+  //   formatTickers()
+  //   getStockData()
+  // }
+
+  let options = stocksIsLoaded && {
     responsive: true,
-    maintainAspectRatio: false,
     borderWidth: 4,
     pointRadius: 0.2,
     pointHoverRadius: 1,
     spanGaps: false,
-    maintainAspectRatio: false,
     elements: {
       point: {
         hoverRadius: 3,
@@ -210,36 +183,82 @@ function PortfolioPage() {
       } else setHoverPrice(false);
     },
   };
+
   const dailyToggle = () => {
-    return setDaily(true), setWeekly(false), setMonthly(false);
+    setDaily(true);
+    setWeekly(false);
+    setMonthly(false);
   };
 
   const weeklyToggle = () => {
-    return setWeekly(true), setDaily(false), setMonthly(false);
+    setWeekly(true);
+    setDaily(false);
+    setMonthly(false);
   };
 
   const monthlyToggle = () => {
-    return setMonthly(true), setWeekly(false), setDaily(false);
+    setMonthly(true);
+    setWeekly(false);
+    setDaily(false);
   };
-  return isLoaded ? (
-    <>
-      <div id="lineChart">
-        <Line data={data} options={options} />
-      </div>
-      <div id="chart-buttons">
-        <label className="chart-radio">
-          <input type="radio" name="radio" onClick={dailyToggle} />
-          <span className="name">Daily</span>
-        </label>
-        <label className="chart-radio">
-          <input type="radio" name="radio" onClick={weeklyToggle} />
-          <span className="name">Weekly</span>
-        </label>
+  const changeId =
+    stocksIsLoaded && formattedChange > 0
+      ? "portfolio_percent_change_plus"
+      : "portfolio_percent_change_minus";
+  const formattedChange =
+    stocksIsLoaded &&
+    data?.datasets[0].data[0] -
+      data?.datasets[0].data[data?.datasets[0].data.length - 1];
 
-        <label className="chart-radio">
-          <input type="radio" name="radio" onClick={monthlyToggle} />
-          <span className="name">Monthly</span>
-        </label>
+  const formattedPercentChange =
+    stocksIsLoaded &&
+    (
+      (formattedChange /
+        data?.datasets[0].data[data.datasets[0].data.length - 1]) *
+      100
+    ).toFixed(2);
+  return stocksIsLoaded ? (
+    <>
+      <div id="portfolio_container">
+        <div id="portfolio_info_container">
+          {<h1>My Portfolio</h1>}
+          <h2 id="portfolio_price">
+            $
+            {hoverPrice ||
+              data.datasets[0].data[0].toFixed(
+                2
+              )}
+          </h2>
+          <h3 id={changeId}>
+            {formattedChange.toFixed(2) > 0
+              ? "+" + formattedChange.toFixed(2)
+              : `${formattedChange.toFixed(2)}`}
+            (
+            {formattedPercentChange > 0
+              ? "+" + formattedPercentChange
+              : `${formattedPercentChange}`}
+            %) {daily ? "Today" : "As of " + formattedLabels()[0]}
+          </h3>
+        </div>
+        <div id="portfolioChart">
+          <Line data={data} options={options} />
+        </div>
+
+        <div id="chart-buttons">
+          <label className="chart-radio">
+            <input type="radio" name="radio" onClick={dailyToggle} />
+            <span className="name">Daily</span>
+          </label>
+          <label className="chart-radio">
+            <input type="radio" name="radio" onClick={weeklyToggle} />
+            <span className="name">Weekly</span>
+          </label>
+
+          <label className="chart-radio">
+            <input type="radio" name="radio" onClick={monthlyToggle} />
+            <span className="name">Monthly</span>
+          </label>
+        </div>
       </div>
     </>
   ) : (

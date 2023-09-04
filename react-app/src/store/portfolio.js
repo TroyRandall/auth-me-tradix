@@ -12,33 +12,34 @@ const getPortfolios = (data, id) => ({
     payload: [data, id]
 })
 
-export const addPortfolioItem = (portfolio) => async (dispatch) => {
-    let {id, symbol,  quantity, avgPrice} = portfolio;
-    const response = await fetch(`/api/portfolio/${id}`, {
-        method: 'POST',
-        headers: {
-			"Content-Type": "application/json",
-		},
-        body: JSON.stringify({
-            "user_id": id,
-            "symbol": symbol,
-            "name": symbol,
-            "quantity": quantity,
-            "avg_price": avgPrice
-        })
-    });
-    if(response.ok){
-        const data = await response.json();
-        dispatch(addPortfolio(data))
-    }
-}
+// export const addPortfolioItem = (portfolio) => async (dispatch) => {
+//     let {id, symbol,  quantity, avgPrice} = portfolio;
+//     const response = await fetch(`/api/portfolio/${id}`, {
+//         method: 'POST',
+//         headers: {
+// 			"Content-Type": "application/json",
+// 		},
+//         body: JSON.stringify({
+//             "user_id": id,
+//             "symbol": symbol,
+//             "name": symbol,
+//             "quantity": quantity,
+//             "avg_price": avgPrice
+//         })
+//     });
+//     if(response.ok){
+//         const data = await response.json();
+//         await dispatch(addPortfolio(data))
+//     }
+// }
 
 
 export const getPortfoliosByUser = (id) => async (dispatch) => {
     const response = await fetch(`/api/portfolio/${id}`)
     if (response.ok) {
         const data = await response.json()
-        dispatch(getPortfolios(data, id))
+         dispatch(getPortfolios(data, id))
+         return data;
     }
 }
 

@@ -15,7 +15,7 @@ export const stockDataDaily = (ticker) => async (dispatch) => {
   const response = await fetch(`/api/stocks/daily/${ticker}`);
   if (response.ok) {
     const data = await response.json();
-    dispatch(getStocks(data));
+       dispatch(getStocks(data));
   }
 };
 
