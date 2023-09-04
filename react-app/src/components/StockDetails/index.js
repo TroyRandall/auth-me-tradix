@@ -6,12 +6,13 @@ import { useParams } from "react-router-dom";
 // eslint-disable-next-line
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import LoadingSymbol from '../LoadingSymbol'
 
 import * as stockActions from "../../store/stocks";
 import * as tickerActions from "../../store/tickers";
 import * as companyActions from "../../store/companyData";
-import * as monthlyActions from '../../store/monthly'
-import * as weeklyActions from '../../store/weekly'
+import * as monthlyActions from "../../store/monthly";
+import * as weeklyActions from "../../store/weekly";
 import PurchaseStockForm from "../StockPurchaseForm";
 import "./stockDetails.css";
 
@@ -34,15 +35,17 @@ function StockDetails() {
     const loadData = async () => {
       await dispatch(stockActions.stockDataDaily(ticker));
       await dispatch(companyActions.companyDataFetch(ticker));
-      await dispatch(tickerActions.stockTickerInfo(ticker))
-      await dispatch(monthlyActions.stockDataMonthly(ticker))
-      await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() => setIsLoaded(true));
+      await dispatch(tickerActions.stockTickerInfo(ticker));
+      await dispatch(monthlyActions.stockDataMonthly(ticker));
+      await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() =>
+        setIsLoaded(true)
+      );
     };
 
     loadData();
     if (isLoaded) {
-      const myChart = document.getElementById("lineChart");
-      myChart.addEventListener("mouseout", () => {
+      const myChart = document.getElementById("lineChart2");
+      myChart.canvas.addEventListener("mouseout", () => {
         setHoverPrice(false);
       });
     }
@@ -50,12 +53,11 @@ function StockDetails() {
 
   const formattedLabels = () => {
     if (daily) return Object.keys(stockInfo[ticker]["Time Series (Daily)"]);
-    else if (weekly) return Object.keys(weeklyInfo['Weekly Time Series']);
-    else return Object.keys(monthlyInfo['Monthly Time Series']);
+    else if (weekly) return Object.keys(weeklyInfo["Weekly Time Series"]);
+    else return Object.keys(monthlyInfo["Monthly Time Series"]);
   };
 
-
-  const formattedData = () => {
+ function formattedData  ()  {
     data = Object.values(stockInfo[ticker]["Time Series (Daily)"]);
     const newData = [];
     data.forEach((dataPoint) => {
@@ -65,7 +67,7 @@ function StockDetails() {
   };
 
   const formattedDataMonthly = () => {
-    console.log(monthlyInfo)
+    console.log(monthlyInfo);
     data = Object.values(monthlyInfo["Monthly Time Series"]);
     const newData = [];
     data.forEach((dataPoint) => {
@@ -97,10 +99,7 @@ function StockDetails() {
     return avg / count > 1000000000 ? "N/A" : avg / count + "M";
   };
 
-
-
-
-  const formattedChange =
+ const formattedChange =
     isLoaded &&
     Object.values(stockInfo[ticker]["Time Series (Daily)"])[
       Object.values(stockInfo[ticker]["Time Series (Daily)"]).length - 1
@@ -109,8 +108,33 @@ function StockDetails() {
         [Object.values(stockInfo[ticker]["Time Series (Daily)"]).length - 1]
       ]["1. open"];
 
+  const formattedChangeMonthly =
+    isLoaded &&
+    Object.values(monthlyInfo["Monthly Time Series"])[
+      Object.values(monthlyInfo["Monthly Time Series"]).length - 1
+    ]["4. close"] -
+      Object.values(monthlyInfo["Monthly Time Series"])[0]["1. open"];
+
+  const formattedChangeWeekly =
+    isLoaded &&
+    Object.values(weeklyInfo["Weekly Time Series"])[
+      Object.values(weeklyInfo["Weekly Time Series"]).length - 1
+    ]["4. close"] -
+      Object.values(weeklyInfo["Weekly Time Series"])[0]["1. open"];
+
   const graphColor =
-    isLoaded && (formattedChange > 0 ? "rgb(0, 243, 0)" : "rgb(255, 0, 0)");
+    isLoaded &&
+    (daily
+      ? formattedChange > 0
+        ? "rgb(0, 243, 0)"
+        : "rgb(255, 0, 0)"
+      : weekly
+      ? formattedChangeWeekly > 0
+        ? "rgb(0, 243, 0)"
+        : "rgb(255, 0, 0)"
+      : formattedChangeMonthly > 0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)");
 
   let data = isLoaded && {
     labels: formattedLabels(),
@@ -119,7 +143,11 @@ function StockDetails() {
         label: `${ticker} Daily Price`,
         backgroundColor: graphColor,
         borderColor: graphColor,
-        data: (daily ? formattedData() : (weekly ? formattedDataWeekly() : formattedDataMonthly())),
+        data: daily
+          ? formattedData()
+          : weekly
+          ? formattedDataWeekly()
+          : formattedDataMonthly(),
         pointHoverRadius: 8,
         fill: false,
         pointBorderColor: "rgba(0, 0, 0, 0)",
@@ -168,26 +196,51 @@ function StockDetails() {
         },
       },
     },
+    events: ['mouseenter', 'mouseleave', 'mouseout', 'mousemove'],
     onHover: function (e, item) {
       if (item.length) {
         setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
-      } else setHoverPrice(false);
+      } console.log(e)
+      if(e.type === 'mouseout'){
+        setHoverPrice(false)
+      }
     },
-  };
+    }
+
 
   const formattedPercentChange =
     isLoaded &&
-    (
-      (formattedChange /
-        Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-          [Object.values(stockInfo[ticker]["Time Series (Daily)"]).length - 1]
-        ]["1. open"]) *
-      100
-    ).toFixed(2);
+    (daily
+      ? (
+          (formattedChange /
+            Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+              Object.values(stockInfo[ticker]["Time Series (Daily)"]).length - 1
+            ]["1. open"]) *
+          100
+        ).toFixed(2)
+      : weekly
+      ? (
+          (formattedChangeWeekly /
+            Object.values(weeklyInfo["Weekly Time Series"])[0]["1. open"]) *
+          100
+        ).toFixed(2)
+      : (
+          (formattedChangeMonthly /
+            Object.values(monthlyInfo["Monthly Time Series"])[0]["1. open"]) *
+          100
+        ).toFixed(2));
 
   const changeId =
     isLoaded &&
-    (formattedChange > 0
+    (daily
+      ? formattedChange > 0
+        ? "stock_details_percent_change_plus"
+        : "stock_details_percent_change_minus"
+      : weekly
+      ? formattedChangeWeekly > 0
+        ? "stock_details_percent_change_plus"
+        : "stock_details_percent_change_minus"
+      : formattedChangeMonthly > 0
       ? "stock_details_percent_change_plus"
       : "stock_details_percent_change_minus");
 
@@ -206,19 +259,31 @@ function StockDetails() {
     }
     return;
   };
-const dailyToggle = () =>{
-         return setDaily(true), setWeekly(false), setMonthly(false)
-}
+  let change = isLoaded && (daily
+    ? formattedChange.toFixed(2).toLocaleString('en-US') > 0
+      ? "+" + formattedChange.toFixed(2).toLocaleString('en-US')
+      : `${formattedChange.toFixed(2).toLocaleString('en-US')}`
+    : weekly
+    ? formattedChangeWeekly.toFixed(2).toLocaleString('en-US') > 0
+      ? `+${formattedChangeWeekly.toFixed(2).toLocaleString('en-US')}`
+      : formattedChangeWeekly.toFixed(2).toLocaleString('en-US')
+    : formattedChangeMonthly > 0
+    ? `+${(formattedChangeMonthly).toFixed(2).toLocaleString('en-US')}`
+    : formattedChangeMonthly.toFixed(2).toLocaleString('en-US'));
 
-const weeklyToggle = () => {
-  return setWeekly(true), setDaily(false), setMonthly(false)
-}
+  const dailyToggle = () => {
+    return setDaily(true), setWeekly(false), setMonthly(false);
+  };
 
-const monthlyToggle = () => {
-  return setMonthly(true), setWeekly(false), setDaily(false)
-}
+  const weeklyToggle = () => {
+    return setWeekly(true), setDaily(false), setMonthly(false);
+  };
+
+  const monthlyToggle = () => {
+    return setMonthly(true), setWeekly(false), setDaily(false);
+  };
   return (
-    isLoaded && (
+    (isLoaded ? (
       <>
         <div id="company-grid-container">
           <PurchaseStockForm
@@ -229,7 +294,7 @@ const monthlyToggle = () => {
               ]["4. close"]
             }
             isLoaded={isLoaded}
-            change={formattedChange > 0 ? "+" : "-"}
+            change={change > 0 ? "+" : "-"}
           />
           <div id="company-info-container">
             {
@@ -248,40 +313,40 @@ const monthlyToggle = () => {
                 ]["4. close"].slice(0, 6)}
             </h2>
             <h3 id={changeId}>
-              {formattedChange.toFixed(2) > 0
-                ? "+" + formattedChange.toFixed(2)
-                : `${formattedChange.toFixed(2)}`}
+              {daily
+                ? formattedChange.toFixed(2) > 0
+                  ? "+" + formattedChange.toFixed(2)
+                  : `${formattedChange.toFixed(2)}`
+                : weekly
+                ? formattedChangeWeekly.toFixed(2) > 0
+                  ? `+${formattedChangeWeekly.toFixed(2)}`
+                  : formattedChangeWeekly.toFixed(2)
+                : formattedChangeMonthly > 0
+                ? `+${formattedChangeMonthly.toFixed(2)}`
+                : formattedChangeMonthly.toFixed(2)}
               (
               {formattedPercentChange > 0
                 ? "+" + formattedPercentChange
                 : `${formattedPercentChange}`}
-              %) Today
+              %) {daily ? "Today" : "As of " + formattedLabels()[0]}
             </h3>
           </div>
 
           <div id="lineChart">
-            <Line data={data} options={options} />
+            <Line data={data} options={options} id='lineChart2'/>
           </div>
           <div id="chart-buttons">
-            <label className="chart-radio" >
-              <input type="radio" name="radio" onClick={dailyToggle}/>
+            <label className="chart-radio">
+              <input type="radio" name="radio" onClick={dailyToggle} />
               <span className="name">Daily</span>
             </label>
             <label className="chart-radio">
-              <input
-                type="radio"
-                name="radio"
-                onClick={weeklyToggle}
-              />
+              <input type="radio" name="radio" onClick={weeklyToggle} />
               <span className="name">Weekly</span>
             </label>
 
             <label className="chart-radio">
-              <input
-                type="radio"
-                name="radio"
-                onClick={monthlyToggle}
-              />
+              <input type="radio" name="radio" onClick={monthlyToggle} />
               <span className="name">Monthly</span>
             </label>
           </div>
@@ -322,7 +387,7 @@ const monthlyToggle = () => {
                 Dividend Yield
               </label>
               <p id="dividend-yield-data" className="info-div-data">
-                {companyInfo !== undefined ? ["DividendYield"] : ""}%
+                {companyInfo !== undefined ? "N/A" : ""}
               </p>
             </div>
             <div className="info-div">
@@ -340,10 +405,10 @@ const monthlyToggle = () => {
               <p id="high-today-data" className="info-div-data">
                 $
                 {
-                  Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                     Object.values(stockInfo[ticker]["Time Series (Daily)"])
                       .length - 1
-                  ]["2. high"]
+                  ]["2. high"])
                 }
               </p>
             </div>
@@ -354,10 +419,10 @@ const monthlyToggle = () => {
               <p id="low-today-data" className="info-div-data">
                 $
                 {
-                  Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                     Object.values(stockInfo[ticker]["Time Series (Daily)"])
                       .length - 1
-                  ]["3. low"]
+                  ]["3. low"])
                 }
               </p>
             </div>
@@ -367,12 +432,12 @@ const monthlyToggle = () => {
               </label>
               <p id="open-price-data" className="info-div-data">
                 $
-                {
-                  Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+
+                  {(Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                     Object.values(stockInfo[ticker]["Time Series (Daily)"])
                       .length - 1
-                  ]["1. open"]
-                }
+                  ]["1. open"])}
+
               </p>
             </div>
             <div className="info-div">
@@ -381,10 +446,10 @@ const monthlyToggle = () => {
               </label>
               <p id="daily-volume-data" className="info-div-data">
                 {
-                  Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                     Object.values(stockInfo[ticker]["Time Series (Daily)"])
                       .length - 1
-                  ]["5. volume"]
+                  ]["5. volume"]).toLocaleString('en-US')
                 }
               </p>
             </div>
@@ -407,7 +472,7 @@ const monthlyToggle = () => {
           </div>
         </div>
       </>
-    )
+    ) : <LoadingSymbol />)
   );
 }
 

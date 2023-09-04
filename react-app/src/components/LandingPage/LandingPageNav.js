@@ -10,9 +10,9 @@ const location = useLocation();
 const current_url = location.pathname;
 
 
-if (currentuser) {
-    return <Redirect to='/' />;
-}
+// if (currentuser) {
+//     return <Redirect to='/' />;
+// }
 
 if (current_url === "/") document.querySelector('meta[name="theme-color"]').setAttribute('content', `#002615`);
 return (
@@ -33,10 +33,11 @@ return (
                         <NavLink to="/learn">
                             <li className="landing-page-navlink" id="landing-page-learn-button">Learn</li>
                         </NavLink>
-                        <NavLink to="/snack">
-                            <li className="landing-page-navlink" id="landing-page-CashCard-button">Snacks</li>
+                            <a className="landing-page-navlink" href="https://sherwoodmedia.com/snacks" id="landing-page-CashCard-button">Snacks</a>
+                        <NavLink to='/support'>
+                        <li className="landing-page-navlink" target="_blank" rel="noopener noreferrer">Support</li>
                         </NavLink>
-                        <a className="landing-page-navlink" href="" target="_blank" rel="noopener noreferrer">Support</a>
+
                     </ul>
                     <div className="landing-page-actions">
                         <NavLink to="/login" exact>

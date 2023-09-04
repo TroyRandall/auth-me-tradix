@@ -16,11 +16,11 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@portfolio_routes.route('/<int:id>')
-@login_required
-def portfolio_details(id):
-    userPortfolio = Portfolio.query.all(user_id=id)
-    return {userPortfolio: userPortfolio}
+@portfolio_routes.route('/<int:user_id>')
+# @login_required
+def portfolio_details(user_id):
+    userPortfolio = Portfolio.query.filter(Portfolio.user_id == user_id).all()
+    return [portfolio.to_dict() for portfolio in userPortfolio]
 
 @portfolio_routes.route('/<int:id>', methods=['POST'])
 @login_required

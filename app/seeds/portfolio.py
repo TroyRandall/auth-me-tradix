@@ -36,11 +36,30 @@ def seed_portfolios():
         quantity = 66,
         avg_price = (300 * 66) / 66
     )
+
+    portfolio6 = Portfolio(
+        user_id=3,
+        symbol='AAPL',
+        name='Apple',
+        quantity = 20,
+        avg_price=(112 * 20) / 20
+    )
+
+    portfolio7 = Portfolio(
+        user_id=3,
+        symbol='TSLA',
+        name = 'Tesla',
+        quantity=100,
+        avg_price=(120 * 100) / 100
+    )
+
     db.session.add(portfolio1)
     db.session.add(portfolio2)
     db.session.add(portfolio3)
     db.session.add(portfolio4)
     db.session.add(portfolio5)
+    db.session.add(portfolio6)
+    db.session.add(portfolio7)
     db.session.commit()
 
     db.session.commit()
