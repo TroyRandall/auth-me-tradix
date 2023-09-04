@@ -44,8 +44,8 @@ function StockDetails() {
 
     loadData();
     if (isLoaded) {
-      const myChart = document.getElementById("lineChart");
-      myChart.addEventListener("mouseout", () => {
+      const myChart = document.getElementById("lineChart2");
+      myChart.canvas.addEventListener("mouseout", () => {
         setHoverPrice(false);
       });
     }
@@ -196,12 +196,17 @@ function StockDetails() {
         },
       },
     },
+    events: ['mouseenter', 'mouseleave', 'mouseout', 'mousemove'],
     onHover: function (e, item) {
       if (item.length) {
         setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
-      } else setHoverPrice(false);
+      } console.log(e)
+      if(e.type === 'mouseout'){
+        setHoverPrice(false)
+      }
     },
-  };
+    }
+
 
   const formattedPercentChange =
     isLoaded &&
@@ -255,16 +260,16 @@ function StockDetails() {
     return;
   };
   let change = isLoaded && (daily
-    ? formattedChange.toFixed(2) > 0
-      ? "+" + formattedChange.toFixed(2)
-      : `${formattedChange.toFixed(2)}`
+    ? formattedChange.toFixed(2).toLocaleString('en-US') > 0
+      ? "+" + formattedChange.toFixed(2).toLocaleString('en-US')
+      : `${formattedChange.toFixed(2).toLocaleString('en-US')}`
     : weekly
-    ? formattedChangeWeekly.toFixed(2) > 0
-      ? `+${formattedChangeWeekly.toFixed(2)}`
-      : formattedChangeWeekly.toFixed(2)
+    ? formattedChangeWeekly.toFixed(2).toLocaleString('en-US') > 0
+      ? `+${formattedChangeWeekly.toFixed(2).toLocaleString('en-US')}`
+      : formattedChangeWeekly.toFixed(2).toLocaleString('en-US')
     : formattedChangeMonthly > 0
-    ? `+${(formattedChangeMonthly).toFixed(2)}`
-    : formattedChangeMonthly.toFixed(2));
+    ? `+${(formattedChangeMonthly).toFixed(2).toLocaleString('en-US')}`
+    : formattedChangeMonthly.toFixed(2).toLocaleString('en-US'));
 
   const dailyToggle = () => {
     return setDaily(true), setWeekly(false), setMonthly(false);
@@ -328,7 +333,7 @@ function StockDetails() {
           </div>
 
           <div id="lineChart">
-            <Line data={data} options={options} />
+            <Line data={data} options={options} id='lineChart2'/>
           </div>
           <div id="chart-buttons">
             <label className="chart-radio">

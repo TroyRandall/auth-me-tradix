@@ -14,7 +14,7 @@ import "./portfolio.css";
 function PortfolioPage() {
   const [portfolioIsLoaded, setPortfolioIsLoaded] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
-  const [toggle, setToggle] = useState(false);
+  const [changeToggle, setChangeToggle] = useState(false);
   const { userId } = useParams();
   const dispatch = useDispatch();
   const [hoverPrice, setHoverPrice] = useState(false);
@@ -40,9 +40,8 @@ function PortfolioPage() {
       });
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 3000));
+    getData().then(setTimeout(() => setStocksIsLoaded(true), 4000));
 
-    console.log(tickerData);
   }, [dispatch, userId, daily, monthly, weekly]);
 
   // const formatTickers = () => {
@@ -63,7 +62,12 @@ function PortfolioPage() {
 
   function formattedData(ticker, state) {
     let data2 =
-      stocksIsLoaded &&(daily ? Object.values(state[ticker]["Time Series (Daily)"]) : (weekly ? Object.values(state[ticker]['Weekly Time Series']) : Object.values(state[ticker]['Monthly Time Series'])))
+      stocksIsLoaded &&
+      (daily
+        ? Object.values(state[ticker]["Time Series (Daily)"])
+        : weekly
+        ? Object.values(state[ticker]["Weekly Time Series"])
+        : Object.values(state[ticker]["Monthly Time Series"]));
     const newData = [];
     if (data2.length) {
       data2.forEach((dataPoint) => {
@@ -76,7 +80,12 @@ function PortfolioPage() {
   const formattedLabels = () => {
     let ticker = stocksIsLoaded && tickerData[0]["symbol"];
     return (
-      stocksIsLoaded && Object.keys(stockInfo[ticker]["Time Series (Daily)"])
+      stocksIsLoaded &&
+      (daily
+        ? Object.keys(stockInfo[ticker]["Time Series (Daily)"])
+        : weekly
+        ? Object.keys(weeklyInfo[ticker]["Weekly Time Series"])
+        : Object.keys(monthlyInfo[ticker]["Monthly Time Series"]))
     );
   };
 
@@ -84,16 +93,25 @@ function PortfolioPage() {
     let newData = {};
     let count;
     Object.values(tickerData).forEach((stock) => {
-      let oldData = formattedData(stock.symbol, state);
-      count = 0;
+      let oldData = formattedData(stock.symbol, state).reverse();
+      // console.log(newData)
+      // console.log(newData[oldData.length-1])
+      // newData[oldData.length-1] = (newData[oldData.length-1] ? newData[oldData.length-1] + (oldData[oldData.length-1] * stock.quantity) : oldData[oldData.length-1] * stock.quantity)
+      // console.log(oldData[oldData.length-1])
+      // console.log(stock.quantity)
+      // console.log(newData[oldData.length-1])
+      count = 1;
       oldData.forEach((data) => {
         if (newData[`${count}`]) {
-          newData[`${count}`] = newData[`${count}`] + (data * stock.quantity);
-        } else newData[`${count}`] = data * stock.quantity;
+          newData[`${count}`] = newData[`${count}`] + data * stock.quantity;
+        } else {
+          newData[`${count}`] = data * stock.quantity;
+        }
         count++;
       });
     });
-    return Object.values(newData);
+
+    return Object.values(newData).reverse();
   };
 
   // const formattedDataWeekly = (state) => {
@@ -111,8 +129,37 @@ function PortfolioPage() {
   //   });
   //   return Object.values(newData);
   // };
+  const formattedChangeWeekly = () => {
+    let weeklyData = formattedDataPortfolio(weeklyInfo);
+    return weeklyData[weeklyData.length - 1] - weeklyData[0];
+  };
+  const formattedChangeMonthly = () => {
+    let monthlyData = formattedDataPortfolio(monthlyInfo);
+    return monthlyData[monthlyData.length - 1] - monthlyData[0];
+  };
+  const changeId = daily
+    ? formattedChange > 0
+      ? "stock_details_percent_change_plus"
+      : "stock_details_percent_change_minus"
+    : weekly
+    ? formattedChangeWeekly() > 0
+      ? "stock_details_percent_change_plus"
+      : "stock_details_percent_change_minus"
+    : formattedChangeMonthly() > 0
+    ? "stock_details_percent_change_plus"
+    : "stock_details_percent_change_minus";
 
-  const graphColor = formattedChange > 0 ? "rgb(0, 243, 0)" : "rgb(255, 0, 0)";
+  const graphColor = daily
+    ? formattedChange > 0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)"
+    : weekly
+    ? formattedChangeWeekly() > 0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)"
+    : formattedChangeMonthly() > 0
+    ? "rgb(0, 243, 0)"
+    : "rgb(255, 0, 0)";
 
   let data = {
     labels: formattedLabels(),
@@ -123,9 +170,9 @@ function PortfolioPage() {
         borderColor: graphColor,
         data: daily
           ? formattedDataPortfolio(stockInfo)
-          : (weekly
+          : weekly
           ? formattedDataPortfolio(weeklyInfo)
-          : formattedDataPortfolio(monthlyInfo)),
+          : formattedDataPortfolio(monthlyInfo),
         pointHoverRadius: 8,
         fill: false,
         pointBorderColor: "rgba(0, 0, 0, 0)",
@@ -161,6 +208,17 @@ function PortfolioPage() {
     plugins: {
       legend: false,
     },
+
+  plugins: [{
+    id: 'myEventCatcher',
+    afterEvent(chart, args, pluginOptions) {
+      const event = args.event;
+      console.log(event.type);
+      if (event.type === 'mouseout') {
+
+        setHoverPrice(false)
+      }
+  }}],
     scales: {
       y: {
         display: false,
@@ -177,10 +235,18 @@ function PortfolioPage() {
         },
       },
     },
+    events: ['mouseenter', 'mouseleave', 'mouseout', 'mousemove', 'myEventCatcher'],
+
     onHover: function (e, item) {
       if (item.length) {
-        setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
+        setHoverPrice(
+          item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
+        );
       } else setHoverPrice(false);
+      console.log(e.type)
+      if(e.type === 'mouseout'){
+        setHoverPrice(false)
+      }
     },
   };
 
@@ -201,38 +267,30 @@ function PortfolioPage() {
     setWeekly(false);
     setDaily(false);
   };
-  const changeId =
-    stocksIsLoaded && formattedChange > 0
-      ? "portfolio_percent_change_plus"
-      : "portfolio_percent_change_minus";
+
   const formattedChange =
     stocksIsLoaded &&
-    data?.datasets[0].data[0] -
-      data?.datasets[0].data[data?.datasets[0].data.length - 1];
+    Number(daily
+      ? data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+        data?.datasets[0].data[data?.datasets[0].data.length - 2]
+      : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+        data?.datasets[0].data[0]);
 
   const formattedPercentChange =
     stocksIsLoaded &&
-    (
-      (formattedChange /
-        data?.datasets[0].data[data.datasets[0].data.length - 1]) *
-      100
-    ).toFixed(2);
+    ((formattedChange / data?.datasets[0].data[0]) * 100).toFixed(2);
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
-            $
-            {hoverPrice ||
-              data.datasets[0].data[0].toFixed(
-                2
-              )}
+            ${Number(hoverPrice).toLocaleString('en-US') || data.datasets[0].data[data.datasets[0].data.length-1].toFixed(2).toLocaleString('en-US')}
           </h2>
           <h3 id={changeId}>
-            {formattedChange.toFixed(2) > 0
-              ? "+" + formattedChange.toFixed(2)
-              : `${formattedChange.toFixed(2)}`}
+            {formattedChange.toFixed(2).toLocaleString('en-US') > 0
+              ? "+$" + formattedChange.toLocaleString('en-US')
+              : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {formattedPercentChange > 0
               ? "+" + formattedPercentChange
@@ -241,21 +299,21 @@ function PortfolioPage() {
           </h3>
         </div>
         <div id="portfolioChart">
-          <Line data={data} options={options} />
+          <Line data={data} options={options} id='portfolioChart2'/>
         </div>
 
         <div id="chart-buttons">
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={dailyToggle} />
+            <input type="radio" name="radio" onClick={dailyToggle} checked={daily || false} />
             <span className="name">Daily</span>
           </label>
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={weeklyToggle} />
+            <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false}/>
             <span className="name">Weekly</span>
           </label>
 
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={monthlyToggle} />
+            <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false} />
             <span className="name">Monthly</span>
           </label>
         </div>
