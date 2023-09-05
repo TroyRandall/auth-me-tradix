@@ -1,6 +1,6 @@
 
 const ADD_PORTFOLIO_ITEM = 'portfolio/ADD_PORTFOLIO_ITEM'
-const GET_TRADIX_PORTFOLIOS = 'portfolio/GET_PORTFOLIOS'
+const GET_TRADIX_PORTFOLIOS = 'portfolio/GET_TRADIX_PORTFOLIOS'
 
 const addPortfolio = (data) => ({
     type: ADD_PORTFOLIO_ITEM,

@@ -34,7 +34,6 @@ function PortfolioPage() {
   useEffect(() => {
     const getData = async () => {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
-      console.log(res[`${userId}`])
       let tickers = Object.values(res[`${userId}`]);
       setTickerData(tickers);
       let created = tickers[0].created_at
@@ -99,7 +98,10 @@ function PortfolioPage() {
         count++;
       });
     });
-    
+    if(state === weeklyInfo || state === monthlyInfo){
+      return Object.values(newData).reverse().slice(count - 30)
+    }
+
     return Object.values(newData).reverse();
   };
 

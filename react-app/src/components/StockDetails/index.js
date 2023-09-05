@@ -341,12 +341,12 @@ function StockDetails() {
               <span className="name">Daily</span>
             </label>
             <label className="chart-radio-stocks">
-              <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false}/>
+              <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false} />
               <span className="name">Weekly</span>
             </label>
 
             <label className="chart-radio-stocks">
-              <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false}/>
+              <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false} />
               <span className="name">Monthly</span>
             </label>
           </div>
