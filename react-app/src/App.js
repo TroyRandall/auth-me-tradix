@@ -54,6 +54,7 @@ function App() {
           <StockDetails />
         </Route>
         <Route path="/portfolios/:userId">
+          <AppHome />
           <PortfolioPage />
         </Route>
         <Route path='/support'>
