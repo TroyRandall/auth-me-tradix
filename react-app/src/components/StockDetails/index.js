@@ -162,7 +162,7 @@ function StockDetails() {
   let options = isLoaded && {
     responsive: true,
     maintainAspectRatio: false,
-    borderWidth: 4,
+    borderWidth: daily ? 4 : 2,
     pointRadius: 0.2,
     pointHoverRadius: 1,
     spanGaps: false,
