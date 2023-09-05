@@ -8,26 +8,32 @@ const NewWatchList = ({openForm, setOpenForm}) => {
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         setValidationError([]);
+
         if (name.length > 64) {
-            return setValidationError('List name must be less than 64 characters')
+          setValidationError('List name must be less than 64 characters');
+          return;
         }
 
         if (name.trim() === "") {
-            return setValidationError('List name can not be blank!!!')
+          setValidationError('List name cannot be blank!!!');
+          return;
         }
 
-        const response = await dispatch(watchlistAction.createWatchlist(name))
-            .catch(async (err) => {
-                setValidationError(err[0])
-                if (err.response) {
-                    const data = await err.response.json();
-                }
-            });
-        setName('');
-        setOpenForm(false)
+        try {
 
-    }
+          const response = await dispatch(watchlistAction.createWatchlist(name));
+
+          if (response) {
+
+            setName('');
+            setOpenForm(false);
+          }
+        } catch (err) {
+          setValidationError(err);
+        }
+      };
 
     const handleCancelButton = (e) => {
         openForm === false ? setOpenForm(true):setOpenForm(false)

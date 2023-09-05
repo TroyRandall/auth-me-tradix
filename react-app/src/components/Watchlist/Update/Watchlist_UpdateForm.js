@@ -17,17 +17,27 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
         if (name.trim() === "") {
             return setValidationError('List name can not be blank.')
         }
-        const response = await dispatch(watchlistAction.updateWatchlist({name, id}))
-        .catch(async (err) => {
-            setValidationError(err[0])
-            if (err.response) {
-                const data = await err.response.json();
+        try {
+
+            const response = await dispatch(watchlistAction.updateWatchlist({ name, id }));
+
+            if (response) {
+              onClose();
             }
-        });
-        if (response) {
-            onClose()
+          } catch (error) {
+
+            if (error.response) {
+              const data = await error.response.json();
+              if (data && data.errors) {
+                const err = Object.values(data.errors);
+                setValidationError(err[0]);
+              }
+            } else {
+
+              console.error("An unexpected error occurred:", error);
+            }
+          }
         }
-    }
     const handleClose = (e) => {
         e.stopPropagation()
         onClose();
