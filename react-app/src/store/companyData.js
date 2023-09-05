@@ -11,6 +11,8 @@ export const companyDataFetch = (ticker) => async (dispatch) => {
     if(response.ok){
         const data = await response.json();
         dispatch(companyData(data));
+    } else {
+        throw new Error('Unable to complete request please try again')
     }
 };
 
