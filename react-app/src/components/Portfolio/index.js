@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import { isBefore, isAfter } from "date-fns";
+
 import LoadingSymbol from "../LoadingSymbol";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
@@ -14,7 +16,7 @@ import "./portfolio.css";
 function PortfolioPage() {
   const [portfolioIsLoaded, setPortfolioIsLoaded] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
-  const [changeToggle, setChangeToggle] = useState(false);
+  const [createdAt, setCreatedAt] = useState(false);
   const { userId } = useParams();
   const dispatch = useDispatch();
   const [hoverPrice, setHoverPrice] = useState(false);
@@ -27,38 +29,26 @@ function PortfolioPage() {
   const stockInfo = useSelector((state) => state.stocks);
   const weeklyInfo = useSelector((state) => state.weekly);
   const monthlyInfo = useSelector((state) => state.monthly);
+  const currentUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     const getData = async () => {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res);
       setTickerData(tickers);
+      let created = tickers[0].created_at
       tickers.forEach(async (ticker) => {
+        if(isBefore(new Date (ticker.created_at), new Date(created))){ created=ticker.created_at}
+
         await dispatch(stockActions.stockDataDaily(ticker.symbol));
         await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
         await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
       });
+      setCreatedAt(created)
     };
 
     getData().then(setTimeout(() => setStocksIsLoaded(true), 4000));
-
   }, [dispatch, userId, daily, monthly, weekly]);
-
-  // const formatTickers = () => {
-  //     const data1 = portfolioIsLoaded && Object.values(portfolios[userId]);
-  //     const tickerData1 = [];
-  //     if (data1.length) {
-  //       data1?.forEach((portfolio) => {
-  //         tickerData1.push({
-  //           symbol: portfolio["symbol"],
-  //           quantity: portfolio["quantity"],
-  //           avgPrice: portfolio["avgPrice"],
-  //         });
-  //         setTickerData(tickerData1);
-  //         setToggle(true);
-  //         return tickerData;
-  //       });
-  //     }}
 
   function formattedData(ticker, state) {
     let data2 =
@@ -94,19 +84,17 @@ function PortfolioPage() {
     let count;
     Object.values(tickerData).forEach((stock) => {
       let oldData = formattedData(stock.symbol, state).reverse();
-      // console.log(newData)
-      // console.log(newData[oldData.length-1])
-      // newData[oldData.length-1] = (newData[oldData.length-1] ? newData[oldData.length-1] + (oldData[oldData.length-1] * stock.quantity) : oldData[oldData.length-1] * stock.quantity)
-      // console.log(oldData[oldData.length-1])
-      // console.log(stock.quantity)
-      // console.log(newData[oldData.length-1])
-      count = 1;
+      count = 0;
+      let labels = stocksIsLoaded && formattedLabels().reverse();
       oldData.forEach((data) => {
-        if (newData[`${count}`]) {
-          newData[`${count}`] = newData[`${count}`] + data * stock.quantity;
-        } else {
-          newData[`${count}`] = data * stock.quantity;
-        }
+        if (
+          !isBefore(new Date(labels[`${count}`]), new Date(stock.created_at))
+        ) {
+          newData[`${count}`]
+            ? (newData[`${count}`] =
+                newData[`${count}`] + data * stock.quantity)
+            : (newData[`${count}`] = data * stock.quantity);
+        } else if (!newData[`${count}`]) newData[`${count}`] = 0;
         count++;
       });
     });
@@ -114,21 +102,6 @@ function PortfolioPage() {
     return Object.values(newData).reverse();
   };
 
-  // const formattedDataWeekly = (state) => {
-  //   let newData = {};
-  //   let count;
-  //   Object.values(tickerData).forEach((stock) => {
-  //     let oldData = formattedData(stock.symbol, monthlyInfo);
-  //     count = 0;
-  //     oldData.forEach((data) => {
-  //       if (newData.count) {
-  //         newData[`${count}`] = newData.count + data * stock.quantity;
-  //       } else newData.count = data * stock.quantity;
-  //       count++;
-  //     });
-  //   });
-  //   return Object.values(newData);
-  // };
   const formattedChangeWeekly = () => {
     let weeklyData = formattedDataPortfolio(weeklyInfo);
     return weeklyData[weeklyData.length - 1] - weeklyData[0];
@@ -165,7 +138,7 @@ function PortfolioPage() {
     labels: formattedLabels(),
     datasets: [
       {
-        label: `Daily Price`,
+        label: `Portfolio Price`,
         backgroundColor: graphColor,
         borderColor: graphColor,
         data: daily
@@ -209,20 +182,17 @@ function PortfolioPage() {
       legend: false,
     },
 
-  plugins: [{
-    id: 'myEventCatcher',
-    afterEvent(chart, args, pluginOptions) {
-      const event = args.event;
-      console.log(event.type);
-      if (event.type === 'mouseout') {
-
-        setHoverPrice(false)
-      }
-  }}],
     scales: {
       y: {
-        display: false,
-      },
+        grid:{
+          display: false,
+        },
+        min: -4000,
+        ticks: {
+          display: false
+        }
+        },
+
       x: {
         grid: {
           display: false,
@@ -233,22 +203,27 @@ function PortfolioPage() {
             return "•";
           }, // Hide X axis labels
         },
-      },
-    },
-    events: ['mouseenter', 'mouseleave', 'mouseout', 'mousemove', 'myEventCatcher'],
+      },},
 
-    onHover: function (e, item) {
-      if (item.length) {
-        setHoverPrice(
-          item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
-        );
-      } else setHoverPrice(false);
-      console.log(e.type)
-      if(e.type === 'mouseout'){
-        setHoverPrice(false)
-      }
-    },
-  };
+      events: [
+        "mouseenter",
+        "mouseleave",
+        "mouseout",
+        "mousemove",
+        "myEventCatcher",
+      ],
+
+      onHover: function (e, item) {
+        if (item.length) {
+          setHoverPrice(
+            item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
+          );
+        } else setHoverPrice(false);
+        if (e.type === "mouseout") {
+          setHoverPrice(false);
+        }
+      },}
+
 
   const dailyToggle = () => {
     setDaily(true);
@@ -267,29 +242,49 @@ function PortfolioPage() {
     setWeekly(false);
     setDaily(false);
   };
+  const formatDates = () => {
+    let labels = formattedLabels()
+    let count = 0
+    labels.forEach((label) => {
+      if(isAfter(new Date(createdAt), new Date (label))) {
+        count++
+      } else {
+        return count
+      }
+    } )
+    return count
+
+  }
 
   const formattedChange =
     stocksIsLoaded &&
-    Number(daily
-      ? data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-        data?.datasets[0].data[data?.datasets[0].data.length - 2]
-      : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-        data?.datasets[0].data[0]);
+    Number(
+      daily
+        ? data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+            data?.datasets[0].data[data?.datasets[0].data.length - 2]
+        : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+            data?.datasets[0].data[0]
+    );
 
   const formattedPercentChange =
     stocksIsLoaded &&
-    ((formattedChange / data?.datasets[0].data[0]) * 100).toFixed(2);
+    (daily ? (((formattedChange / data?.datasets[0].data[data.datasets[0].data.length-2]) * 100).toFixed(2)) :  ( weekly ? ((formattedChangeWeekly() / data?.datasets[0].data[formatDates()]) *100).toFixed(2)  : (formattedChangeMonthly() / data?.datasets[0].data[formatDates()]*100).toFixed(2)))
+
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
-            ${Number(hoverPrice).toLocaleString('en-US') || data.datasets[0].data[data.datasets[0].data.length-1].toFixed(2).toLocaleString('en-US')}
+            $
+            {Number(hoverPrice).toLocaleString("en-US") ||
+              data.datasets[0].data[data.datasets[0].data.length - 1]
+                .toFixed(2)
+                .toLocaleString("en-US")}
           </h2>
           <h3 id={changeId}>
-            {formattedChange.toFixed(2).toLocaleString('en-US') > 0
-              ? "+$" + formattedChange.toLocaleString('en-US')
+            {formattedChange.toFixed(2).toLocaleString("en-US") > 0
+              ? "+$" + formattedChange.toLocaleString("en-US")
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {formattedPercentChange > 0
@@ -299,23 +294,55 @@ function PortfolioPage() {
           </h3>
         </div>
         <div id="portfolioChart">
-          <Line data={data} options={options} id='portfolioChart2'/>
+          <Line data={data} options={options} id="portfolioChart2" />
         </div>
 
         <div id="chart-buttons">
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={dailyToggle} checked={daily || false} />
+            <input
+              type="radio"
+              name="radio"
+              onClick={dailyToggle}
+              checked={daily || false}
+            />
             <span className="name">Daily</span>
           </label>
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false}/>
+            <input
+              type="radio"
+              name="radio"
+              onClick={weeklyToggle}
+              checked={weekly || false}
+            />
             <span className="name">Weekly</span>
           </label>
 
           <label className="chart-radio">
-            <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false} />
+            <input
+              type="radio"
+              name="radio"
+              onClick={monthlyToggle}
+              checked={monthly || false}
+            />
             <span className="name">Monthly</span>
           </label>
+          <h3>Buying Power</h3>
+          <p>{currentUser?.buying_power || 0}</p>
+
+          <h3>Current Assets</h3>
+          <div id="portfolio-assets">
+            {Object.values(tickerData).map((ticker) => {
+              return (
+                <div id="">
+                  <p> Name: {ticker.name}</p>
+                  <p>Symbol: {ticker.symbol}</p>
+                  <p>Average Price: {ticker.avgPrice}</p>
+                  <p>Quantity : {ticker.quantity}</p>
+                  <p>Purchase On : {ticker.created_at.slice(0, 16)}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>

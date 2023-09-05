@@ -14,7 +14,7 @@ export const stockDataWeekly = (ticker) => async (dispatch) => {
   }
 }
 
-const initialState = { weekly: null };
+const initialState = {weekly: null};
 
 const stocksWeeklyReducer = (state = initialState, action) => {
   let newState;

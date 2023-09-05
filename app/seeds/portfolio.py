@@ -1,4 +1,5 @@
 from app.models import db, Portfolio, environment, SCHEMA
+from datetime import datetime
 
 def seed_portfolios():
     portfolio1 = Portfolio(
@@ -6,7 +7,8 @@ def seed_portfolios():
         symbol='TSLA',
         name = 'Tesla',
         quantity=100,
-        avg_price=(120 * 100) / 1
+        avg_price=(120 * 100) / 1,
+
     )
     portfolio2 = Portfolio(
         user_id=1,
@@ -50,8 +52,29 @@ def seed_portfolios():
         symbol='TSLA',
         name = 'Tesla',
         quantity=100,
-        avg_price=(120 * 100) / 100
+        avg_price=(120 * 100) / 100,
+        created_at= datetime(2023, 6, 6)
     )
+
+    portfolio8 = Portfolio(
+        user_id=3,
+        symbol='FORD',
+        name = 'Ford',
+        quantity=35,
+        avg_price=(29 * 100) / 100,
+        created_at= datetime(2023,7,10)
+    )
+
+    portfolio9 = Portfolio(
+        user_id=3,
+        symbol='GM',
+        name = 'General Motors',
+        quantity=100,
+        avg_price=(19 * 100) / 100,
+        created_at= datetime(2023,5,29)
+    )
+
+
 
     db.session.add(portfolio1)
     db.session.add(portfolio2)
@@ -60,6 +83,8 @@ def seed_portfolios():
     db.session.add(portfolio5)
     db.session.add(portfolio6)
     db.session.add(portfolio7)
+    db.session.add(portfolio8)
+    db.session.add(portfolio9)
     db.session.commit()
 
     db.session.commit()

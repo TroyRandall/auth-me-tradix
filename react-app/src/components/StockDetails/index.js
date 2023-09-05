@@ -200,7 +200,7 @@ function StockDetails() {
     onHover: function (e, item) {
       if (item.length) {
         setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
-      } console.log(e)
+      } 
       if(e.type === 'mouseout'){
         setHoverPrice(false)
       }
