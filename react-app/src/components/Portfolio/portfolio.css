@@ -6,10 +6,7 @@ body {
   display: grid;
   grid-template-rows: repeat(10, 150px);
   grid-template-columns: repeat(2, 50%);
-  margin-left: 250px;
-  margin-top: 50px;
   font-family: "Avenir black", "Arial";
-  width: 50vw;
 }
 
 #portfolioChart {
@@ -92,4 +89,3 @@ h1 {
   margin: 0px;
   color: red;
 }
-

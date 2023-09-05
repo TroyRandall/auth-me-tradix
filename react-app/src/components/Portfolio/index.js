@@ -81,6 +81,7 @@ function PortfolioChart() {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
+    console.log(tickerData)
     Object.values(tickerData).forEach((stock) => {
       let oldData = formattedData(stock.symbol, state).reverse();
       let index = 0;
@@ -100,7 +101,6 @@ function PortfolioChart() {
       index++
       if(index === Object.values(tickerData).length -1) setIdx(count)
     })
-
 
     if(state === weeklyInfo || state === monthlyInfo){
       return (Object.values(newData).reverse()).slice(idx - 30)
@@ -164,7 +164,10 @@ function PortfolioChart() {
     ],
   };
 
-
+  // if(portfolioIsLoaded) {
+  //   formatTickers()
+  //   getStockData()
+  // }
 
   let options = stocksIsLoaded && {
     responsive: true,

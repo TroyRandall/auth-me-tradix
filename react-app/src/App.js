@@ -68,9 +68,9 @@ function App() {
           <Route path="/sign-up" exact={true}>
             <SignupFormPage />
           </Route>
-          <Route path='/app' exact={true}>
+          {/* <Route path='/app' exact={true}>
             <AppHome />
-          </Route>
+          </Route> */}
 
 
         </Switch>
