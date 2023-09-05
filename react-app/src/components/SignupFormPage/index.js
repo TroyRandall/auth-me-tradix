@@ -29,7 +29,7 @@ function SignupFormPage() {
 
 
   if (sessionUser) {
-    return <Redirect to='/app' />;
+    return <Redirect to={`/portfolios/${sessionUser.id}`} />;
   }
 
 
