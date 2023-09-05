@@ -11,7 +11,9 @@ export const stockDataWeekly = (ticker) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(getWeekly(data));
-  }
+  } else {
+    throw new Error('Unable to complete request please try again')
+}
 }
 
 const initialState = {weekly: null};

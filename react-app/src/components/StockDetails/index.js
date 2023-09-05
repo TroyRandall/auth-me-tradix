@@ -200,7 +200,7 @@ function StockDetails() {
     onHover: function (e, item) {
       if (item.length) {
         setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
-      } 
+      }
       if(e.type === 'mouseout'){
         setHoverPrice(false)
       }
@@ -335,18 +335,18 @@ function StockDetails() {
           <div id="lineChart">
             <Line data={data} options={options} id='lineChart2'/>
           </div>
-          <div id="chart-buttons">
-            <label className="chart-radio">
-              <input type="radio" name="radio" onClick={dailyToggle} />
+          <div id="chart-buttons-stocks">
+            <label className="chart-radio-stocks">
+              <input type="radio" name="radio" onClick={dailyToggle} checked={daily || false}/>
               <span className="name">Daily</span>
             </label>
-            <label className="chart-radio">
-              <input type="radio" name="radio" onClick={weeklyToggle} />
+            <label className="chart-radio-stocks">
+              <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false}/>
               <span className="name">Weekly</span>
             </label>
 
-            <label className="chart-radio">
-              <input type="radio" name="radio" onClick={monthlyToggle} />
+            <label className="chart-radio-stocks">
+              <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false}/>
               <span className="name">Monthly</span>
             </label>
           </div>

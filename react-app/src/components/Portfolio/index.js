@@ -34,7 +34,8 @@ function PortfolioPage() {
   useEffect(() => {
     const getData = async () => {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
-      let tickers = Object.values(res);
+      console.log(res[`${userId}`])
+      let tickers = Object.values(res[`${userId}`]);
       setTickerData(tickers);
       let created = tickers[0].created_at
       tickers.forEach(async (ticker) => {
@@ -47,7 +48,7 @@ function PortfolioPage() {
       setCreatedAt(created)
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 4000));
+    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000));
   }, [dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
@@ -249,6 +250,7 @@ function PortfolioPage() {
       if(isAfter(new Date(createdAt), new Date (label))) {
         count++
       } else {
+
         return count
       }
     } )

@@ -9,7 +9,9 @@ const addPortfolio = (data) => ({
 
 const getTradixPortfolios = (data, id) => ({
     type: GET_TRADIX_PORTFOLIOS,
-    payload: [data, id]
+    payload: {
+        'data': data,
+        'id': id}
 })
 
 // export const addPortfolioItem = (portfolio) => async (dispatch) => {
@@ -39,7 +41,9 @@ export const getPortfoliosByUser = (id) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
          dispatch(getTradixPortfolios(data, id))
-         return data;
+         return data
+    } else {
+        throw new Error('Unable to complete request please try again')
     }
 }
 
@@ -50,7 +54,7 @@ const portfolioReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_TRADIX_PORTFOLIOS:
             newState = Object.assign({}, state);
-            newState[action.payload[1]] = action.payload[0]
+            newState[action.payload.id] = action.payload.data
             return newState;
         default:
             return state;

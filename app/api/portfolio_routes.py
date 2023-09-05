@@ -16,27 +16,26 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@portfolio_routes.route('/<int:user_id>')
-# @login_required
+@portfolio_routes.route('/<user_id>')
 def portfolio_details(user_id):
     userPortfolio = Portfolio.query.filter(Portfolio.user_id == user_id).all()
-    return [portfolio.to_dict() for portfolio in userPortfolio]
+    return {user_id: [portfolio.to_dict() for portfolio in userPortfolio]}
 
-@portfolio_routes.route('/<int:id>', methods=['POST'])
-@login_required
-def portfolio_add(id):
-    form = PortfolioForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        newPortfolio = Portfolio(
-            user_id = id,
-            symbol = form.data['Symbol'],
-            name = form.data['Symbol'],
-            quantity = form.data['Quantity'],
-            avg_price = form.data['Average Price'],
-            purchaseIn = form.data['Purchase In'],
-        )
-        db.session.add(newPortfolio)
-        db.session.commit()
-        return newPortfolio
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+# @portfolio_routes.route('/<int:id>', methods=['POST'])
+# @login_required
+# def portfolio_add(id):
+#     form = PortfolioForm()
+#     form['csrf_token'].data = request.cookies['csrf_token']
+#     if form.validate_on_submit():
+#         newPortfolio = Portfolio(
+#             user_id = id,
+#             symbol = form.data['Symbol'],
+#             name = form.data['Symbol'],
+#             quantity = form.data['Quantity'],
+#             avg_price = form.data['Average Price'],
+#             purchaseIn = form.data['Purchase In'],
+#         )
+#         db.session.add(newPortfolio)
+#         db.session.commit()
+#         return newPortfolio
+#     return {'errors': validation_errors_to_error_messages(form.errors)}, 401

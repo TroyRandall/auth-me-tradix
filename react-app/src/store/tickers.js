@@ -16,7 +16,9 @@ export const stockTickerInfo = (ticker) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(tickerData(data));
-  }
+  } else {
+    throw new Error('Unable to complete request please try again')
+}
 };
 
 export const stockTickerSearch = (ticker) => async (dispatch) => {
