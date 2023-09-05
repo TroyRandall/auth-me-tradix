@@ -64,8 +64,9 @@ def update_watchlist(watchlist_id):
 
     if form.validate_on_submit():
         if update_watchlist.user_id == current_user_id:
-            new_name = form.data['name']
 
+            new_name = form.data['name']
+            print(new_name)
             # Check if the new name is already used by another watchlist
             existing_watchlist = Watchlist.query.filter(
                 Watchlist.name == new_name,

@@ -35,7 +35,7 @@ function PortfolioChart() {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
       setTickerData(tickers);
-      let created = tickers[0].created_at
+      let created = tickers[0]?.created_at
       tickers.forEach(async (ticker) => {
         if(isBefore(new Date (ticker.created_at), new Date(created))){ created=ticker.created_at}
 

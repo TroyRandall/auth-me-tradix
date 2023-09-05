@@ -3,7 +3,7 @@ import UpdateFormModal from "./UpdateFormModal";
 import DeleteModal from "../Delete/DeleteFormModal";
 
 const UpdateButton = ({watchlist, i, openModal, closeModal}) => {
-    const [open, setOpen] = useState({});
+    const [open, setOpen] = useState(false);
 
     const handleClickBtn = (i) => (e) => {
         e.stopPropagation();
