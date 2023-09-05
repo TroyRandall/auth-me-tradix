@@ -99,7 +99,7 @@ function PortfolioPage() {
         count++;
       });
     });
-
+    
     return Object.values(newData).reverse();
   };
 
