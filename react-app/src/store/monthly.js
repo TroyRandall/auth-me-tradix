@@ -11,7 +11,9 @@ export const stockDataMonthly = (ticker) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(getMonthly(data));
-  }
+  } else {
+    throw new Error('Unable to complete request please try again')
+}
 }
 
 const initialState = { monthly: null };

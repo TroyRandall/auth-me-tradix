@@ -1,15 +1,17 @@
 
 const ADD_PORTFOLIO_ITEM = 'portfolio/ADD_PORTFOLIO_ITEM'
-const GET_PORTFOLIOS = 'portfolio/GET_PORTFOLIOS'
+const GET_TRADIX_PORTFOLIOS = 'portfolio/GET_TRADIX_PORTFOLIOS'
 
 const addPortfolio = (data) => ({
     type: ADD_PORTFOLIO_ITEM,
     payload: data
 })
 
-const getPortfolios = (data, id) => ({
-    type: GET_PORTFOLIOS,
-    payload: [data, id]
+const getTradixPortfolios = (data, id) => ({
+    type: GET_TRADIX_PORTFOLIOS,
+    payload: {
+        'data': data,
+        'id': id}
 })
 
 // export const addPortfolioItem = (portfolio) => async (dispatch) => {
@@ -38,8 +40,10 @@ export const getPortfoliosByUser = (id) => async (dispatch) => {
     const response = await fetch(`/api/portfolio/${id}`)
     if (response.ok) {
         const data = await response.json()
-         dispatch(getPortfolios(data, id))
-         return data;
+         dispatch(getTradixPortfolios(data, id))
+         return data
+    } else {
+        throw new Error('Unable to complete request please try again')
     }
 }
 
@@ -48,9 +52,9 @@ const initialState = {portfolios: null}
 const portfolioReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
-        case GET_PORTFOLIOS:
+        case GET_TRADIX_PORTFOLIOS:
             newState = Object.assign({}, state);
-            newState[action.payload[1]] = action.payload[0]
+            newState[action.payload.id] = action.payload.data
             return newState;
         default:
             return state;
