@@ -27,7 +27,11 @@ function SignupFormPage() {
   const [city, setCity] = useState("")
   const [state, setState] = useState("")
 
-  if (sessionUser) return <Redirect to="/" />;
+
+  if (sessionUser) {
+    return <Redirect to='/app' />;
+  }
+
 
   const regex = RegExp(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
@@ -127,9 +131,6 @@ function SignupFormPage() {
         setSignupStage(3);
       }
     }
-    // setLoading(false);
-    // setErrors(errors);
-    // setSignupStage(3);
   };
 
 

@@ -15,6 +15,7 @@ const WatchList = () => {
     const dispatch = useDispatch();
     // const data = useSelector(state => state.watchlists);
     const watchlists = useSelector(state => state.watchlists.watchlists);
+    console.log(watchlists)
     const [openForm, setOpenForm] = useState(false);
     const [openings, setOpenings] = useState({});
     const [showModal, setShowModal] = useState(false);
