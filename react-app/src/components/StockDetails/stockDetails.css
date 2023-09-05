@@ -9,7 +9,7 @@ body {
   grid-column: 1/3;
 }
 
-#chart-buttons {
+#chart-buttons-stocks {
   grid-row: 4/5;
   grid-column: 1/2;
   position: relative;
@@ -29,16 +29,16 @@ body {
   right: 55px;
 }
 
-#chart-buttons .chart-radio {
+#chart-buttons-stocks .chart-radio-stocks {
   flex: 1 1 auto;
   text-align: center;
 }
 
-#chart-buttons .chart-radio input {
+#chart-buttons-stocks .chart-radio-stocks input {
   display: none;
 }
 
-#chart-buttons .chart-radio .name {
+#chart-buttons-stocks .chart-radio-stocks .name {
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -50,7 +50,7 @@ body {
   transition: all 0.15s ease-in-out;
 }
 
-#chart-buttons .chart-radio input:checked + .name {
+#chart-buttons-stocks .chart-radio-stocks input:checked + .name {
   background-color: #fff;
   font-weight: 600;
 }

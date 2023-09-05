@@ -14,7 +14,7 @@ import "./portfolio.css";
 function PortfolioPage() {
   const [portfolioIsLoaded, setPortfolioIsLoaded] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
-  const [changeToggle, setChangeToggle] = useState(false);
+  const [idx, setIdx] = useState(0);
   const { userId } = useParams();
   const dispatch = useDispatch();
   const [hoverPrice, setHoverPrice] = useState(false);
@@ -31,7 +31,7 @@ function PortfolioPage() {
   useEffect(() => {
     const getData = async () => {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
-      let tickers = Object.values(res);
+      let tickers = Object.values(res[userId]);
       setTickerData(tickers);
       tickers.forEach(async (ticker) => {
         await dispatch(stockActions.stockDataDaily(ticker.symbol));
@@ -44,21 +44,6 @@ function PortfolioPage() {
 
   }, [dispatch, userId, daily, monthly, weekly]);
 
-  // const formatTickers = () => {
-  //     const data1 = portfolioIsLoaded && Object.values(portfolios[userId]);
-  //     const tickerData1 = [];
-  //     if (data1.length) {
-  //       data1?.forEach((portfolio) => {
-  //         tickerData1.push({
-  //           symbol: portfolio["symbol"],
-  //           quantity: portfolio["quantity"],
-  //           avgPrice: portfolio["avgPrice"],
-  //         });
-  //         setTickerData(tickerData1);
-  //         setToggle(true);
-  //         return tickerData;
-  //       });
-  //     }}
 
   function formattedData(ticker, state) {
     let data2 =
@@ -94,12 +79,6 @@ function PortfolioPage() {
     let count;
     Object.values(tickerData).forEach((stock) => {
       let oldData = formattedData(stock.symbol, state).reverse();
-      // console.log(newData)
-      // console.log(newData[oldData.length-1])
-      // newData[oldData.length-1] = (newData[oldData.length-1] ? newData[oldData.length-1] + (oldData[oldData.length-1] * stock.quantity) : oldData[oldData.length-1] * stock.quantity)
-      // console.log(oldData[oldData.length-1])
-      // console.log(stock.quantity)
-      // console.log(newData[oldData.length-1])
       count = 1;
       oldData.forEach((data) => {
         if (newData[`${count}`]) {
@@ -110,6 +89,9 @@ function PortfolioPage() {
         count++;
       });
     });
+    if(state === weeklyInfo || state === monthlyInfo){
+      return Object.values(newData).reverse().slice(count - 30)
+    }
 
     return Object.values(newData).reverse();
   };

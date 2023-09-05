@@ -1,6 +1,6 @@
 
 const ADD_PORTFOLIO_ITEM = 'portfolio/ADD_PORTFOLIO_ITEM'
-const GET_PORTFOLIOS = 'portfolio/GET_PORTFOLIOS'
+const GET_USER_PORTFOLIOS = 'portfolio/GET_PORTFOLIOS'
 
 const addPortfolio = (data) => ({
     type: ADD_PORTFOLIO_ITEM,
@@ -8,7 +8,7 @@ const addPortfolio = (data) => ({
 })
 
 const getPortfolios = (data, id) => ({
-    type: GET_PORTFOLIOS,
+    type: GET_USER_PORTFOLIOS,
     payload: [data, id]
 })
 
@@ -48,7 +48,7 @@ const initialState = {portfolios: null}
 const portfolioReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
-        case GET_PORTFOLIOS:
+        case GET_USER_PORTFOLIOS:
             newState = Object.assign({}, state);
             newState[action.payload[1]] = action.payload[0]
             return newState;
