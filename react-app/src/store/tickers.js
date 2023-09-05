@@ -1,6 +1,6 @@
 const GET_TICKER_DATA = "stocks/GET_TICKER_DATA";
 const SEARCH_TICKER_INFO = "stocks/SEARCH_TICKER_DATA"
-
+const SET_SYMBOL = 'symbol/SET'
 const tickerData = (data) => ({
   type: GET_TICKER_DATA,
   payload: data,
@@ -9,6 +9,11 @@ const tickerData = (data) => ({
 const tickerSearch = (data) => ({
   type: SEARCH_TICKER_INFO,
   payload: data
+})
+export const setSymbol = (symbol, name) => ({
+  type: SET_SYMBOL,
+  symbol,
+  name
 })
 
 export const stockTickerInfo = (ticker) => async (dispatch) => {
@@ -30,6 +35,10 @@ export const stockTickerSearch = (ticker) => async (dispatch) => {
 }
 
 const initialState = { tickers: null };
+const iniState = {
+  symbol: 'AAPL',
+  name: 'Apple Inc.'
+}
 
 const tickersReducer = (state = initialState, action) => {
   let newState;
@@ -42,6 +51,8 @@ const tickersReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.bestMatches = action.payload['bestMatches'];
       return newState;
+    case SET_SYMBOL:
+      return {symbol: action.symbol, name: action.name}
     default:
       return state;
   }
