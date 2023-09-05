@@ -6,7 +6,7 @@ import UpdateButton from './Update/UpdateButton';
 import { Link } from 'react-router-dom';
 import SmallChart from './StockChart';
 // import StockPrice from './StockPrice';
-// import { Modal } from '../../context/Modal'
+import  {Modal}  from '../Modal/Modal'
 
 import RemoveStockBtn from './Delete/DeleteStock.js';
 import './index.css';
@@ -15,6 +15,7 @@ const WatchList = () => {
     const dispatch = useDispatch();
     // const data = useSelector(state => state.watchlists);
     const watchlists = useSelector(state => state.watchlists.watchlists);
+    console.log(watchlists)
     const [openForm, setOpenForm] = useState(false);
     const [openings, setOpenings] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -68,11 +69,11 @@ const WatchList = () => {
                                     </div>
                                 </div>
                                 <div className='watchlist-btn-container'>
-                                    {/* {modalInfo.show && (
+                                    {modalInfo.show && (
                                         <Modal>
                                             {modalInfo.content}
                                         </Modal>
-                                    )} */}
+                                    )}
                                     <UpdateButton i={i} watchlist={watchlist} openModal={(content) => setModalInfo({ show: true, content })} closeModal={() => setModalInfo({ show: false })} />
                                     <button className='btn-openstock watchlist-btn'>
                                         <i className={`fa-solid fa-angle-up ${openings[i] ? "watchlist-opening" : "watchlist-closing"}`}></i>

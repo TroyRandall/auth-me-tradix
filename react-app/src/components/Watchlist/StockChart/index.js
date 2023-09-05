@@ -28,20 +28,20 @@ const SmallChart = ({ symbol }) => {
     }
 
     const getOneDayData = async () => {
-        const res = Array(40).fill(null)
-        const { data, realtime } = await getOneDayPrices(symbol, true)
-        // setChart(data, categories)
-        const curr = data.reduce((p, c) => c || p)
+        const res = Array(40).fill(null);
+        const { data, realtime } = await getOneDayPrices(symbol, true);
 
-        setPrices({curr, diff: curr - data[0]})
+        const curr = data.reduce((p, c) => c || p, null);
+
+        setPrices({ curr, diff: curr - data[0] });
         data.forEach((d, i) => {
-            res[i] = d
-        })
+            res[i] = d;
+        });
 
-        setChart(res)
+        setChart(res);
 
-        setIsRealtime(realtime)
-        setIsLoaded(true)
+        setIsRealtime(realtime);
+        setIsLoaded(true);
     }
 
     useEffect(() => {
@@ -88,9 +88,13 @@ const SmallChart = ({ symbol }) => {
                 height={80}
                 width={140}
             />
-            <div>
+          <div>
+                {prices.curr !== null ? (
                     <div>{`$${prices.curr.toFixed(2)}`}</div>
-                    <div style={{color}}>{diffFormatter(prices.diff)}</div>
+                ) : (
+                    <div>No data available</div>
+                )}
+                <div style={{ color }}>{diffFormatter(prices.diff)}</div>
             </div>
         </div> :
         <PlaceHolder height={60} />

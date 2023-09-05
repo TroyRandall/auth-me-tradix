@@ -3,14 +3,17 @@ import { useDispatch } from 'react-redux';
 import { useState} from 'react';
 
 
+
 const DeleteWatchlist = ({ watchlist, onClose }) => {
     const dispatch = useDispatch();
     const [validationError, setValidationError] = useState('');
-
+    console.log('test000-----------------')
+    console.log('..........-------' + watchlist)
     const handleDeletebtn = async (e) => {
         e.stopPropagation()
         setValidationError('');
         const response = await dispatch(watchlistAction.deleteWatchlist(watchlist.id))
+        console.log('----------------' + watchlist.id)
             .catch(async (err) => {
                 return setValidationError(err[0])
             });
