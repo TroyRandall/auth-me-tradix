@@ -10,6 +10,7 @@ import stocksWeeklyReducer from './weekly'
 import portfolioReducer from './portfolio'
 import newsReducer from './news';
 import priceReducer from './price';
+import watchlistStockReducer from './watchlistStock';
 
 
 const rootReducer = combineReducers({
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   weekly: stocksWeeklyReducer,
   news: newsReducer,
   portfolios: portfolioReducer,
-  price: priceReducer
+  price: priceReducer,
+  watchlistStocks: watchlistStockReducer
 });
 
 
