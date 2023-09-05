@@ -29,13 +29,14 @@ const UpdateButton = ({watchlist, i, openModal, closeModal}) => {
                         <UpdateFormModal watchlist={watchlist} closeDropdown={closeDropdown} openModal={openModal} closeModal={closeModal} />
                     </div>
                     <div className="watchlist-dropdown-delete">
-                        <DeleteModal watchlist={watchlist} closeDropdown={closeDropdown} openModal={openModal} closeModal={closeModal}/>
+                        <DeleteModal watchlist={watchlist} closeDropdown={closeDropdown} openModal={openModal} closeModal={closeModal} />
                     </div>
                 </div>
             }
     </div>
     )
 }
+//
 
 
 export default UpdateButton;

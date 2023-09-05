@@ -27,7 +27,11 @@ function SignupFormPage() {
   const [city, setCity] = useState("")
   const [state, setState] = useState("")
 
-  if (sessionUser) return <Redirect to="/" />;
+
+  if (sessionUser) {
+    return <Redirect to='/app' />;
+  }
+
 
   const regex = RegExp(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
@@ -72,20 +76,18 @@ function SignupFormPage() {
       setShowUsernameError(true);
 
   }
-
-
   const handleSubmit1 = async (e) => {
-    const errors = {}
+    const errors = {};
     e.preventDefault();
-    if (firstName.length > 0 === false) errors.firstName = "Please enter your first name.";
-    if (lastName.length > 0 === false) errors.lastName = "Please enter your last name.";
-    if (email.length > 0 === false) errors.email = "Please enter your email.";
+    if (firstName.length === 0) errors.firstName = "Please enter your first name.";
+    if (lastName.length === 0) errors.lastName = "Please enter your last name.";
+    if (email.length === 0) errors.email = "Please enter your email.";
     else if (!email.trim().match(regex)) {
       errors.email = 'Please provide a valid Email';
     }
 
-    if (password.length >= 6 === false) errors.password = "Password must be at least 6 characters long";
-    if (confirmPassword.length > 0 === false) errors.confirmPassword = "Please retype your password.";
+    if (password.length < 6) errors.password = "Password must be at least 6 characters long";
+    if (confirmPassword.length === 0) errors.confirmPassword = "Please retype your password.";
     else if (confirmPassword !== password) errors.confirmPassword = "Passwords must match!";
 
     if (Object.keys(errors).length > 0) {
@@ -109,30 +111,27 @@ function SignupFormPage() {
   const handleSubmit2 = async (e) => {
     const errors = {};
     e.preventDefault();
-    if (bank.length > 0 && bank.length == false) errors.bank = "Please enter your bank account information.";
+    if (bank.length === 0) errors.bank = "Please enter your bank account information.";
     if (!lastFour || lastFour < 0) errors.lastFour = "Please enter the last four digit numbers of your bank account.";
     else if (lastFour.toString().length < 4) errors.lastFour = "Please enter the last four of your bank account.";
-    if (accountNickname.length > 0 === false) errors.accountNickname = "Please enter a nickname for your account.";
-    if (!buyingPower || buyingPower <= 0) errors.buyingPower = "Buying Power must greater than 0";
-    else if (buyingPower > 1000000) errors.buyingPower = "Tradix's current max limi for an account is $1,000,000. Please deposit less money.";
+    if (accountNickname.length === 0) errors.accountNickname = "Please enter a nickname for your account.";
+    if (!buyingPower || buyingPower <= 0) errors.buyingPower = "Buying Power must be greater than 0";
+    else if (buyingPower > 1000000) errors.buyingPower = "Tradix's current max limit for an account is $1,000,000. Please deposit less money.";
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
       return;
     }
 
     setLoading(true);
-    if(password === confirmPassword){
-    const data = await dispatch(signUp(firstName, lastName, email, password, buyingPower, username));
-    if(data) {
-      setLoading(false);
-      setErrors(errors);
-      setSignupStage(3);
+    if (password === confirmPassword) {
+      const data = await dispatch(signUp(firstName, lastName, email, password, buyingPower, username));
+      if (data) {
+        setLoading(false);
+        setErrors(errors);
+        setSignupStage(3);
+      }
     }
-    }
-    // setLoading(false);
-    // setErrors(errors);
-    // setSignupStage(3);
-  }
+  };
 
 
 

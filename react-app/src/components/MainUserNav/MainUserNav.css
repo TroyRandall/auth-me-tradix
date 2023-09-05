@@ -53,10 +53,6 @@
     color:  #FF6600;
 }
 
-/* #account-button:focus-within {
-    color: var(--rockethood-green);
-    border-bottom: 2px var(--rockethood-green) solid;
-} */
 
 #account-button.account-button-hold {
     color:  #00C805;
