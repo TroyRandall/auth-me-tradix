@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { stockTickerInfo } from '../../store/tickers'
+import { stockTickerInfo, setSymbol, stockTickerSearch } from '../../store/tickers';
+
 import { Link } from 'react-router-dom'
 import styles from './style.module.css'
 
@@ -71,12 +72,12 @@ const Search = () => {
             {
             !!searchRes.length ?
               searchRes.map(res =>
-                <Link to={`/stocks/${res.symbol}`}>
+                <Link to={`/stocks/${res.ticker}`}>
                   <li
                       className={styles.resultItem}
                       key={res.symbol}
                       onClick={() => {
-                        dispatch(stockTickerInfo(res.symbol, res.name))
+                        dispatch(stockTickerSearch(res.symbol, res.name))
                         setIsHoveringOnSearchRes(false)
                         setKeyword('')
                         setSearchRes([])
