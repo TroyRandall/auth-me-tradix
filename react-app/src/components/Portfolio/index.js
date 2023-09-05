@@ -13,8 +13,8 @@ import * as monthlyActions from "../../store/monthly";
 import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 
-function PortfolioPage() {
-  const [portfolioIsLoaded, setPortfolioIsLoaded] = useState(false);
+function PortfolioChart() {
+  const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
   const { userId } = useParams();
@@ -23,7 +23,6 @@ function PortfolioPage() {
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
-  const [stockData, setStockData] = useState({});
   const [tickerData, setTickerData] = useState(false);
   const portfolios = useSelector((state) => state.portfolios);
   const stockInfo = useSelector((state) => state.stocks);
@@ -74,8 +73,8 @@ function PortfolioPage() {
       (daily
         ? Object.keys(stockInfo[ticker]["Time Series (Daily)"])
         : weekly
-        ? Object.keys(weeklyInfo[ticker]["Weekly Time Series"])
-        : Object.keys(monthlyInfo[ticker]["Monthly Time Series"]))
+        ? Object.keys(weeklyInfo[ticker]["Weekly Time Series"]).slice(idx - 30)
+        : Object.keys(monthlyInfo[ticker]["Monthly Time Series"]).slice(idx - 30))
     );
   };
 
@@ -84,6 +83,7 @@ function PortfolioPage() {
     let count;
     Object.values(tickerData).forEach((stock) => {
       let oldData = formattedData(stock.symbol, state).reverse();
+      let index = 0;
       count = 0;
       let labels = stocksIsLoaded && formattedLabels().reverse();
       oldData.forEach((data) => {
@@ -97,9 +97,13 @@ function PortfolioPage() {
         } else if (!newData[`${count}`]) newData[`${count}`] = 0;
         count++;
       });
-    });
+      index++
+      if(index === Object.values(tickerData).length -1) setIdx(count)
+    })
+
+
     if(state === weeklyInfo || state === monthlyInfo){
-      return Object.values(newData).reverse().slice(count - 30)
+      return (Object.values(newData).reverse()).slice(idx - 30)
     }
 
     return Object.values(newData).reverse();
@@ -160,10 +164,7 @@ function PortfolioPage() {
     ],
   };
 
-  // if(portfolioIsLoaded) {
-  //   formatTickers()
-  //   getStockData()
-  // }
+
 
   let options = stocksIsLoaded && {
     responsive: true,
@@ -294,7 +295,7 @@ function PortfolioPage() {
             {formattedPercentChange > 0
               ? "+" + formattedPercentChange
               : `${formattedPercentChange}`}
-            %) {daily ? "Today" : "As of " + formattedLabels()[0]}
+            %) {daily ? "Today" : "As of " + formattedLabels()[30]}
           </h3>
         </div>
         <div id="portfolioChart">
@@ -330,23 +331,6 @@ function PortfolioPage() {
             />
             <span className="name">Monthly</span>
           </label>
-          <h3>Buying Power</h3>
-          <p>{currentUser?.buying_power || 0}</p>
-
-          <h3>Current Assets</h3>
-          <div id="portfolio-assets">
-            {Object.values(tickerData).map((ticker) => {
-              return (
-                <div id="">
-                  <p> Name: {ticker.name}</p>
-                  <p>Symbol: {ticker.symbol}</p>
-                  <p>Average Price: {ticker.avgPrice}</p>
-                  <p>Quantity : {ticker.quantity}</p>
-                  <p>Purchase On : {ticker.created_at.slice(0, 16)}</p>
-                </div>
-              );
-            })}
-          </div>
         </div>
       </div>
     </>
@@ -354,4 +338,4 @@ function PortfolioPage() {
     <LoadingSymbol />
   );
 }
-export default PortfolioPage;
+export default PortfolioChart;
