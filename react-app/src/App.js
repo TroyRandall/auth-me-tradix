@@ -55,7 +55,6 @@ function App() {
         </Route>
         <Route path="/portfolios/:userId">
           <AppHome />
-          <PortfolioPage />
         </Route>
         <Route path='/support'>
           <LandingPageNav />
