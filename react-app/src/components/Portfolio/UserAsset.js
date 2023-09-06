@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import "../stylesheets/UserAssets.css";
+import "./UserAsset.css";
 
 function UserAssets() {
     const assets = Object.values(useSelector(state => state.session.user?.portfolios));
