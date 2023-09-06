@@ -17,7 +17,8 @@ import LearnHomePage from "./components/LandingPage/Learn";
 import AppHome from "./components/HomePageUser/AppHome";
 import AppMainNavBar from "./components/MainUserNav/MainUserNav";
 import PortfolioPage from "./components/Portfolio";
-
+import ProfilePage from "./components/Portfolio/Profilepage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 function App() {
   const dispatch = useDispatch();
@@ -46,9 +47,9 @@ function App() {
         <Route path="/sign-up" exact={true}>
           <SignupFormPage />
         </Route>
-        <Route path="/app" exact={true}>
+        {/* <Route path="/app" exact={true}>
           <AppHome />
-        </Route>
+        </Route> */}
         <Route path="/stocks/:ticker">
           <LandingPageNav />
           <StockDetails />
@@ -68,9 +69,9 @@ function App() {
           <Route path="/sign-up" exact={true}>
             <SignupFormPage />
           </Route>
-          {/* <Route path='/app' exact={true}>
-            <AppHome />
-          </Route> */}
+          <ProtectedRoute path="/profile" exact>
+            <ProfilePage />
+        </ProtectedRoute>
 
 
         </Switch>

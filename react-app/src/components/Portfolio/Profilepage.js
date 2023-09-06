@@ -1,9 +1,9 @@
-import AppMainNavBar from "./AppMainNavBar/AppMainNavBar";
-import ProfileSection from "./ProfileSection";
+import AppMainNavBar from "../MainUserNav/MainUserNav";
+// import ProfileSection from "./ProfileSection";
 // import LikedNews from "./News/LikedNews";
-import "./ProfilePage.css";
-import WatchlistTab from "./WatchList/WatchlistTab";
-import UserAssets from "./UserAssets";
+import './Profilepage.css'
+import WatchlistTab from "../Watchlist/WatchlistTab";
+import UserAssets from "./UserAsset";
 
 function ProfilePage() {
     return (
@@ -12,7 +12,7 @@ function ProfilePage() {
             <div className="profile-page-center-util">
                 <div className="profile-page">
                     <div className="app-home-left">
-                        <ProfileSection />
+                        {/* <ProfileSection /> */}
                         <div className="profile-page-profile-info">
                             <div className="profile-page-profile-info-container" id="profile-page-assets">
                                 <h2 className="profile-page-profile-info-title">Assets</h2>

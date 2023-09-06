@@ -16,7 +16,7 @@ def check_buying_power(form, field):
     if user.buying_power < form.buying_power_needed :
          raise ValidationError('Not Enough Funds to Complete Transaction')
 
-class Transaction(FlaskForm):
+class TransactionForm(FlaskForm):
         email = StringField('email', validators=[DataRequired(), user_exists])
         buying_power_needed = FloatField("buying power", validators=[DataRequired(), check_buying_power])
         stock_symbol = StringField("Stock Symbol", validators = [DataRequired()])
