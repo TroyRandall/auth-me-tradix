@@ -77,7 +77,7 @@ const Search = () => {
                       className={styles.resultItem}
                       key={res.symbol}
                       onClick={() => {
-                        dispatch(stockTickerSearch(res.symbol, res.name))
+                        dispatch(stockTickerSearch(res.ticker))
                         setIsHoveringOnSearchRes(false)
                         setKeyword('')
                         setSearchRes([])
