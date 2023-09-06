@@ -51,9 +51,9 @@ def stock_ticker_details(ticker):
 #     return res
 
 
-# @stock_routes.route('/search/<string:keyword>')
-# def search_symbols(keyword):
-#     result = [{'symbol': item.symbol, 'name': item.company} for item in StockSymbol.query.filter(StockSymbol.symbol.ilike(f'%{keyword}%') | StockSymbol.company.ilike(
-#         f'%{keyword}%')).order_by(case((StockSymbol.symbol.startswith(keyword), 0), (StockSymbol.company.startswith(keyword), 1), else_=2)).limit(7)]
+@stock_routes.route('/search/<string:keyword>')
+def search_symbols(keyword):
+    result = [{'symbol': item.symbol, 'name': item.company} for item in StockSymbol.query.filter(StockSymbol.symbol.ilike(f'%{keyword}%') | StockSymbol.company.ilike(
+        f'%{keyword}%')).order_by(case((StockSymbol.symbol.startswith(keyword), 0), (StockSymbol.company.startswith(keyword), 1), else_=2)).limit(7)]
 
-#     return jsonify(result)
+    return jsonify(result)
