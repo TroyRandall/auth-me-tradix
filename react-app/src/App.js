@@ -8,7 +8,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 // import Navigation from "./components/Navigation";
 import CashCard from "./components/LandingPage/SupportCashCard";
-
+import OfferLanding from "./components/LandingPage/Offer";
 import StockDetails from './components/StockDetails'
 import LandingHomePage from "./components/LandingPage/LandingHomePage";
 import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
@@ -17,7 +17,8 @@ import LearnHomePage from "./components/LandingPage/Learn";
 import AppHome from "./components/HomePageUser/AppHome";
 import AppMainNavBar from "./components/MainUserNav/MainUserNav";
 import PortfolioPage from "./components/Portfolio";
-
+import ProfilePage from "./components/Portfolio/Profilepage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 function App() {
   const dispatch = useDispatch();
@@ -40,21 +41,26 @@ function App() {
           <LearnHomePage />
           <LandingHomeFooter />
         </Route>
+        <Route path='/offer' >
+        <LandingPageNav />
+        <OfferLanding />
+        <LandingHomeFooter />
+        </Route>
         <Route path="/login" exact={true}>
           <LoginFormPage />
         </Route>
         <Route path="/sign-up" exact={true}>
           <SignupFormPage />
         </Route>
-        <Route path="/app" exact={true}>
+        {/* <Route path="/app" exact={true}>
           <AppHome />
-        </Route>
+        </Route> */}
         <Route path="/stocks/:ticker">
           <LandingPageNav />
           <StockDetails />
         </Route>
         <Route path="/portfolios/:userId">
-          <PortfolioPage />
+          <AppHome />
         </Route>
         <Route path='/support'>
           <LandingPageNav />
@@ -67,9 +73,9 @@ function App() {
           <Route path="/sign-up" exact={true}>
             <SignupFormPage />
           </Route>
-          <Route path='/app' exact={true}>
-            <AppHome />
-          </Route>
+          <ProtectedRoute path="/profile" exact>
+            <ProfilePage />
+        </ProtectedRoute>
 
 
         </Switch>

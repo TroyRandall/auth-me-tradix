@@ -28,7 +28,7 @@ const CashCard = () => {
             <div className="cashcard-section-three">
                 <div className="cashcard-section-three-content-1">
                     <div className="cashcard-section-three-itemblock">
-                        <img className="cashcard-section-three-item" src="https://v.fastcdn.co/u/62ba1c13/61243602-0-rhyui-1.png" />
+                        <img className="cashcard-section-three-item" src="https://tradix.s3.us-east-2.amazonaws.com/support-phone.webp" />
                     </div>
                     <div className='cashcard-section-three-headline'>
                         <div className="cashcard-section-three-itemblock-title">
@@ -55,13 +55,13 @@ const CashCard = () => {
 
                     </div>
                     <div className="cashcard-section-three-itemblock">
-                        <img className="cashcard-section-three-item" src="https://v.fastcdn.co/u/62ba1c13/61243633-0-RHYillo1.png" />
+                        <img className="cashcard-section-three-item" src="https://tradix.s3.us-east-2.amazonaws.com/card-supprt.webp" />
                     </div>
 
                 </div>
                 <div className="cashcard-section-three-content-1">
                     <div className="cashcard-section-three-itemblock">
-                        <img className="cashcard-section-three-item" src="https://v.fastcdn.co/u/62ba1c13/61243648-0-RHYillo2.png" />
+                        <img className="cashcard-section-three-item" src="https://tradix.s3.us-east-2.amazonaws.com/card2supprt.webp" />
                     </div>
                     <div className='cashcard-section-three-headline'>
                         <div className="cashcard-section-three-itemblock-title">

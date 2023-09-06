@@ -12,7 +12,7 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to="/app" />;
+  if (sessionUser) return <Redirect to={`/portfolios/${sessionUser.id}`} />;
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
