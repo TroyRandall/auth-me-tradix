@@ -8,7 +8,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 // import Navigation from "./components/Navigation";
 import CashCard from "./components/LandingPage/SupportCashCard";
-
+import OfferLanding from "./components/LandingPage/Offer";
 import StockDetails from './components/StockDetails'
 import LandingHomePage from "./components/LandingPage/LandingHomePage";
 import LandingHomeFooter from "./components/LandingPage/LandingHomeFooter";
@@ -40,6 +40,11 @@ function App() {
           <LandingPageNav />
           <LearnHomePage />
           <LandingHomeFooter />
+        </Route>
+        <Route path='/offer' >
+        <LandingPageNav />
+        <OfferLanding />
+        <LandingHomeFooter />
         </Route>
         <Route path="/login" exact={true}>
           <LoginFormPage />
