@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from app.models import Portfolio, db
+from app.models import Portfolio, db, User
 from app.forms import PortfolioForm
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 portfolio_routes = Blueprint('portfolio', __name__)
 
@@ -21,21 +21,24 @@ def portfolio_details(user_id):
     userPortfolio = Portfolio.query.filter(Portfolio.user_id == user_id).all()
     return {user_id: [portfolio.to_dict() for portfolio in userPortfolio]}
 
-# @portfolio_routes.route('/<int:id>', methods=['POST'])
-# @login_required
-# def portfolio_add(id):
-#     form = PortfolioForm()
-#     form['csrf_token'].data = request.cookies['csrf_token']
-#     if form.validate_on_submit():
-#         newPortfolio = Portfolio(
-#             user_id = id,
-#             symbol = form.data['Symbol'],
-#             name = form.data['Symbol'],
-#             quantity = form.data['Quantity'],
-#             avg_price = form.data['Average Price'],
-#             purchaseIn = form.data['Purchase In'],
-#         )
-#         db.session.add(newPortfolio)
-#         db.session.commit()
-#         return newPortfolio
-#     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+@portfolio_routes.route('/<int:id>', methods=['POST'])
+@login_required
+def portfolio_add(id):
+    currentUser = User.query.get(current_user.id)
+    print(currentUser)
+    form = PortfolioForm()
+    print(form.data)
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate():
+        newPortfolio = Portfolio(
+            user_id = id,
+            symbol = form.data['symbol'],
+            name = form.data['symbol'],
+            quantity = form.data['quantity'],
+            avg_price = form.data['avg_price'],
+        )
+        currentUser.buying_power = currentUser.buying_power - (form.data['avg_price'] * form.data['quantity'])
+        db.session.add(newPortfolio)
+        db.session.commit()
+        return newPortfolio.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
