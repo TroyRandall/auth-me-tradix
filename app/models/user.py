@@ -3,9 +3,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.datastructures import FileStorage
-from .portfolio import Portfolio
+
 import os
-import boto3
+# import boto3
 
 
 
@@ -54,47 +54,47 @@ class User(db.Model, UserMixin):
             'imageUrl': self.image_url
         }
 
-def upload_profile(self, file: FileStorage) -> str:
-        filename = 'profile-image/' + self.email + str(datetime.now()) + '.' + file.filename.split('.')[-1]
+# def upload_profile(self, file: FileStorage) -> str:
+#         filename = 'profile-image/' + self.email + str(datetime.now()) + '.' + file.filename.split('.')[-1]
 
 
-        s3 = boto3.client(
-            's3',
-            region_name = os.environ.get('S3_REGION'),
-            aws_access_key_id = os.environ.get('S3_KEY'),
-            aws_secret_access_key = os.environ.get('S3_SECRET')
-        )
+#         s3 = boto3.client(
+#             's3',
+#             region_name = os.environ.get('S3_REGION'),
+#             aws_access_key_id = os.environ.get('S3_KEY'),
+#             aws_secret_access_key = os.environ.get('S3_SECRET')
+#         )
 
-        s3.upload_fileobj(
-            file,
-            os.environ.get('S3_BUCKET'),
-            filename,
-            ExtraArgs = {
-                "ContentType": file.content_type
-            }
-        )
+#         s3.upload_fileobj(
+#             file,
+#             os.environ.get('S3_BUCKET'),
+#             filename,
+#             ExtraArgs = {
+#                 "ContentType": file.content_type
+#             }
+#         )
 
-        self.image_url = f"{os.environ.get('S3_LOCATION')}/{filename}"
-        db.session.commit()
+#         self.image_url = f"{os.environ.get('S3_LOCATION')}/{filename}"
+#         db.session.commit()
 
-        return self.image_url
+#         return self.image_url
 
 
-def delete_profile(self):
-        s3 = boto3.client(
-            's3',
-            region_name = os.environ.get('S3_REGION'),
-            aws_access_key_id = os.environ.get('S3_KEY'),
-            aws_secret_access_key = os.environ.get('S3_SECRET')
-        )
+# def delete_profile(self):
+#         s3 = boto3.client(
+#             's3',
+#             region_name = os.environ.get('S3_REGION'),
+#             aws_access_key_id = os.environ.get('S3_KEY'),
+#             aws_secret_access_key = os.environ.get('S3_SECRET')
+#         )
 
-        s3.delete_object(
-            Bucket=os.environ.get('S3_BUCKET'),
-            Key=self.image_url.split('amazonaws.com/')[1]
-        )
+#         s3.delete_object(
+#             Bucket=os.environ.get('S3_BUCKET'),
+#             Key=self.image_url.split('amazonaws.com/')[1]
+#         )
 
-        self.image_url = None
-        db.session.commit()
+#         self.image_url = None
+#         db.session.commit()
 
 def update_un_nn(self, nick_name, user_name):
         self.nick_name = nick_name
