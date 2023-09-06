@@ -43,7 +43,9 @@ function PortfolioChart() {
             created = ticker.created_at;
           }
 
-          await dispatch(stockActions.stockDataDaily(ticker.symbol));
+          // await dispatch(stockActions.stockDataDaily(ticker.symbol));
+          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol))
+          console.log('---------------' + test)
           await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
           await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
         });
