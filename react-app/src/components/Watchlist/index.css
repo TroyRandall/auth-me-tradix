@@ -742,7 +742,7 @@ input[type=checkbox] {
     width: 100%;
 }
 .cashcard-section-one {
-    background: url(https://v.fastcdn.co/u/62ba1c13/61275071-0-header-RHY-CashCard-.jpg) no-repeat;
+    background: url(https://tradix.s3.us-east-2.amazonaws.com/cashcard.jpg) no-repeat;
     height: 60rem;
     background-size: cover;
     display: flex;
@@ -771,16 +771,17 @@ input[type=checkbox] {
     background: #C3F53C;
     border: 1px solid #C3F53C;
     color: #000000;
-    font-size: 1.4861rem;
-    font-family: CapsuleSansText;
-    font-weight: 400;
-    height: 4.3125rem;
-    width: 13.6875rem;
+    font-size: 1.8rem;
+    font-family: 'Capsule Sans Text', sans-serif;
+    font-weight: 600;
+    height: 5.3125rem;
+    width: 14.6875rem;
     border-radius: 41px;
+    padding-left: 21px
 }
 
 .cashcard-section-two {
-    background: url(https://v.fastcdn.co/u/62ba1c13/61246691-0-Comp-3.gif) no-repeat #00C805;
+    background: url(https://tradix.s3.us-east-2.amazonaws.com/card-rotate.gif) no-repeat #00C805;
     background-size: contain;
     background-position: center;
     display: flex;
@@ -793,7 +794,7 @@ input[type=checkbox] {
 
 .cashcard-section-two-headline {
     box-sizing: border-box;
-    font-size: 3.5rem;
+    font-size: 5rem;
     width: 60%;
     text-align: center;
 }
@@ -849,7 +850,7 @@ input[type=checkbox] {
 }
 
 .cashcard-section-four {
-    background: url(https://v.fastcdn.co/u/62ba1c13/61243667-0-NoFees.png ) no-repeat ;
+    background: url(https://tradix.s3.us-east-2.amazonaws.com/supprpr-last.png ) no-repeat ;
     background-size: cover;
     display: flex;
     flex-direction: column;
