@@ -14,27 +14,39 @@ const getTradixPortfolios = (data, id) => ({
         'id': id}
 })
 
-// export const addPortfolioItem = (portfolio) => async (dispatch) => {
-//     let {id, symbol,  quantity, avgPrice} = portfolio;
-//     const response = await fetch(`/api/portfolio/${id}`, {
+export const addPortfolioItem = (portfolio) => async (dispatch) => {
+    let {id, symbol,  quantity, avgPrice} = portfolio;
+    const response = await fetch(`/api/portfolio/${id}`, {
+        method: 'POST',
+        headers: {
+			"Content-Type": "application/json",
+		},
+        body: JSON.stringify({
+            "user_id": id,
+            "symbol": symbol,
+            "name": symbol,
+            "quantity": quantity,
+            "avg_price": avgPrice
+        })
+    });
+    if(response.ok){
+        const data = await response.json();
+        await dispatch(addPortfolio(data))
+    }
+}
+
+//still working on this route for the reducer will continue tomorrow
+
+// export const deletePortfolioItem = (id, name) => (dispatch) => {
+//     const response = await fetch(`/api/portolfios/${id}`, {
 //         method: 'POST',
 //         headers: {
 // 			"Content-Type": "application/json",
 // 		},
-//         body: JSON.stringify({
-//             "user_id": id,
-//             "symbol": symbol,
-//             "name": symbol,
-//             "quantity": quantity,
-//             "avg_price": avgPrice
-//         })
-//     });
-//     if(response.ok){
-//         const data = await response.json();
-//         await dispatch(addPortfolio(data))
-//     }
-// }
 
+//     }
+//     )
+// }
 
 export const getPortfoliosByUser = (id) => async (dispatch) => {
     const response = await fetch(`/api/portfolio/${id}`)

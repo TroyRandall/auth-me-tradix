@@ -12,6 +12,7 @@ import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
 import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
+import { object } from "prop-types";
 
 function PortfolioChart() {
   const [idx, setIdx] = useState(false);
@@ -34,16 +35,24 @@ function PortfolioChart() {
     const getData = async () => {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
-      setTickerData(tickers);
-      let created = tickers[0]?.created_at
-      tickers.forEach(async (ticker) => {
-        if(isBefore(new Date (ticker.created_at), new Date(created))){ created=ticker.created_at}
+      if (tickers.length > 0) {
+        setTickerData(tickers);
+        let created = tickers[0]?.created_at;
+        tickers.forEach(async (ticker) => {
+          if (isBefore(new Date(ticker.created_at), new Date(created))) {
+            created = ticker.created_at;
+          }
 
-        await dispatch(stockActions.stockDataDaily(ticker.symbol));
-        await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
-        await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
-      });
-      setCreatedAt(created)
+          await dispatch(stockActions.stockDataDaily(ticker.symbol));
+          await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
+          await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
+        });
+        setCreatedAt(created);
+      } else {
+        await dispatch(stockActions.stockDataDaily("tsla"));
+        await dispatch(weeklyActions.stockDataWeekly("tsla"));
+        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+      }
     };
 
     getData().then(setTimeout(() => setStocksIsLoaded(true), 5000));
@@ -67,45 +76,78 @@ function PortfolioChart() {
   }
 
   const formattedLabels = () => {
-    let ticker = stocksIsLoaded && tickerData[0]["symbol"];
-    return (
-      stocksIsLoaded &&
-      (daily
-        ? Object.keys(stockInfo[ticker]["Time Series (Daily)"])
-        : weekly
-        ? Object.keys(weeklyInfo[ticker]["Weekly Time Series"]).slice(idx - 30)
-        : Object.keys(monthlyInfo[ticker]["Monthly Time Series"]).slice(idx - 30))
-    );
+    if (tickerData) {
+      let ticker = stocksIsLoaded && tickerData[0]["symbol"];
+      return (
+        stocksIsLoaded &&
+        (daily
+          ? Object.keys(stockInfo[ticker]["Time Series (Daily)"])
+          : weekly
+          ? Object.keys(weeklyInfo[ticker]["Weekly Time Series"]).slice(
+              idx - 30
+            )
+          : Object.keys(monthlyInfo[ticker]["Monthly Time Series"]).slice(
+              idx - 30
+            ))
+      );
+    } else {
+      return (
+        stocksIsLoaded &&
+        (daily
+          ? Object.keys(stockInfo["tsla"]["Time Series (Daily)"])
+          : weekly
+          ? Object.keys(weeklyInfo["tsla"]["Weekly Time Series"]).slice(
+              idx ? idx - idx / 5 : 0
+            )
+          : Object.keys(monthlyInfo["tsla"]["Monthly Time Series"]).slice(
+              idx ? idx - idx / 5 : 0
+            ))
+      );
+    }
   };
 
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    console.log(tickerData)
-    Object.values(tickerData).forEach((stock) => {
-      let oldData = formattedData(stock.symbol, state).reverse();
-      let index = 0;
-      count = 0;
-      let labels = stocksIsLoaded && formattedLabels().reverse();
-      oldData.forEach((data) => {
-        if (
-          !isBefore(new Date(labels[`${count}`]), new Date(stock.created_at))
-        ) {
-          newData[`${count}`]
-            ? (newData[`${count}`] =
-                newData[`${count}`] + data * stock.quantity)
-            : (newData[`${count}`] = data * stock.quantity);
-        } else if (!newData[`${count}`]) newData[`${count}`] = 0;
-        count++;
+    if (tickerData) {
+      Object.values(tickerData).forEach((stock) => {
+        let oldData = formattedData(stock.symbol, state).reverse();
+        let index = 0;
+        count = 0;
+        let labels = stocksIsLoaded && formattedLabels().reverse();
+        oldData.forEach((data) => {
+          if (
+            !isBefore(new Date(labels[`${count}`]), new Date(stock.created_at))
+          ) {
+            newData[`${count}`]
+              ? (newData[`${count}`] =
+                  newData[`${count}`] + data * stock.quantity)
+              : (newData[`${count}`] = data * stock.quantity);
+          } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+          count++;
+        });
+        index++;
+        if (index === Object.values(tickerData).length - 1) setIdx(count);
       });
-      index++
-      if(index === Object.values(tickerData).length -1) setIdx(count)
-    })
-
-    if(state === weeklyInfo || state === monthlyInfo){
-      return (Object.values(newData).reverse()).slice(idx - 30)
+    } else {
+      newData = {};
+      let count = 0;
+      let labels = stocksIsLoaded && formattedLabels();
+      stocksIsLoaded &&
+        labels?.forEach((label) => {
+          newData[`${count}`] = 0;
+          count++;
+        });
+      return Object.values(newData);
     }
 
+    if (state === weeklyInfo || state === monthlyInfo) {
+      return Object.values(newData)
+        .reverse()
+        .slice(idx - 30);
+    }
+
+    console.log(formattedChange);
     return Object.values(newData).reverse();
   };
 
@@ -118,21 +160,25 @@ function PortfolioChart() {
     return monthlyData[monthlyData.length - 1] - monthlyData[0];
   };
   const changeId = daily
-    ? formattedChange > 0
-      ? "stock_details_percent_change_plus"
-      : "stock_details_percent_change_minus"
+    ? formattedChange
+      ? formattedChange >= 0
+        ? "stock_details_percent_change_plus"
+        : "stock_details_percent_change_minus"
+      : "stock_details_percent_change_plus"
     : weekly
-    ? formattedChangeWeekly() > 0
+    ? formattedChangeWeekly() >= 0
       ? "stock_details_percent_change_plus"
       : "stock_details_percent_change_minus"
-    : formattedChangeMonthly() > 0
+    : formattedChangeMonthly() >= 0
     ? "stock_details_percent_change_plus"
     : "stock_details_percent_change_minus";
 
   const graphColor = daily
-    ? formattedChange > 0
-      ? "rgb(0, 243, 0)"
-      : "rgb(255, 0, 0)"
+    ? formattedChange
+      ? formattedChange >= 0
+        ? "rgb(0, 243, 0)"
+        : "rgb(255, 0, 0)"
+      : "rgb(0, 243, 0)"
     : weekly
     ? formattedChangeWeekly() > 0
       ? "rgb(0, 243, 0)"
@@ -190,15 +236,26 @@ function PortfolioChart() {
     },
 
     scales: {
-      y: {
-        grid:{
-          display: false,
-        },
-        min: -4000,
-        ticks: {
-          display: false
-        }
-        },
+      y: tickerData
+        ? {
+            grid: {
+              display: false,
+            },
+            min: -4000,
+            ticks: {
+              display: false,
+            },
+          }
+        : {
+            grid: {
+              display: false,
+            },
+            max: 1000,
+            min: -1000,
+            ticks: {
+              display: false,
+            },
+          },
 
       x: {
         grid: {
@@ -210,27 +267,28 @@ function PortfolioChart() {
             return "•";
           }, // Hide X axis labels
         },
-      },},
+      },
+    },
 
-      events: [
-        "mouseenter",
-        "mouseleave",
-        "mouseout",
-        "mousemove",
-        "myEventCatcher",
-      ],
+    events: [
+      "mouseenter",
+      "mouseleave",
+      "mouseout",
+      "mousemove",
+      "myEventCatcher",
+    ],
 
-      onHover: function (e, item) {
-        if (item.length) {
-          setHoverPrice(
-            item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
-          );
-        } else setHoverPrice(false);
-        if (e.type === "mouseout") {
-          setHoverPrice(false);
-        }
-      },}
-
+    onHover: function (e, item) {
+      if (item.length) {
+        setHoverPrice(
+          item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
+        );
+      } else setHoverPrice(false);
+      if (e.type === "mouseout") {
+        setHoverPrice(false);
+      }
+    },
+  };
 
   const dailyToggle = () => {
     setDaily(true);
@@ -250,19 +308,17 @@ function PortfolioChart() {
     setDaily(false);
   };
   const formatDates = () => {
-    let labels = formattedLabels()
-    let count = 0
+    let labels = formattedLabels();
+    let count = 0;
     labels.forEach((label) => {
-      if(isAfter(new Date(createdAt), new Date (label))) {
-        count++
+      if (isAfter(new Date(createdAt), new Date(label))) {
+        count++;
       } else {
-
-        return count
+        return count;
       }
-    } )
-    return count
-
-  }
+    });
+    return count;
+  };
 
   const formattedChange =
     stocksIsLoaded &&
@@ -276,7 +332,27 @@ function PortfolioChart() {
 
   const formattedPercentChange =
     stocksIsLoaded &&
-    (daily ? (((formattedChange / data?.datasets[0].data[data.datasets[0].data.length-2]) * 100).toFixed(2)) :  ( weekly ? ((formattedChangeWeekly() / data?.datasets[0].data[formatDates()]) *100).toFixed(2)  : (formattedChangeMonthly() / data?.datasets[0].data[formatDates()]*100).toFixed(2)))
+    (daily
+      ? (
+          (formattedChange /
+            data?.datasets[0].data[data.datasets[0].data.length - 2]) *
+          100
+        ).toFixed(2) > 100
+        ? 100
+        : (
+            (formattedChange /
+              data?.datasets[0].data[data.datasets[0].data.length - 2]) *
+            100
+          ).toFixed(2)
+      : weekly
+      ? (
+          (formattedChangeWeekly() / data?.datasets[0].data[formatDates()]) *
+          100
+        ).toFixed(2)
+      : (
+          (formattedChangeMonthly() / data?.datasets[0].data[formatDates()]) *
+          100
+        ).toFixed(2));
 
   return stocksIsLoaded ? (
     <>
@@ -291,14 +367,21 @@ function PortfolioChart() {
                 .toLocaleString("en-US")}
           </h2>
           <h3 id={changeId}>
-            {formattedChange.toFixed(2).toLocaleString("en-US") > 0
+            {formattedChange.toFixed(2).toLocaleString("en-US") >= 0
               ? "+$" + formattedChange.toLocaleString("en-US")
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
-            {formattedPercentChange > 0
-              ? "+" + formattedPercentChange
-              : `${formattedPercentChange}`}
-            %) {daily ? "Today" : "As of " + formattedLabels()[30]}
+            {tickerData
+              ? formattedPercentChange >= 0
+                ? "+" + formattedPercentChange
+                : `${formattedPercentChange}`
+              : 0}
+            %){" "}
+            {tickerData
+              ? daily
+                ? "Today"
+                : "As of " + createdAt.slice(0, 16)
+              : ""}
           </h3>
         </div>
         <div id="portfolioChart">
