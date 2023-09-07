@@ -9,6 +9,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
     const id = watchlist.id;
     const [name, setName] = useState(watchlist.name);
     const [validationError, setValidationError] = useState([]);
+    const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +22,8 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
         }
         try {
 
-            const response = await dispatch(watchlistAction.updateWatchlist({ name, id }));
+            const response = await dispatch(watchlistAction.updateWatchlist({ name }));
+
 
             if (response) {
               onClose();
@@ -84,41 +86,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
             </form>
 
         </div>
-        {/* <div className='updateform-container'>
-            <form onSubmit={handleSubmit}>
-                <div className='updateform-header'>
-                    <div>Edit List</div>
-                    <button type='button'className='btn-close' onClick={handleClose}>
-                        <i className="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div className='updateform-content'>
-                    <div className='watchlist-icon'>
-                        <img src="https://cdn.robinhood.com/emoji/v0/128/1f4a1.png"/>
-                    </div>
-                    <div className='updateform-info'>
-                        <label>
-                            <input className='updateform-input'
-                                id='listName'
-                                type='text'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder='List Name'
-                                required
-                            />
-                        </label>
-                    </div>
-                </div>
-                {validationError &&
-                    <div className='updateform-error'>
-                        {validationError}
-                    </div>
-                }
-                <div className='updateform-btnsave'>
-                    <button type='submit' className='btn-save'>Save</button>
-                </div>
-            </form>
-        </div> */}
+
         </>
     );
 }
