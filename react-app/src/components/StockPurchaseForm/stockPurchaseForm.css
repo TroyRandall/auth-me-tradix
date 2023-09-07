@@ -573,3 +573,10 @@
   margin-left: 15px;
   justify-self: space-between;
 }
+  #watchlist-name {
+    grid-row: 7/8;
+  }
+
+  #watchlist-hidden {
+    display: none;
+  }

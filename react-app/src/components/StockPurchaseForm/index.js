@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import  AddToWatchlist  from "./addToWatchlist";
 
 import * as portfolioActions from "../../store/portfolio";
 import "./stockPurchaseForm.css";
@@ -173,7 +174,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
-          <button
+          <AddToWatchlist change={change} />
+          {/* <button
+          onClick={}
             className={
               change === "+"
                 ? "form-add-to-watchlist"
@@ -181,7 +184,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             }
           >
             Add To watchlist
-          </button>
+          </button> */}
         </form>
         <div id="modal-form" ref={purchaseRef}>
           <div>{checkModal()}</div>
