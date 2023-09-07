@@ -38,7 +38,6 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addPortfolio(data));
-    console.log(data);
     return data;
   } else if (response.status < 500) {
     const data = await response.json();
@@ -64,25 +63,24 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
 // }
 
 export const updatePortfolioItem = (portfolio) => async (dispatch) => {
-  const { id, tickerSymbol, quantity, avgPrice, sold_at} = portfolio
+  const { id, tickerSymbol, quantity, avgPrice, portfolioId} = portfolio
   const response = await fetch(`/api/portfolio/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      id: portfolioId,
       user_id: id,
       symbol: tickerSymbol,
       name: tickerSymbol,
       quantity: quantity,
       avg_price: avgPrice,
-      sold_at: sold_at
     }),
   });
   if (response.ok) {
     const data = await response.json();
     dispatch(updatePortfolio(data));
-    console.log(data);
     return data;
   } else if (response.status < 500) {
     const data = await response.json();

@@ -18,10 +18,11 @@ const AppHome = () => {
                     <div id="app-home-chart-container">
                     <PortfolioChart />
 
-                        <div className="buying-power-section">
+                    {/* had to move this into the portfolio Chart item itself to allow it to format with the stock assets items below */}
+                        {/* <div className="buying-power-section">
                             <p className="buying-power-section-label">Buying Power</p>
                             <p className="buying-power-section-content">${usDollar.format(buyingPower)}</p>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="app-home-news-container">
                        {/* <AllNews /> */}

@@ -30,4 +30,5 @@ class Portfolio(db.Model):
             'user_id': self.user_id,
             'created_at': self.created_at,
             'sold_at': self.sold_at,
+            'id': self.id
         }

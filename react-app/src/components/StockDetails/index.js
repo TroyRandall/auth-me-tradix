@@ -67,7 +67,6 @@ function StockDetails() {
   };
 
   const formattedDataMonthly = () => {
-    console.log(monthlyInfo);
     data = Object.values(monthlyInfo["Monthly Time Series"]);
     const newData = [];
     data.forEach((dataPoint) => {

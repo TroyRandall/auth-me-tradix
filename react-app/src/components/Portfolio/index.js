@@ -31,6 +31,11 @@ function PortfolioChart() {
   const weeklyInfo = useSelector((state) => state.weekly);
   const monthlyInfo = useSelector((state) => state.monthly);
   const currentUser = useSelector((state) => state.session.user);
+  const buyingPower = useSelector((state) => state.session.user?.buyingPower);
+  const usDollar = Intl.NumberFormat("en-us", {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -46,7 +51,6 @@ function PortfolioChart() {
 
           // await dispatch(stockActions.stockDataDaily(ticker.symbol));
           let test = await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          console.log("---------------" + test);
           await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
           await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
         });
@@ -113,7 +117,6 @@ function PortfolioChart() {
     let newData = {};
     let count;
     if (tickerData) {
-      console.log(portfolios[userId])
       Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
@@ -121,17 +124,18 @@ function PortfolioChart() {
         let labels = stocksIsLoaded && formattedLabels().reverse();
         oldData.forEach((data) => {
           if (!stock.sold_at) {
-            if(!isBefore(
-              new Date(labels[`${count}`]),
-              new Date(stock.created_at)
-            ))  {
-            newData[`${count}`]
-              ? (newData[`${count}`] =
-                  newData[`${count}`] + data * stock.quantity)
-              : (newData[`${count}`] = data * stock.quantity);
-          } else if (!newData[`${count}`]) newData[`${count}`] = 0;
-          count++;
-
+            if (
+              !isBefore(
+                new Date(labels[`${count}`]),
+                new Date(stock.created_at)
+              )
+            ) {
+              newData[`${count}`]
+                ? (newData[`${count}`] =
+                    newData[`${count}`] + data * stock.quantity)
+                : (newData[`${count}`] = data * stock.quantity);
+            } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+            count++;
           } else {
             if (
               !isBefore(
@@ -169,7 +173,6 @@ function PortfolioChart() {
         .slice(idx - 30);
     }
 
-    console.log(formattedChange);
     return Object.values(newData).reverse();
   };
 
@@ -186,7 +189,7 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "stock_details_percent_change_plus"
         : "stock_details_percent_change_minus"
-      : "stock_details_percent_change_plus"
+      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "stock_details_percent_change_plus" :"stock_details_percent_change_minus")
     : weekly
     ? formattedChangeWeekly() >= 0
       ? "stock_details_percent_change_plus"
@@ -200,7 +203,7 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "rgb(0, 243, 0)"
         : "rgb(255, 0, 0)"
-      : "rgb(0, 243, 0)"
+      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "rgb(0, 243, 0)" :"rgb(255, 0, 0)")
     : weekly
     ? formattedChangeWeekly() > 0
       ? "rgb(0, 243, 0)"
@@ -343,11 +346,9 @@ function PortfolioChart() {
   };
 
   const formattedChange =
-    stocksIsLoaded &&
     Number(
       daily
-        ? data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-            data?.datasets[0].data[data?.datasets[0].data.length - 2]
+        ? formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2]
         : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
             data?.datasets[0].data[0]
     );
@@ -394,9 +395,9 @@ function PortfolioChart() {
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {tickerData
-              ? formattedPercentChange >= 0
+              ? (formattedPercentChange >= 0 ?  formattedPercentChange >= 0
                 ? "+" + formattedPercentChange
-                : `${formattedPercentChange}`
+                : `${formattedPercentChange}` : 0)
               : 0}
             %){" "}
             {tickerData
@@ -440,30 +441,33 @@ function PortfolioChart() {
             <span className="name">Monthly</span>
           </label>
         </div>
-        <div id='portfolio-assets'>
+        <div className="buying-power-section">
+          <p className="buying-power-section-label">Buying Power</p>
+          <p className="buying-power-section-content">
+            ${usDollar.format(buyingPower)}
+          </p>
+        </div>
 
-        <div id="stock-asset-container">
-      <div className="stock-asset-item">Name</div>
-      <div className="stock-asset-item">Symbol</div>
-      <div className="stock-asset-item">Quantity</div>
-      <div className="stock-asset-item">Average Price</div>
-      <div className="stock-asset-item">Purchased On</div>
-      <div className="stock-asset-item">
-        Sold On
-      </div>
-      <div className="stock-asset-item">
-        Sell Stock Button
-      </div>
-
-    </div>
-        {stocksIsLoaded && Object.values(portfolios[userId][userId]).map((portfolio) => {
-          return  (
-            <SellStockForm
-              portfolio={portfolio}
-              stocksIsLoaded={stocksIsLoaded}
-            />
-          );
-        })}</div>
+        <div id="portfolio-assets">
+          <div id="stock-asset-container">
+            <div className="stock-asset-item">Name</div>
+            <div className="stock-asset-item">Symbol</div>
+            <div className="stock-asset-item">Quantity</div>
+            <div className="stock-asset-item">Average Price</div>
+            <div className="stock-asset-item">Purchased On</div>
+            <div className="stock-asset-item">Sold On</div>
+            <div className="stock-asset-item">Sell Stock Button</div>
+          </div>
+          {stocksIsLoaded &&
+            Object.values(portfolios[userId][userId]).map((portfolio) => {
+              return (
+                <SellStockForm
+                  portfolio={portfolio}
+                  stocksIsLoaded={stocksIsLoaded}
+                />
+              );
+            })}
+        </div>
       </div>
     </>
   ) : (

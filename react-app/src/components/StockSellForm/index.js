@@ -13,6 +13,7 @@ function SellStockForm({ portfolio }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState({});
+  const [portfolioId, setPortfolioId] = useState(portfolio.id)
   const [backendErrors, setBackendErrors] = useState(false);
   const [tickerSymbol, setTickerSymbol] = useState(portfolio.symbol);
   const [called, setCalled] = useState(false);
@@ -21,11 +22,10 @@ function SellStockForm({ portfolio }) {
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
 
-  if (!currentUser) history.push("/");
-  console.log(portfolio)
-  console.log('sellStockForm')
+  if (!currentUser) history.push("/login");
 
   useEffect(() => {
+
     setEstimate((avgPrice * quantity).toFixed(2));
     if(portfolio.symbol) setIsLoaded(true)
     if (submitToggle) {
@@ -33,7 +33,7 @@ function SellStockForm({ portfolio }) {
 
       if (currentUser !== null) {
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
-        if (quantity < portfolio.quantity && newErrors.quantity === undefined) newErrors.quantity = 'You cannot Sell More Shares Than You Own'
+        if (quantity < portfolio.quantity && !newErrors.quantity) newErrors.quantity = 'You cannot Sell More Shares Than You Own'
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
         if (avgPrice <= 0) newErrors.price = "Price is Required";
       }
@@ -64,7 +64,7 @@ function SellStockForm({ portfolio }) {
     setSubmitToggle(true);
     let id = currentUser?.id;
     let sold_at = new Date()
-    let portfolio = { id, tickerSymbol, quantity, avgPrice, sold_at};
+    let portfolio = { id, tickerSymbol, quantity, avgPrice, sold_at, portfolioId};
     if (!Object.values(errors).length) {
       const response = await dispatch(
         portfolioActions.updatePortfolioItem(portfolio)
@@ -72,6 +72,7 @@ function SellStockForm({ portfolio }) {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
+      console.log(response)
       setCalled(true);
       return response;
     }
@@ -123,7 +124,7 @@ function SellStockForm({ portfolio }) {
     }
   };
 
-  return (
+  return ( portfolio?.quantity === 0 ? null :
     <div id="stock-asset-container">
       <div className="stock-asset-item">{portfolio.name}</div>
       <div className="stock-asset-item">{portfolio.symbol}</div>

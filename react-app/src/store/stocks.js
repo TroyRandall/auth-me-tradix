@@ -16,7 +16,6 @@ export const stockDataDaily = (ticker) => async (dispatch) => {
   // if (response.status === 304) return null
   if (response.ok) {
     const data = await response.json();
-    console.log(data)
        dispatch(getStocks(data));
   }else {
     throw new Error('Unable to complete request please try again')
