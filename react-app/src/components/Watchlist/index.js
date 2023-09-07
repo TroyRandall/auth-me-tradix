@@ -11,7 +11,7 @@ import {Modal} from '../../context/Modal'
 
 import RemoveStockBtn from './Delete/DeleteStock.js';
 import './index.css';
-import Onelist from './Onelist';
+import Onelist from '../Watchlist2/Onelist';
 
 const WatchList = () => {
     const dispatch = useDispatch();
@@ -91,7 +91,7 @@ const WatchList = () => {
                                         watchlist.watchlist_stocks.map(stock => (
                                             <div className='watchlist-minigraph'>
                                                 <Link to={`/stocks/${stock.stock_symbol}`}>
-                                                    <image src='https://tradix.s3.us-east-2.amazonaws.com/stock2.svg' />
+                                                    <img src='https://tradix.s3.us-east-2.amazonaws.com/stock2.svg' />
                                                     {/* <SmallChart symbol={stock.stock_symbol} /> */}
                                                 </Link>
                                                 <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />

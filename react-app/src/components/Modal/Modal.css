@@ -1,27 +1,104 @@
-#modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    z-index: 10;
-  }
+.addTolist{
+  width: 18rem;
+  height: 2.5rem;
+  border-radius: .2rem;
+  border: 1px solid;
+  border-color:  rgb(255, 80, 0, 1);
+  color: rgb(255, 80, 0, 1);
+  font-weight: bold;
+  background-color: white;
+  float: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+#editlist1{
+  font-size: large;
+  font-weight: 550;
 
-  #modal-background {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-  }
+}
+.addTolist:hover{
+  background-color: rgb(255, 80, 0, .8);
+  color: white;
+  cursor: pointer;
+}
 
-  #modal-content {
-    position: absolute;
-    background-color: white;
-    border-radius: 8px;
-  }
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 106;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+
+}
+
+.xbutton:hover{
+  background-color: rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: visible;
+}
+
+.modal-content {
+  width: 410px;
+  background-color: #fff;
+  transform: translateY(-200px);
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header, .modal-footer {
+  padding: 10px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-title {
+  margin: 0;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-family: "Capsule Sans Text", system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.modal-body {
+  /* background-color: grey; */
+  padding: 1rem;
+
+}
+
+
+.modal-form {
+  padding: 10px;
+  /* border-top: 1px solid #eee; */
+  display: flex;
+  flex-direction: column;
+
+}
+
+.xbutton{
+  margin-top: 1rem;
+  margin-right: .6rem;
+}

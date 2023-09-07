@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Watchlist from '../Watchlist';
 import AllNews from '../News/GetAllNews';
 import PortfolioChart from '../Portfolio'
+import List from '../Watchlist2/Watchlist2';
 import './AppHome.css'
 
 const AppHome = () => {
@@ -28,7 +29,8 @@ const AppHome = () => {
                     </div>
                 </div>
                 <div className="app-home-right">
-                    <Watchlist />
+                    <List />
+                    {/* <Watchlist /> */}
                 </div>
             </div>
         </div>
