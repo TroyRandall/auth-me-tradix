@@ -12,11 +12,13 @@ function ProfilePage() {
             <AppMainNavBar />
             <div className="profile-page-center-util">
                 <div className="profile-page">
+
                     <div className="app-home-left">
+
                         <ProfileSection />
                         <div className="profile-page-profile-info">
                             <div className="profile-page-profile-info-container" id="profile-page-assets">
-                                <h2 className="profile-page-profile-info-title">Assets</h2>
+                                <h2 className="profile-page-profile-info-title">Portfolio: </h2>
                                 <div>
                                     <UserAssets />
                                 </div>

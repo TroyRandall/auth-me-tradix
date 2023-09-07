@@ -2,8 +2,6 @@ import { useSelector } from "react-redux"
 import { useState, useRef, useEffect } from 'react'
 
 
-import ModalProfile from "./ModalProfile"
-
 import { amountFormatter } from "../until/util2"
 import styles from './profile.module.css'
 
@@ -36,11 +34,9 @@ const ProfileSection = () => {
 
     return (
         <>
-            {isModalOn && <ModalProfile user={user} setIsModalOn={setIsModalOn} setIsModalMessage={setIsModalMessage} setIsErrorOccured={setIsErrorOccured} />}
-            <div className={styles.mainContainer}>
-                <div className={styles.profileContainer}>
 
-                </div>
+            <div className={styles.mainContainer}>
+
                 <div>
                     <div className={styles.amount}>{amountFormatter(user.totalStock + user.buyingPower)}</div>
                     <div>Total in Tradix</div>
