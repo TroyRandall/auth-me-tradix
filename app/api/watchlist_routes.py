@@ -59,6 +59,7 @@ def update_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
     current_user_id = current_user_info['id']
     update_watchlist = Watchlist.query.get(watchlist_id)
+
     form = WatchlistAddForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -67,7 +68,7 @@ def update_watchlist(watchlist_id):
 
             new_name = form.data['name']
             print(new_name)
-            # Check if the new name is already used by another watchlist
+
             existing_watchlist = Watchlist.query.filter(
                 Watchlist.name == new_name,
                 Watchlist.id != watchlist_id

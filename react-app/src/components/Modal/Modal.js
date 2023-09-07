@@ -1,42 +1,34 @@
-// import React, { useContext, useRef, useState, useEffect } from 'react';
-// import ReactDOM from 'react-dom';
-// import './Modal.css';
+import "./Modal.css"
 
-// const ModalContext = React.createContext();
 
-// export function ModalProvider({ children }) {
-//   const modalRef = useRef();
-//   const [value, setValue] = useState();
+function Modal(props) {
 
-//   useEffect(() => {
-//     setValue(modalRef.current);
-//   }, []);
+    return(
+        <div className={`modal ${props.show?'show':''}`} onClick={props.onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <div className="modal-header">
+                    <p id="editlist1">Edit List</p>
+                    <h4 className="modal-title">{props.title}</h4>
+                    <svg className="xbutton" onClick={props.onClose} fill="none" height="24" role="img" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.4143 12L19.7072 5.70706L18.293 4.29285L12.0001
+                        10.5857L5.70718 4.29285L4.29297 5.70706L10.5859 12L4.29297
+                        18.2928L5.70718 19.7071L12.0001 13.4142L18.293 19.7071L19.7072
+                        18.2928L13.4143 12Z" fill="black"></path></svg>
+                </div>
+                <div className="modal-form">
+                    <div className="modal-body">
+                        {props.children}
+                    </div>
+                    <div className="modal-footer">
 
-//   return (
-//     <>
-//       <ModalContext.Provider value={value}>
-//         {children}
-//       </ModalContext.Provider>
-//       <div ref={modalRef} />
-//     </>
-//   );
-// }
 
-// export function Modal({ onClose, children }) {
-//   const modalNode = useContext(ModalContext);
-//   if (!modalNode) return null;
+                    </div>
 
-//   return ReactDOM.createPortal(
-//     <div id="modal">
-//       <div id="modal-background" onClick={onClose} />
-//       <div id="modal-content">
-//         {children}
-//       </div>
-//     </div>,
-//     modalNode
-//   );
-// }
+                </div>
+            </div>
+        </div>
 
-// export function useModalContext() {
-//   return useContext(ModalContext);
-// }
+    )
+}
+
+export default Modal

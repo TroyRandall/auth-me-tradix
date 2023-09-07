@@ -76,8 +76,8 @@ const CashCard = () => {
             </div>
             <div className="cashcard-section-four">
                 <div className="cashcard-section-three-content">
-                    <h1>No hidden fee</h1>
-                    <p>No in-your-face fees, either. When you use your Robinhood Cash Card, there are never monthly fees, in-network ATM fees, or overdraft fees—and you won't need to maintain a minimum balance.</p>
+                    <h1 style={{paddingRight: '20'}} >No hidden fee</h1>
+                    <p>No in-your-face fees, either. When you use your Tradix Cash Card, there are never monthly fees, in-network ATM fees, or overdraft fees—and you won't need to maintain a minimum balance.</p>
                 </div>
             </div>
         </div>

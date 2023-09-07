@@ -1,3 +1,5 @@
+
+
 import * as watchlistAction from '../../../store/watchlist';
 import { useDispatch } from 'react-redux';
 import {  useState } from 'react';
@@ -7,6 +9,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
     const id = watchlist.id;
     const [name, setName] = useState(watchlist.name);
     const [validationError, setValidationError] = useState([]);
+    const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,7 +22,8 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
         }
         try {
 
-            const response = await dispatch(watchlistAction.updateWatchlist({ name, id }));
+            const response = await dispatch(watchlistAction.updateWatchlist({ name }));
+
 
             if (response) {
               onClose();
@@ -44,14 +48,20 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
     }
 
     return (
+        <>
         <div className='updateform-container'>
-            <form onSubmit={handleSubmit}>
-                <div className='updateform-header'>
-                    <div>Edit List</div>
-                    <button type='button'className='btn-close' onClick={handleClose}>
+            <div className='updateform-header'>
+                <h2>Edit List</h2>
+                <button type='button'className='btn-close' onClick={handleClose}>
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                </div>
+            </div>
+            <form onSubmit={handleSubmit} className='updateform-submit'>
+            {validationError &&
+                    <div className='updateform-error'>
+                        {validationError}
+                    </div>
+                }
                 <div className='updateform-content'>
                     <div className='watchlist-icon'>
                         <img src="https://cdn.robinhood.com/emoji/v0/128/1f4a1.png"/>
@@ -59,6 +69,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
                     <div className='updateform-info'>
                         <label>
                             <input className='updateform-input'
+                                id='listName'
                                 type='text'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -68,18 +79,15 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
                         </label>
                     </div>
                 </div>
-                {validationError &&
-                    <div className='updateform-error'>
-                        {validationError}
-                    </div>
-                }
                 <div className='updateform-btnsave'>
                     <button type='submit' className='btn-save'>Save</button>
                 </div>
+
             </form>
+
         </div>
+
+        </>
     );
 }
-
-
 export default UpdateWatchlistForm;

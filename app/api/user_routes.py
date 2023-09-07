@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import User, Portfolio, Transaction, db
 from app.forms import PortfolioForm, TransactionForm
+from werkzeug.utils import secure_filename
+import os
 
 user_routes = Blueprint('users', __name__)
 
@@ -30,16 +32,38 @@ def user(id):
 def update():
     update = request.json
 
-    if not update.get('nickname') or not update.get('username'):
+    if not update.get('username'):
         return {'error': 'nickname and username are required'}, 400
 
-    nickname = update.get('nickname')
+
     username = update.get('username')
 
-    current_user.update_un_nn(nickname, username)
+    current_user.update_un_nn( username)
 
     return {'message': 'successfully updated'}
+# @user_routes.route('/upload', methods=['POST'])
+# def upload_file():
+#     if 'image_url' not in request.files:
+#         flash('No file part')
+#         return redirect(request.url)
 
+#     file = request.files['profile_picture']
+
+#     if file.filename == '':
+#         flash('No selected file')
+#         return redirect(request.url)
+
+#     if file:
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+#         # Update the user's profile picture in the database
+#         user = User.query.filter_by(username='current_user').first()
+#         user.profile_picture = filename
+#         db.session.commit()
+
+#         flash('File uploaded successfully')
+#         return redirect(url_for('profile'))
 @user_routes.route("/<email>")
 def findEmail(email):
     """
