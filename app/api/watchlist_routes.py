@@ -59,7 +59,7 @@ def update_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
     current_user_id = current_user_info['id']
     update_watchlist = Watchlist.query.get(watchlist_id)
-    print(update_watchlist + "-------heyyyyy")
+
     form = WatchlistAddForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 

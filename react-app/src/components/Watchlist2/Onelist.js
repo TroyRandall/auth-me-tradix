@@ -24,9 +24,9 @@ const Onelist = ({watchlist}) => {
 	}
 	const submitEditWatchlist = async (e) => {
 		e.preventDefault();
-		dispatch(
-		watchlistAction.updateWatchlist(newEditName)
-		).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)));
+		await dispatch(
+		watchlistAction.updateWatchlist({name: newEditName, id: watchlist.id})
+		);
 		setShow(false);
 		setNewEditName("");
 
