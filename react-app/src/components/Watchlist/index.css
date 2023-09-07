@@ -201,9 +201,9 @@ header {
 
 .watchlist-dropdown {
     position: absolute;
-    background-color: white;
+    background-color: #ffffff;
     z-index: 1000;
-    width:12rem;
+    width: 33rem;
     left: -2rem;
     border: 1px solid #cccccc;
     border-radius: 5px;
@@ -276,7 +276,7 @@ header {
 }
 
 .updateform-container {
-    width: 468px;
+    width: 330px;
 }
 
 .updateform-header {
@@ -374,6 +374,8 @@ header {
     width: 468px;
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 12px 24px rgba(0,0,0,0.6), 0px 12px 24px rgba(0,0,0,0.02);
 }
 
 .delete-head {
@@ -384,9 +386,11 @@ header {
     padding-left: 20px;
     font-weight: 600;
 }
-
+.modal-content > .delete-container{
+    border-radius: 5px;
+}
 .delete-head>h1 {
-    margin: 20px;
+    margin: 15px;
 }
 
 .delete-btncontainer {

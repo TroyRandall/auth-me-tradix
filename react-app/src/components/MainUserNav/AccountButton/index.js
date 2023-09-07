@@ -126,6 +126,7 @@ function AccountButton() {
               <p>Profile</p>
             </div>
           </Link>
+
           <div id="submenu-logout-container" onClick={logout}>
             <i className="fa-solid fa-arrow-right-from-bracket" />
             <p>Log Out</p>

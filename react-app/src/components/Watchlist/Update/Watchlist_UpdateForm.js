@@ -1,3 +1,5 @@
+
+
 import * as watchlistAction from '../../../store/watchlist';
 import { useDispatch } from 'react-redux';
 import {  useState } from 'react';
@@ -44,7 +46,45 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
     }
 
     return (
+        <>
         <div className='updateform-container'>
+            <div className='updateform-header'>
+                <h2>Edit List</h2>
+                <button type='button'className='btn-close' onClick={handleClose}>
+                        <i className="fa-solid fa-xmark"></i>
+                    </button>
+            </div>
+            <form onSubmit={handleSubmit} className='updateform-submit'>
+            {validationError &&
+                    <div className='updateform-error'>
+                        {validationError}
+                    </div>
+                }
+                <div className='updateform-content'>
+                    <div className='watchlist-icon'>
+                        <img src="https://cdn.robinhood.com/emoji/v0/128/1f4a1.png"/>
+                    </div>
+                    <div className='updateform-info'>
+                        <label>
+                            <input className='updateform-input'
+                                id='listName'
+                                type='text'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder='List Name'
+                                required
+                            />
+                        </label>
+                    </div>
+                </div>
+                <div className='updateform-btnsave'>
+                    <button type='submit' className='btn-save'>Save</button>
+                </div>
+
+            </form>
+
+        </div>
+        {/* <div className='updateform-container'>
             <form onSubmit={handleSubmit}>
                 <div className='updateform-header'>
                     <div>Edit List</div>
@@ -59,6 +99,7 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
                     <div className='updateform-info'>
                         <label>
                             <input className='updateform-input'
+                                id='listName'
                                 type='text'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -77,9 +118,8 @@ const UpdateWatchlistForm = ({watchlist, onClose}) => {
                     <button type='submit' className='btn-save'>Save</button>
                 </div>
             </form>
-        </div>
+        </div> */}
+        </>
     );
 }
-
-
 export default UpdateWatchlistForm;

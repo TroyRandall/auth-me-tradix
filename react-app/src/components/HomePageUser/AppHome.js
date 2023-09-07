@@ -16,7 +16,7 @@ const AppHome = () => {
             <div className="app-home">
                 <div className="app-home-left">
                     <div id="app-home-chart-container">
-                    <PortfolioChart />
+                    {/* <PortfolioChart /> */}
 
                         <div className="buying-power-section">
                             <p className="buying-power-section-label">Buying Power</p>
@@ -24,7 +24,7 @@ const AppHome = () => {
                         </div>
                     </div>
                     <div className="app-home-news-container">
-                       <AllNews />
+                       {/* <AllNews /> */}
                     </div>
                 </div>
                 <div className="app-home-right">
