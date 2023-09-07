@@ -8,6 +8,7 @@ const getMonthly = (data) => ({
 
 export const stockDataMonthly = (ticker) => async (dispatch) => {
     const response = await fetch(`/api/stocks/monthly/${ticker}`);
+  if (response.status === 304) return null
   if (response.ok) {
     const data = await response.json();
     dispatch(getMonthly(data));

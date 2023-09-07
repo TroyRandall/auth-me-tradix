@@ -45,7 +45,7 @@ const DeleteWatchlist = ({ watchlist, onClose }) => {
                 </div>
             }
             <div className='delete-btndelete-container'>
-                <button className='delete-btndelete' onClick={handleDeletebtn}> Delete {watchlist.name}</button>
+                <button className='delete-btndelete' onClick={handleDeletebtn}> Delete "{watchlist.name}"</button>
             </div>
         </div>
     );

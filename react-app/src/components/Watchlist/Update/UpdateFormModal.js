@@ -40,7 +40,7 @@ const UpdateFormModal = ({ watchlist}) => {
           {showModal ? (
             <div className="modal">
               <div className="modal-content" onClick={closeModal}>
-                <UpdateWatchlistForm watchlist={watchlist} />
+                <UpdateWatchlistForm watchlist={watchlist} onClose={closeModal} />
               </div>
             </div>
           ) : (

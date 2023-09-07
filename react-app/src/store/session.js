@@ -156,18 +156,18 @@ export const deleteProfileImage = () => async dispatch => {
   }
 };
 
-export const updateNicknameUsername = (nickname, username) => async dispatch => {
+export const updateNicknameUsername = ( username) => async dispatch => {
   try {
     const headers = { 'Content-Type': 'application/json' };
     const options = {
       method: 'PUT',
       headers,
-      body: JSON.stringify({ nickname, username })
+      body: JSON.stringify({ username })
     };
 
     const response = await fetch('/api/users/update', options);
     if (response.ok) {
-      dispatch(updateNames(nickname, username));
+      dispatch(updateNames(username));
       return true;
     } else
       throw Error('Something went wrong');
