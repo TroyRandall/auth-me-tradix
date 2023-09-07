@@ -1,13 +1,18 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import  AddToWatchlist  from "./addToWatchlist";
-
+import StockList from "../StockList/StockList";
+import Modal from "../Modal/Modal";
 import * as portfolioActions from "../../store/portfolio";
 import "./stockPurchaseForm.css";
 
 function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
+  console.log(ticker)
+  const {stockId} = useParams();
+  console.log(stockId)
+  const [show, setShow] = useState(false);
+
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
   const purchaseRef = useRef();
@@ -174,9 +179,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
-          <AddToWatchlist change={change} />
-          {/* <button
-          onClick={}
+          <button
             className={
               change === "+"
                 ? "form-add-to-watchlist"
