@@ -24,7 +24,7 @@ const AppHome = () => {
                         </div>
                     </div>
                     <div className="app-home-news-container">
-                       <AllNews />
+                       {/* <AllNews /> */}
                     </div>
                 </div>
                 <div className="app-home-right">

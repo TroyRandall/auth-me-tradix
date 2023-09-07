@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from app.models import Portfolio, db, User
+from app.forms.sell_portfolio import PortfolioSellForm
 from app.forms import PortfolioForm
 from flask_login import login_required, current_user
 
@@ -41,4 +42,24 @@ def portfolio_add(id):
         db.session.add(newPortfolio)
         db.session.commit()
         return newPortfolio.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@portfolio_routes.route('/<int:id>', methods=['PUT'])
+@login_required
+def portfolio_update(id):
+    currentUser = User.query.get(current_user.id)
+    form = PortfolioSellForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate():
+        userPortfolio = Portfolio.query.filter(Portfolio.created_at == form.data['Purchased On'])
+        if userPortfolio:
+            userPortfolio.sold_at = {
+                'sold': form.data['sold_at'],
+                'quantity': form.data['quantity'],
+                'avgPrice': form.data['avg_price']}
+            currentUser.buying_power = currentUser.buying_power + (form.data['avg_price'] * form.data['quantity'])
+            db.session.commit()
+            return userPortfolio.to_dict()
+        else: return {'errors': 'Portfolio does not exist'}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401

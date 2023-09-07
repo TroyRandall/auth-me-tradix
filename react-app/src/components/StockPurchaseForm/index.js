@@ -9,7 +9,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
-  const purchaseRef = useRef()
+  const purchaseRef = useRef();
   const [tickerSymbol, setTickerSymbol] = useState("");
   const [called, setCalled] = useState(false);
   const [quantity, setQuantity] = useState("");
@@ -41,24 +41,23 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     }
 
     const closeModal = (e) => {
-      console.log(e.target)
-      console.log(purchaseRef.current.contains)
-      if(!(purchaseRef.current.contains(e.target)))
+
       setCalled(false);
-      setTickerSymbol('');
-      setAvgPrice('');
-      setQuantity('');
-      setEstimate('')
-    }
+      setSubmitToggle(false);
+      setTickerSymbol("");
+      setAvgPrice("");
+      setQuantity("");
+      setEstimate("");
 
-    console.log(called);
-    if(called){
-      document.addEventListener('click', closeModal)
 
-      return document.removeEventListener('click', closeModal)
+    };
+
+    if (called) {
+      document.addEventListener("click", closeModal);
+
+      return () => document.removeEventListener("click", closeModal);
     }
   }, [avgPrice, quantity, submitToggle, called]);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,12 +68,40 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     if (!Object.values(errors).length) {
       const response = await dispatch(
         portfolioActions.addPortfolioItem(portfolio)
-      ).catch(    async (res) => {
+      ).catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) setBackendErrors(data.errors)
-      })
-    setCalled(true)
-    return response
+        if (data && data.errors) setBackendErrors(data.errors);
+      });
+      setCalled(true);
+      return response;
+    }
+  };
+
+  const UlClassName = "overlay" + (called ? "" : "hidden");
+
+  const checkModal = () => {
+    if (called) {
+      return (
+      <div className={UlClassName}>
+        {Object.values(backendErrors).length ? (
+          <div id="failed-purchase">
+            <h3 id="purchase-title"> Order Not Executed</h3>
+            <p>
+              {Object.values(backendErrors)?.map((error) => {
+                return <p id="purchase-message-failed"> {error} </p>;
+              })}
+            </p>
+          </div>
+        ) : (
+          <div id="successful-purchase">
+            <h3 id="purchase-title">Congratulations</h3>
+            <p id="purchase-message-success">
+              Your Market Order for {quantity} Shares of {tickerSymbol} for $
+              {avgPrice} Is Completed
+            </p>
+          </div>
+        )}
+      </div>)
     }
   };
   return (
@@ -156,31 +183,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Add To watchlist
           </button>
         </form>
-        <div id='modal-form' ref={purchaseRef}>
-          {called ? (
-            <>
-              <div className="overlay">
-                {Object.values(backendErrors).length ? (
-                  <div id="failed-purchase">
-                    <h3 id='purchase-title'> Order Not Executed</h3>
-                    <p>{Object.values(backendErrors)?.map((error) => {
-                          return (<p id='purchase-message-failed'> {error} </p>)
-                    })}</p>
-                  </div>
-                ) : (
-                  <div id="successful-purchase">
-                    <h3 id='purchase-title'>Congratulations</h3>
-                    <p id='purchase-message-success'>
-                      Your Market Order for {quantity} Shares of {tickerSymbol}{" "}
-                      for ${avgPrice} Is Completed
-                    </p>
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+        <div id="modal-form" ref={purchaseRef}>
+          <div>{checkModal()}</div>
         </div>
       </>
     )

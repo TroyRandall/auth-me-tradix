@@ -7,6 +7,7 @@ import { Line } from "react-chartjs-2";
 import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
+import SellStockForm from "../StockSellForm";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -44,8 +45,8 @@ function PortfolioChart() {
           }
 
           // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol))
-          console.log('---------------' + test)
+          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol));
+          console.log("---------------" + test);
           await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
           await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
         });
@@ -112,21 +113,40 @@ function PortfolioChart() {
     let newData = {};
     let count;
     if (tickerData) {
+      console.log(portfolios[userId])
       Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
         count = 0;
         let labels = stocksIsLoaded && formattedLabels().reverse();
         oldData.forEach((data) => {
-          if (
-            !isBefore(new Date(labels[`${count}`]), new Date(stock.created_at))
-          ) {
+          if (!stock.sold_at) {
+            if(!isBefore(
+              new Date(labels[`${count}`]),
+              new Date(stock.created_at)
+            ))  {
             newData[`${count}`]
               ? (newData[`${count}`] =
                   newData[`${count}`] + data * stock.quantity)
               : (newData[`${count}`] = data * stock.quantity);
           } else if (!newData[`${count}`]) newData[`${count}`] = 0;
           count++;
+
+          } else {
+            if (
+              !isBefore(
+                new Date(labels[`${count}`]),
+                new Date(stock.created_at)
+              ) &&
+              isBefore(new Date(labels[`${count}`]), new Date(stock.sold_at))
+            ) {
+              newData[`${count}`]
+                ? (newData[`${count}`] =
+                    newData[`${count}`] + data * stock.quantity)
+                : (newData[`${count}`] = data * stock.quantity);
+            } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+            count++;
+          }
         });
         index++;
         if (index === Object.values(tickerData).length - 1) setIdx(count);
@@ -420,6 +440,30 @@ function PortfolioChart() {
             <span className="name">Monthly</span>
           </label>
         </div>
+        <div id='portfolio-assets'>
+
+        <div id="stock-asset-container">
+      <div className="stock-asset-item">Name</div>
+      <div className="stock-asset-item">Symbol</div>
+      <div className="stock-asset-item">Quantity</div>
+      <div className="stock-asset-item">Average Price</div>
+      <div className="stock-asset-item">Purchased On</div>
+      <div className="stock-asset-item">
+        Sold On
+      </div>
+      <div className="stock-asset-item">
+        Sell Stock Button
+      </div>
+
+    </div>
+        {stocksIsLoaded && Object.values(portfolios[userId][userId]).map((portfolio) => {
+          return  (
+            <SellStockForm
+              portfolio={portfolio}
+              stocksIsLoaded={stocksIsLoaded}
+            />
+          );
+        })}</div>
       </div>
     </>
   ) : (

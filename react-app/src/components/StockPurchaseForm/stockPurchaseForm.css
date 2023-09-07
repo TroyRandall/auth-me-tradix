@@ -523,6 +523,10 @@
     z-index: 7;
 }
 
+.overlay-hidden {
+  display: none;
+}
+
 #successful-purchase {
   width: 300px;
   height: 100px;

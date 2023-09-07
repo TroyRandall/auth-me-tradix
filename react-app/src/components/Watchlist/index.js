@@ -85,9 +85,9 @@ const WatchList = () => {
                                     {watchlist.watchlist_stocks.length > 0 &&
                                         watchlist.watchlist_stocks.map(stock => (
                                             <div className='watchlist-minigraph'>
-                                                <Link to={`/stocks/${stock.stock_symbol}`}>
+                                                {/* <Link to={`/stocks/${stock.stock_symbol}`}>
                                                     <SmallChart symbol={stock.stock_symbol} />
-                                                </Link>
+                                                </Link> */}
                                                 <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
                                             </div>
                                         ))
