@@ -179,7 +179,19 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
-          <button
+          <button onClick={() => setShow(true)} className="addTolist">
+							Add to Watchlist
+						</button>
+          <Modal
+							title={`Add ${ticker["symbol"]} to a Watchlist`}
+							show={show}
+							onClose={() => setShow(false)}
+						>
+							<>
+								<StockList assetID={stockId} assetSymbol={ticker["symbol"]} />
+							</>
+						</Modal>
+          {/* <button
             className={
               change === "+"
                 ? "form-add-to-watchlist"
