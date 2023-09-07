@@ -8,6 +8,7 @@ const getWeekly = (data) => ({
 
 export const stockDataWeekly = (ticker) => async (dispatch) => {
     const response = await fetch(`/api/stocks/weekly/${ticker}`);
+    if (response.status === 304) return null
   if (response.ok) {
     const data = await response.json();
     dispatch(getWeekly(data));

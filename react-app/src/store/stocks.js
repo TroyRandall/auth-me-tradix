@@ -13,9 +13,10 @@ export const stockDataDaily = (ticker) => async (dispatch) => {
   // url =f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={key}'
   // r = requests.get(url)
   const response = await fetch(`/api/stocks/daily/${ticker}`);
-
+  // if (response.status === 304) return null
   if (response.ok) {
     const data = await response.json();
+    console.log(data)
        dispatch(getStocks(data));
   }else {
     throw new Error('Unable to complete request please try again')
