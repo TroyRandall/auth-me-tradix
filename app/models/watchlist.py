@@ -1,6 +1,11 @@
 from .db import db
 from datetime import datetime
 
+# watchlist_assets = db.Table(
+#     'watchlist_assets',
+#     db.Column("asset_id", db.Integer, db.ForeignKey("assets.id"), primary_key=True),
+#     db.Column("watchlist_id", db.Integer, db.ForeignKey("watchlists.id"), primary_key=True)
+# )
 class Watchlist(db.Model):
     __tablename__ = 'watchlists'
 
@@ -21,5 +26,6 @@ class Watchlist(db.Model):
             'id': self.id,
             'name': self.name,
             'user_id': self.user_id,
-            'watchlist_stocks': [stock.to_dict() for stock in self.watchlist_stocks]
+            'watchlist_stocks': [stock.to_dict() for stock in self.watchlist_stocks],
+            # 'watchlist_assets': watchlist_assets
         }

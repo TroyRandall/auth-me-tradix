@@ -109,6 +109,7 @@ function AccountButton() {
   return (
     <div id="account-button-container">
       <button
+        style={{ fontSize: "16px", fontWeight: "bold" }}s
         onClick={() => setShowAccount(!showAccount)}
         id="account-button"
         className={`${showAccount ? "account-button-hold" : ""}`}

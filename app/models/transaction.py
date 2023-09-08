@@ -16,5 +16,6 @@ class Transaction(db.Model):
     transaction_time = db.Column(db.Date,  default = datetime.now, nullable=False)
     created_at = db.Column(db.Date, default = datetime.now)
     updated_at = db.Column(db.Date, default = datetime.now)
-
+    # trans_asset = db.relationship("Asset", back_populates="transactions", lazy=True)
+    # asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
     user = db.relationship('User', back_populates='transactions')

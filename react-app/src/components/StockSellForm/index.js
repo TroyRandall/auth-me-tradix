@@ -72,7 +72,7 @@ function SellStockForm({ portfolio }) {
         const data = res;
         if (data && data.errors) setBackendErrors(data.errors);
       });
-      console.log(response)
+
       setCalled(true);
       return response;
     }

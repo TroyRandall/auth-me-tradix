@@ -641,15 +641,17 @@ input[type=checkbox] {
 
 .removestock-container {
     padding: 1rem 0rem 0rem 2.5rem;
+
 }
 .removestock-btn {
     background: none;
     border: transparent;
     min-width: 0;
+
 }
 
 .removestock-btn:hover {
-    color: #00C805;
+    color: #FF6600;
     font-weight: 700;
 }
 

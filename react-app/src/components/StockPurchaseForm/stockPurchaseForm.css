@@ -37,7 +37,7 @@
   background-color: #fff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   max-width: 320px;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 #purchase-form-errors {
@@ -85,7 +85,7 @@
 #form-title {
   grid-row: 1/2;
   grid-column: 1/2;
-  font-size: 18px;
+  font-size: 20px;
   align-self: center;
   margin-top: 0px;
   padding-top: 10px;
@@ -106,7 +106,7 @@
   grid-column: 1/2;
   justify-self: start;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-field2 {
@@ -114,7 +114,7 @@
   grid-column: 1/2;
   justify-self: end;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-ticker-label {
@@ -122,7 +122,7 @@
   grid-column: 1/2;
   justify-self: start;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-ticker-input {
@@ -130,7 +130,7 @@
   grid-column: 1/2;
   justify-self: end;
   align-self: center;
-  font-size: 1.25em;
+  font-size:18px;
   margin-right: 0px;
   width: 8vw;
   background-color: rgba(7, 255, 69, 0.2);
@@ -142,7 +142,7 @@
   grid-column: 1/2;
   justify-self: start;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-quantity-input {
@@ -150,7 +150,7 @@
   grid-column: 1/2;
   justify-self: end;
   align-self: center;
-  font-size: 1.25em;
+  font-size:18px;
   margin-right: 0px;
   width: 8vw;
   background-color: rgba(7, 255, 69, 0.2);
@@ -162,7 +162,7 @@
   grid-column: 1/2;
   justify-self: start;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-price-input {
@@ -170,7 +170,7 @@
   grid-column: 1/2;
   justify-self: end;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
   margin-right: 0px;
   width: 8vw;
   background-color: rgba(7, 255, 69, 0.2);
@@ -182,7 +182,7 @@
   grid-column: 1/2;
   justify-self: start;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
 }
 
 #form-purchaseIn-input {
@@ -190,7 +190,7 @@
   grid-column: 1/2;
   justify-self: end;
   align-self: center;
-  font-size: 1.25em;
+  font-size: 18px;
   margin-right: 0px;
   width: 8vw;
   background-color: rgba(7, 255, 69, 0.2);
@@ -202,11 +202,14 @@
   grid-column: 1/2;
   justify-self: center;
   align-self: center;
-  font-size: 1.25em;
-  background-color: rgba(7, 255, 69, 0.2);
-  border: 2px solid rgb(131, 131, 131);
+  font-size: 1.25rem;
+  background-color: #00C805;
+  border: 1px solid #00C805;
   width: 13vw;
   height: 35px;
+}
+#form-submit-button span {
+  font-size: 1.3rem;
 }
 
 #form-submit-button {
@@ -360,7 +363,7 @@
     grid-column: 1/2;
     justify-self: center;
     align-self: flex-end;
-    font-size: 1.25em;
+    font-size: 18px;
     border-top: 1px solid rgb(131, 131, 131);
     border-bottom: 1px solid rgb(131, 131, 131);
     padding-top: 35px;

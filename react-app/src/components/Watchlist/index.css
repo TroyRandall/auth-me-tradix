@@ -240,23 +240,30 @@ header {
     margin-right: 15px;
     font-weight: 600;
 }
+.row__chart{
+    padding : 0 10px;
+    /* width: 100%; */
 
+  }
 .watchlist-minigraph {
-    /* height: 60px;
+display: flex;
+  justify-content: space-between;
+  height: 60px;
+  align-items: center;
+  padding: 0 20px;
+  cursor: pointer;
+  width: 100%
+
+    /* height: 100px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 15px;
-    margin-right: 15px; */
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+    justify-content: space-between;
+    width: 100%; */
 
 }
 .watchlist-minigraph:hover {
     background-color: #E3E9ED;
     cursor: pointer;
+    transform: scale(1);
 }
 
 .watchlist-stockprice {

@@ -1,13 +1,18 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import  AddToWatchlist  from "./addToWatchlist";
-
+import StockList from "../StockList/StockList";
+import Modal from "../Modal/Modal";
 import * as portfolioActions from "../../store/portfolio";
 import "./stockPurchaseForm.css";
 
 function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
+
+  const {stockId} = useParams();
+
+  const [show, setShow] = useState(false);
+
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
   const purchaseRef = useRef();
@@ -168,15 +173,25 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               change === "+" ? "form-submit-button" : "form-submit-button-minus"
             }
           >
-            Add To Portfolio
+            <span>Add to portfolio</span>
           </div>
           <p id="form-buying-power-available">
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
-          <AddToWatchlist change={change} />
+          <button onClick={() => setShow(true)} className="addTolist">
+          <span>Add to Watchlist</span>
+						</button>
+          <Modal
+							title={`Add ${ticker} to a Watchlist ?`}
+							show={show}
+							onClose={() => setShow(false)}
+						>
+							<>
+								<StockList assetID={stockId} assetSymbol={ticker} />
+							</>
+						</Modal>
           {/* <button
-          onClick={}
             className={
               change === "+"
                 ? "form-add-to-watchlist"
