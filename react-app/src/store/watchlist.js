@@ -92,7 +92,6 @@ export const createWatchlist = (watchlist) => async dispatch => {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             dispatch(addWatchlist(data));
             return response;
 

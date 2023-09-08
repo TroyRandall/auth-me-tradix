@@ -110,11 +110,11 @@ const portfolioReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TRADIX_PORTFOLIOS:
       newState = Object.assign({}, state);
-      newState[action.payload.id] = action.payload.data;
+      newState = action.payload.data;
       return newState;
     case ADD_PORTFOLIO_ITEM:
       newState = Object.assign({}, state);
-      newState['newPortfolio'] = action.payload;
+      newState[action.payload.id] = newState[action.payload.id] + action.payload
     default:
       return state;
   }

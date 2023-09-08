@@ -22,11 +22,12 @@ function PortfolioChart() {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const [hoverPrice, setHoverPrice] = useState(false);
+  const [tickerCheck, setTickerCheck] = useState({})
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
   const [tickerData, setTickerData] = useState(false);
-  const portfolios = useSelector((state) => state.portfolios);
+  const portfolios = useSelector((state) => state.portfolios[userId]);
   const stockInfo = useSelector((state) => state.stocks);
   const weeklyInfo = useSelector((state) => state.weekly);
   const monthlyInfo = useSelector((state) => state.monthly);
@@ -39,12 +40,17 @@ function PortfolioChart() {
 
   useEffect(() => {
     const getData = async () => {
+
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
+      const newTickers = {}
+      tickers.forEach((ticker) => {
+        if(!newTickers[ticker.symbol]) newTickers[ticker.symbol] = ticker.symbol
+      })
       if (tickers.length > 0) {
         setTickerData(tickers);
         let created = tickers[0]?.created_at;
-        tickers.forEach(async (ticker) => {
+        Object.values(newTickers).forEach(async (ticker) => {
           if (isBefore(new Date(ticker.created_at), new Date(created))) {
             created = ticker.created_at;
           }
@@ -459,7 +465,7 @@ function PortfolioChart() {
             <div className="stock-asset-item">Sell Stock Button</div>
           </div>
           {stocksIsLoaded &&
-            Object.values(portfolios[userId][userId]).map((portfolio) => {
+            Object.values(portfolios).map((portfolio) => {
               return (
                 <SellStockForm
                   portfolio={portfolio}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector,  } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -10,13 +10,12 @@ function SellStockForm({ portfolio }) {
   const history = useHistory();
   const currentUser = useSelector((state) => state.session.user);
   const stockInfo = useSelector((state) => state.stocks)
+  const portfolios = useSelector((state) => state.portfolios[portfolio.id]);
   const [isLoaded, setIsLoaded] = useState(false)
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState({});
   const [portfolioId, setPortfolioId] = useState(portfolio.id)
-  const [backendErrors, setBackendErrors] = useState(false);
   const [tickerSymbol, setTickerSymbol] = useState(portfolio.symbol);
-  const [called, setCalled] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [avgPrice, setAvgPrice] = useState("");
   const [estimate, setEstimate] = useState("");
@@ -31,32 +30,17 @@ function SellStockForm({ portfolio }) {
     if (submitToggle) {
       let newErrors = {};
 
-      if (currentUser !== null) {
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
-        if (quantity < portfolio.quantity && !newErrors.quantity) newErrors.quantity = 'You cannot Sell More Shares Than You Own'
+        if (quantity > portfolio.quantity && !newErrors.quantity) newErrors.quantity = 'You cannot Sell More Shares Than You Own'
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
         if (avgPrice <= 0) newErrors.price = "Price is Required";
-      }
+
 
       setErrors({ ...newErrors });
       if (errors && Object.values(newErrors).length > 0) return errors;
     }
 
-    const closeModal = () => {
-      setCalled(false);
-      setSubmitToggle(false);
-      setTickerSymbol("");
-      setAvgPrice("");
-      setQuantity("");
-      setEstimate("");
-    };
-
-    if (called) {
-      document.addEventListener("click", closeModal);
-
-      return () => document.removeEventListener("click", closeModal);
-    }
-  }, [avgPrice, quantity, submitToggle, called]);
+  }, [avgPrice, quantity, submitToggle, portfolios]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,13 +54,39 @@ function SellStockForm({ portfolio }) {
         portfolioActions.updatePortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = res;
-        if (data && data.errors) setBackendErrors(data.errors);
+        if (data && data.errors) setErrors(data.errors);
       });
-
-      setCalled(true);
+      if(!Object.values(errors).length){
+        setToggle(false)
+        setSubmitToggle(false);
+      }
       return response;
     }
   };
+
+  const cancelModal = (e) => {
+    const overlay = document.getElementById('overlay');
+    const yesButton = document.getElementById('yes-button')
+    const noButton = document.getElementById('no-button')
+    if(e.target !== overlay && e.target !== noButton) return null
+    else if (e.target === yesButton) {
+      let newErrors = {};
+
+        if (quantity <= 0) newErrors.quantity = "Quantity is Required";
+        if (quantity > portfolio.quantity && !newErrors.quantity) newErrors.quantity = 'You cannot Sell More Shares Than You Own'
+        if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+        if (avgPrice <= 0) newErrors.price = "Price is Required";
+
+
+      setErrors({ ...newErrors });
+      if (errors && Object.values(newErrors).length > 0) return errors;
+      else return handleSubmit()
+    } else {
+    setToggle(false)
+    setSubmitToggle(false);
+    }
+
+  }
 
   const UlClassName = "overlay" + (toggle ? "" : "hidden");
 
@@ -86,8 +96,11 @@ function SellStockForm({ portfolio }) {
   const checkModal = () => {
     if (toggle) {
       return (
-        <div className={UlClassName}>
+        <div className={UlClassName} onClick={cancelModal} id='overlay'>
           <div id="sell-stock-form">
+            {Object.values(errors).length ? Object.values(errors).map((error) => {
+              return <div>{}</div>
+            }) : ''}
             How Many Shares of {portfolio.name} Would You Like To Sell?
             <form id="sell-stock-form">
               <label>
@@ -116,7 +129,7 @@ function SellStockForm({ portfolio }) {
               </label>
 
               <div>Are You Sure You Would Like to Sell {quantity} shares of {portfolio.name} for {estimate}?
-              <button onClick={handleSubmit}>Yes</button> <button>No</button></div>
+              <button onClick={handleSubmit} id='yes-button'>Yes</button> <button onClick={cancelModal} id='no-button'>No</button></div>
             </form>
           </div>
         </div>
@@ -124,7 +137,7 @@ function SellStockForm({ portfolio }) {
     }
   };
 
-  return ( portfolio?.quantity === 0 ? null :
+  return ( portfolio?.quantity === 0 || portfolio?.sold_at ? null:
     <div id="stock-asset-container">
       <div className="stock-asset-item">{portfolio.name}</div>
       <div className="stock-asset-item">{portfolio.symbol}</div>

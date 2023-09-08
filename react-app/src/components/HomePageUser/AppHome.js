@@ -9,6 +9,7 @@ import './AppHome.css'
 
 const AppHome = () => {
     const buyingPower = useSelector(state => state.session.user?.buyingPower);
+    const portfolios = useSelector((state) => state.portfolios);
     const usDollar = Intl.NumberFormat("en-us", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
     return (
         <>
@@ -17,7 +18,7 @@ const AppHome = () => {
             <div className="app-home">
                 <div className="app-home-left">
                     <div id="app-home-chart-container">
-                    {/* <PortfolioChart /> */}
+                    <PortfolioChart />
 
                     {/* had to move this into the portfolio Chart item itself to allow it to format with the stock assets items below */}
                         {/* <div className="buying-power-section">
@@ -26,7 +27,7 @@ const AppHome = () => {
                         </div> */}
                     </div>
                     <div className="app-home-news-container">
-                       {/* <AllNews /> */}
+                       <AllNews />
                     </div>
                 </div>
                 <div className="app-home-right">

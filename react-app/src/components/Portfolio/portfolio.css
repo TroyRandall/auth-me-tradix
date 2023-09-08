@@ -7,6 +7,7 @@ body {
   grid-template-rows: repeat(7, 150px);
   grid-template-columns: repeat(2, 50%);
   font-family: "Avenir black", "Arial";
+  margin-bottom: 75px;
 }
 
 #portfolioChart {
@@ -98,4 +99,6 @@ h1 {
   flex-flow: column;
   margin-right: 5px;
   margin-left: 5px;
+  position: relative;
+  bottom: 35px;
 }

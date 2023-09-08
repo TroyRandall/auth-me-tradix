@@ -70,7 +70,7 @@ def portfolio_update(id):
                     avg_price=userPortfolio.avg_price,
                     created_at=userPortfolio.created_at,
                 )
-                userPortfolio.quantity = userPortfolio.quantity - form.data["quantity"]
+                userPortfolio.quantity = form.data["quantity"]
                 userPortfolio.sold_at = datetime.now()
                 currentUser.buying_power = currentUser.buying_power + (
                     form.data["avg_price"] * form.data["quantity"]
