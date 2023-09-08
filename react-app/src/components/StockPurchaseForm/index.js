@@ -117,12 +117,12 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 							Add to Watchlist
 						</button>
           <Modal
-							title={`Add ${ticker["symbol"]} to a Watchlist`}
+							title={`Add ${ticker} to a Watchlist`}
 							show={show}
 							onClose={() => setShow(false)}
 						>
 							<>
-								<StockList assetID={stockId} assetSymbol={ticker["symbol"]} />
+								<StockList assetID={stockId} assetSymbol={ticker} />
 							</>
 						</Modal>
           {/* <button
