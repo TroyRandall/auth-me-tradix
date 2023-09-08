@@ -1,5 +1,12 @@
 #app-nav-bar {
-    display: grid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    background-color: rgb(255, 255, 255);
+    padding: 0 2.4rem;
+
+    /* display: grid;
     align-items: center;
     height: 6.4rem;
     background-color: rgb(255, 255, 255);
@@ -8,8 +15,24 @@
     width: 100%;
     z-index: 2;
     padding: 0 2.4rem;
-    grid-template-columns: 1fr minmax(auto, 102.4rem) 1fr;
+    grid-template-columns: 1fr minmax(auto, 102.4rem) 1fr; */
 }
+.header__menuItems a {
+    font-weight: bold;
+    text-decoration: none;
+    padding : 0 10px;
+    font-size: 16px;
+  }
+  .header__menuItems{
+    padding: 16px
+  }
+  .header__menuContainer {
+    margin-left: auto; /* Push menu items to the left */
+  }
+  .header__menuItems a:hover {
+    color : #5AC53B;
+  }
+
 
 @media screen and (min-width: 1200px) {
     #app-nav-bar {
@@ -20,6 +43,9 @@
 #app-nav-bar-logo {
     font-size: 3rem;
     justify-self: self-start;
+}
+#app-nav-bar-logo:hover{
+    color:#00C805
 }
 
 .navbar-green:hover {

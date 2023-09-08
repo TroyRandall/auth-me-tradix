@@ -59,7 +59,7 @@ def update_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()
     current_user_id = current_user_info['id']
     update_watchlist = Watchlist.query.get(watchlist_id)
-    print(update_watchlist + "-------heyyyyy")
+
     form = WatchlistAddForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -114,7 +114,7 @@ def delete_watchlist(watchlist_id):
         }}, 404
 
 #add a stock to wathclist(done)
-@watchlist_routes.route('<int:watchlist_id>/stocks', methods=['POST'])
+@watchlist_routes.route('<int:watchlist_id>/addAsset', methods=['POST'])
 @login_required
 def add_stock_to_watchlist(watchlist_id):
     current_user_info = current_user.to_dict()

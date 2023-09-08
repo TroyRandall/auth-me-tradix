@@ -1,19 +1,25 @@
 .addTolist{
   width: 18rem;
   height: 2.5rem;
-  border-radius: .2rem;
+  border-radius: 50px;
   border: 1px solid;
   border-color:  rgb(255, 80, 0, 1);
   color: rgb(255, 80, 0, 1);
   font-weight: bold;
   background-color: white;
-  float: center;
-  margin-top: 1rem;
+  margin-top:1rem;
   margin-bottom: 1rem;
+  margin-left: 7rem;
+  display: inline-block;
+}
+.addTolist span {
+  margin-left: 2rem
+
 }
 #editlist1{
   font-size: large;
   font-weight: 550;
+  color: green
 
 }
 .addTolist:hover{

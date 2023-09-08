@@ -4,6 +4,7 @@ const REMOVE_WATCHLIST = "watchlist/removeWatchlist";
 const EDIT_WATCHLIST = "watchlist/editWatchlist";
 const ADD_STOCK = "watchlist/addStock";
 const REMOVE_STOCK = "watchlist/removeStock";
+const ADD_TO_LIST = "lists/ADD_TO_LIST";
 
 export function loadWatchlists(watchlists) {
     return {
@@ -46,13 +47,35 @@ export function deleteStock(info) {
         info
     }
 }
+const addAssestToList = watchlists => ({
+    type: ADD_TO_LIST,
+    payload: watchlists,
+  });
+  export const addToWatchlist = (watchlistId, symbol) => async dispatch => {
+    console.log(watchlistId, symbol)
+    const res = await fetch(`/api/watchlists/${watchlistId}/addAsset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ watchlistId, symbol }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(addAssestToList(data));
+    } else {
+        const data = await res.json();
+
+    }
+  };
+
 
 export const fetchUserWatchlists = () => async dispatch => {
     const response = await fetch(`/api/watchlists/current`);
     if (response.ok) {
         const data = await response.json();
         dispatch(loadWatchlists(data.watchlists));
-        return response
+        return data
     }
 
 }
@@ -69,6 +92,7 @@ export const createWatchlist = (watchlist) => async dispatch => {
 
         if (response.ok) {
             const data = await response.json();
+            console.log(data)
             dispatch(addWatchlist(data));
             return response;
 
@@ -132,8 +156,8 @@ export const deleteWatchlist = (watchlistId) => async dispatch => {
     }
 }
 
-export const addStockToWatchlist = (info) => async dispatch => {
-    const { watchlistId, symbol } = info;
+export const addStockToWatchlist = (watchlistId, symbol) => async dispatch => {
+
 
     try {
         const response = await fetch(`/api/watchlists/${watchlistId}/stocks`, {
@@ -222,6 +246,8 @@ const watchlistReducer = (state = {}, action) => {
             let stocklists = newState.watchlists[watchlistId].watchlist_stocks.filter(stock => stock.id !== stockId);
             newState.watchlists[watchlistId].watchlist_stocks = stocklists;
             return newState;
+        case ADD_TO_LIST:
+            return { ...state, watchlists: action.payload}
         default:
             return state
     }

@@ -17,6 +17,7 @@ const List = () => {
     useEffect(() => {
         if(sessionUser){
             dispatch(watchlistAction.fetchUserWatchlists())
+
         }
     },[dispatch, sessionUser, mainWatchlist])
 
@@ -24,7 +25,7 @@ const List = () => {
         e.preventDefault();
         setShowNewWatchlist(!showNewWatchlist)
         if(!sessionUser) return;
-        dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
+        await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
     }
     if (!watchlists){
         return null

@@ -49,6 +49,7 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('quantity', sa.Float(), nullable=False),
     sa.Column('avg_price', sa.Float(), nullable=False),
+    sa.Column('sold_at', sa.Date(), nullable=True),
     sa.Column('created_at', sa.Date(), nullable=True),
     sa.Column('updated_at', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
