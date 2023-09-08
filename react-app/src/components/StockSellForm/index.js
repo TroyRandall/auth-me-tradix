@@ -69,7 +69,7 @@ function SellStockForm({ portfolio }) {
       const response = await dispatch(
         portfolioActions.updatePortfolioItem(portfolio)
       ).catch(async (res) => {
-        const data = await res.json();
+        const data = res;
         if (data && data.errors) setBackendErrors(data.errors);
       });
       console.log(response)

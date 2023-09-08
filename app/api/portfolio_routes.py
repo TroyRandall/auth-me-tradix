@@ -76,6 +76,8 @@ def portfolio_update(id):
                     form.data["avg_price"] * form.data["quantity"]
             )
                 db.session.add(newPortfolio)
+                db.session.commit()
+                return {'portfolios': [newPortfolio.to_dict(), userPortfolio.to_dict()]}
             else:
                 userPortfolio.quantity = 0
                 userPortfolio.sold_at = datetime.now()
