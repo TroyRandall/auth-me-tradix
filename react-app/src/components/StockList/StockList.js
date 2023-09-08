@@ -5,6 +5,8 @@ import * as watchlistAction from '../../store/watchlist';
 
 function StockList({ assetID, assetSymbol }) {
     const dispatch = useDispatch();
+    // console.log(assetID)
+    // console.log("----------------" +assetSymbol)
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
     const [newEditName, setNewEditName] = useState("");
@@ -31,7 +33,7 @@ function StockList({ assetID, assetSymbol }) {
     };
 
     const submitAddAsset = async e => {
-      dispatch(watchlistAction.addToWatchlist(mainWatchlist, assetID)).then(() =>
+      dispatch(watchlistAction.addToWatchlist(mainWatchlist,assetSymbol)).then(() =>
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id))
       );
 
