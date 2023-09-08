@@ -4,6 +4,8 @@ import { Redirect, Link } from "react-router-dom";
 import { signUp } from "../../store/session";
 import './SignupForm.css';
 
+
+
 function SignupFormPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
@@ -139,10 +141,15 @@ function SignupFormPage() {
     <div className='signup-page'>
     <div className='signup-page-left'>
       <div className='signup-page-left-top'>
+      <Link to="/">
         <div className="landing-page-logo" id="signup-logo">
+
           <p className="landing-page-logo-text">Tradix</p>
           <i className="fa-solid fa-rocket"></i>
+
+
         </div>
+        </Link>
         <p id="signup-title">Create your login</p>
         <p id="signup-support-text">We'll need you name, email, and a unique password. You'll use this login to access Tradix next time.</p>
       </div>

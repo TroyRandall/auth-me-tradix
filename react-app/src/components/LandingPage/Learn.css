@@ -141,7 +141,7 @@
 .what-is-section-content {
     position: absolute;
     left: 2%;
-    padding: 10px;
+    padding: 1px;
 
 }
 .what-is-section-content > h3 {
@@ -152,8 +152,8 @@
     margin-bottom: 16px;
 }
 .what-is-section-content > p {
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: -0.1px;
-    line-height: 1.6;
+    line-height: 2;
     margin-top: 14px;
 }
