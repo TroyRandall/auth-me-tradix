@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from '../Modal/Modal'
 import * as watchlistAction from '../../store/watchlist';
 import './OneList.css'
+import RemoveStockBtn from "../Watchlist/Delete/DeleteStock";
 
-
+import SmallChart from "../Watchlist/StockChart";
 
 const Onelist = ({watchlist}) => {
     const sessionUser = useSelector((state) => state.session.user);
@@ -98,17 +99,40 @@ const Onelist = ({watchlist}) => {
 					) : null}
 			</div>
 			</div>
+
 			<button className='btn-openstock watchlist-btn'>
             <i
 					className={`fa-solid fa-angle-up ${caret}`}
 
 				></i>
-					</button>
-
+			</button>
 			</div>
-
-
-
+			{showList ? (
+				<div id="watchlist-assets-list">
+					{Object.keys(assets).map((key, index) => (
+						<NavLink to={`/stocks/${assets[key].asset_id}`}>
+							<div id="individual-list-asset">
+								{assets[key].symbol}
+								<div
+									style={{
+										marginLeft: "auto",
+										paddingRight: 20,
+										display: "flex",
+										flexDirection: "column",
+									}}
+								>
+									<p style={{ fontSize: 11 }}>
+										${stocks[assets[key].symbol].quote.latestPrice}
+									</p>
+									<p style={{ fontSize: 11, margin: 0, textAlign: "right" }}>
+										${stocks[assets[key].symbol].quote.changePercent.toFixed(2)}
+									</p>
+								</div>
+							</div>
+						</NavLink>
+					))}
+				</div>
+			) : null}
         </>
     )
 }
