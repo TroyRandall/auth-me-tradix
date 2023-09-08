@@ -9,6 +9,7 @@ const getStocks = (data) => ({
 });
 
 
+
 export const stockDataDaily = (ticker) => async (dispatch) => {
   // url =f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={key}'
   // r = requests.get(url)

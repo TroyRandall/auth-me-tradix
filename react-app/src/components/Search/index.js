@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { stockTickerInfo, setSymbol, stockTickerSearch } from '../../store/tickers';
-
+import {searchSymbolData }from '../../store/search'
 import { Link } from 'react-router-dom'
 import styles from './style.module.css'
+
 
 const Search = () => {
   const [keyword, setKeyword] = useState('')
@@ -12,6 +12,7 @@ const Search = () => {
   const [searchRes, setSearchRes] = useState([])
   const [isHoveringOnSearchRes, setIsHoveringOnSearchRes] = useState(false)
   const dispatch = useDispatch()
+  console.log('hihiii '+ keyword)
 
   const searchInput = e => {
     if(/^[A-Za-z]*$/.test(e.target.value))
@@ -38,6 +39,7 @@ const Search = () => {
       if(keyword.length){
         setShowSearchRes(true)
         const url = '/api/stock/search/' + keyword
+
         fetch(url)
             .then(res => res.json())
             .then(res => {
@@ -77,7 +79,7 @@ const Search = () => {
                       className={styles.resultItem}
                       key={res.symbol}
                       onClick={() => {
-                        dispatch(stockTickerSearch(res.ticker))
+                        dispatch(searchSymbolData(res.ticker))
                         setIsHoveringOnSearchRes(false)
                         setKeyword('')
                         setSearchRes([])

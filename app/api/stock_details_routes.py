@@ -53,7 +53,22 @@ def stock_ticker_details(ticker):
 
 @stock_routes.route('/search/<string:keyword>')
 def search_symbols(keyword):
-    result = [{'symbol': item.symbol, 'name': item.company} for item in StockSymbol.query.filter(StockSymbol.symbol.ilike(f'%{keyword}%') | StockSymbol.company.ilike(
-        f'%{keyword}%')).order_by(case((StockSymbol.symbol.startswith(keyword), 0), (StockSymbol.company.startswith(keyword), 1), else_=2)).limit(7)]
+   try:
+        url = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={key}'
+        r = requests.get(url)
 
-    return jsonify(result)
+        if r.status_code == 200:
+            data = r.json()
+            print(data + '-----------------------------------' )
+            return jsonify(data)
+
+        else:
+            return jsonify({'error': 'Failed to fetch data'}), 500  # Return an error response with status code 500
+
+   except Exception as e:
+        print(f"Error searching symbols: {e}")
+        return jsonify({'error': 'An error occurred while search symbol'}), 500
+    # result = [{'symbol': item.symbol, 'name': item.company} for item in StockSymbol.query.filter(StockSymbol.symbol.ilike(f'%{keyword}%') | StockSymbol.company.ilike(
+    #     f'%{keyword}%')).order_by(case((StockSymbol.symbol.startswith(keyword), 0), (StockSymbol.company.startswith(keyword), 1), else_=2)).limit(7)]
+    # print(keyword)
+    # return jsonify(result)
