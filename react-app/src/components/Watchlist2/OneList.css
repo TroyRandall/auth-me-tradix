@@ -32,6 +32,9 @@
     position: relative;
     z-index: 3;
 }
+.watchlist-stocks-container {
+    width:100%
+}
 #show-watchlist-options{
   z-index: 4;
   right:0;
@@ -62,6 +65,9 @@
   margin-top: 1rem;
   justify-content: center;
   /* margin-right: 5rem; */
+}
+#stockchartpic {
+    height: 50%
 }
 
 .submit-edit-list:hover{

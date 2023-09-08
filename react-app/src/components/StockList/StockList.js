@@ -1,12 +1,10 @@
 import "./StockList.css";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux"
-import { useParams } from 'react-router-dom'
 import * as watchlistAction from '../../store/watchlist';
 
 function StockList({ assetID, assetSymbol }) {
     const dispatch = useDispatch();
-    const { ticker } = useParams()
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
     const [newEditName, setNewEditName] = useState("");
@@ -18,7 +16,6 @@ function StockList({ assetID, assetSymbol }) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
-
       if (sessionUser) {
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id));
       }
@@ -34,7 +31,7 @@ function StockList({ assetID, assetSymbol }) {
     };
 
     const submitAddAsset = async e => {
-      dispatch(watchlistAction.addToWatchlist(mainWatchlist, ticker)).then(() =>
+      dispatch(watchlistAction.addToWatchlist(mainWatchlist, assetID)).then(() =>
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id))
       );
 
@@ -90,14 +87,14 @@ function StockList({ assetID, assetSymbol }) {
               <button
                 type="submit"
                 onClick={hideAddListForm2}
-                className="createListButton"
+                className="btn-submit-form"
               >
                 Create List
               </button>
               <button
                 type="submit1"
                 onClick={hideAddListForm}
-                className="cancelCreateButton"
+                className="btn-cancel-form1"
               >
                 Cancel
               </button>
@@ -127,17 +124,18 @@ function StockList({ assetID, assetSymbol }) {
               )
             )}
           </div>
-
+              <div className="savechange">
           <button onClick={submitAddAsset} className="SaveChangesButton">
-            Save Changes
+            <span className="button-text">Save Changes</span>
           </button>
+          </div>
           {mainWatchlist && additionComplete ? (
             <p
               style={{
                 color: "rgb(0, 185, 5)",
                 textAlign: "center",
                 marginTop: "20px",
-                fontWeight: "1000",
+                fontWeight: "700",
               }}
             >
               {assetSymbol} has been added to {watchlists[mainWatchlist]?.name}

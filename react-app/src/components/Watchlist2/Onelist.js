@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from '../Modal/Modal'
 import * as watchlistAction from '../../store/watchlist';
@@ -17,6 +17,10 @@ const Onelist = ({watchlist}) => {
     const [mainWatchlist, setMainWatchlist] = useState("");
 	const [showDots, setShowDots] = useState(false);
 	const caret = showList ? "watchlist-opening" : "watchlist-closing";
+	const toggleList = () => {
+		// Toggle the showList state when the button is clicked
+		setShowList(!showList);
+	  };
     const dispatch = useDispatch();
 	function showOptions(ev) {
 		ev.preventDefault();
@@ -100,39 +104,39 @@ const Onelist = ({watchlist}) => {
 			</div>
 			</div>
 
-			<button className='btn-openstock watchlist-btn'>
-            <i
-					className={`fa-solid fa-angle-up ${caret}`}
+			<button
+        className='btn-openstock watchlist-btn'
+        onClick={toggleList}
+      >
+        <i className={`fa-solid fa-angle-up ${caret}`}></i>
+      </button>
 
-				></i>
-			</button>
+
+
 			</div>
-			{showList ? (
-				<div id="watchlist-assets-list">
-					{Object.keys(assets).map((key, index) => (
-						<NavLink to={`/stocks/${assets[key].asset_id}`}>
-							<div id="individual-list-asset">
-								{assets[key].symbol}
-								<div
-									style={{
-										marginLeft: "auto",
-										paddingRight: 20,
-										display: "flex",
-										flexDirection: "column",
-									}}
-								>
-									<p style={{ fontSize: 11 }}>
-										${stocks[assets[key].symbol].quote.latestPrice}
-									</p>
-									<p style={{ fontSize: 11, margin: 0, textAlign: "right" }}>
-										${stocks[assets[key].symbol].quote.changePercent.toFixed(2)}
-									</p>
-								</div>
-							</div>
-						</NavLink>
-					))}
-				</div>
-			) : null}
+			{showList &&
+                        <div className='watchlist-stocks-container'>
+                        {watchlist.watchlist_stocks.length > 0 &&
+                            watchlist.watchlist_stocks.map(stock => (
+                          <div className='watchlist-minigraph'>
+							<div  id='row-intro'>
+                            <Link to={`/stocks/${stock.stock_symbol}`}>
+
+                              <SmallChart symbol={stock.stock_symbol} />
+
+                              </Link>
+							  </div>
+							   <div className="row__chart">
+           				 <img id="stockchartpic" style={{width: 60, height: 100}}src="https://robinhood-clone-937dc.web.app/static/media/stock2.b50e9eae.svg"></img>
+     					 </div>
+                              <RemoveStockBtn symbol={stock.stock_symbol} watchlist={watchlist} stockId={stock.id} />
+                              </div>
+                                        ))}
+
+
+						</div>
+							}
+
         </>
     )
 }

@@ -11,6 +11,7 @@ const SmallChart = ({ symbol }) => {
     const [isLoaded, setIsLoaded] = useState(false)
     const [prices, setPrices] = useState({curr: 0, diff: 0})
     const [isRealtime, setIsRealtime] = useState(false)
+    // const percentage = ((props.price - props.openPrice) / props.openPrice) * 100;
 
     const diffFormatter = diff => {
         const sign = diff >= 0 ? '+' : '-'
@@ -26,6 +27,12 @@ const SmallChart = ({ symbol }) => {
         })
         setColor(data[0] <= data.reduce((p, c) => c || p) ? '#5ac53b' : '#ec5e2a')
     }
+//     const StockChart = null;
+//     if (percentage > 0) {
+//     StockChart = StockChart_increase;
+//   } else {
+//     StockChart = StockChart_decrease;
+//   }
 
     const getOneDayData = async () => {
         const res = Array(40).fill(null);
@@ -54,48 +61,18 @@ const SmallChart = ({ symbol }) => {
 
     return (
         isLoaded ?
-        <div className={styles.container}>
-            <Link to={`/stocks/${symbol}`}>
-                <div className={styles.symbol}>{symbol}</div>
-            </Link>
-            <Chart
-                series={allData.series}
-                options={{
-                    chart: {
-                        animations: { enabled: false },
-                        type: 'line',
-                        zoom: { enabled: false },
-                        toolbar: { show: false },
-                        parentHeightOffset: 0,
-                    },
-                    colors: [color],
-                    xaxis: { labels: { show: false }},
-                    yaxis: {
-                        labels: { show: false },
+        <div className='roww'>
+        <div className={styles.container} id='row-intro'>
 
-                    },
-                    grid: { show: false },
-                    stroke: {
-                        width: 1.5,
-                    },
-                    legend: {
-                        show: false,
-                    },
-                    tooltip: {
-                        enabled: false,
-                    },
-                }}
-                height={80}
-                width={140}
-            />
-          <div>
-                {prices.curr !== null ? (
-                    <div>{`$${prices.curr.toFixed(2)}`}</div>
-                ) : (
-                    <div>No data available</div>
-                )}
-                <div style={{ color }}>{diffFormatter(prices.diff)}</div>
+            <Link to={`/stocks/${symbol}`}>
+                <div className="">{symbol}</div>
+            </Link>
             </div>
+            {/* <div className="row__chart">
+            <img id="stockchartpic" height={40}  src="https://raw.githubusercontent.com/ZakiRangwala/Robinhood-Clone/cde46d27cc0529e0785185793170e757688eee82/src/stock2.svg"></img>
+      </div> */}
+
+
         </div> :
         <PlaceHolder height={60} />
     )

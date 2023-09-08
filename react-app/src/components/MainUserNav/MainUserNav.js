@@ -15,7 +15,19 @@ const AppMainNavBar = () => {
         <div id="app-nav-bar">
             <Link to={`/portfolios/${sessionUser?.id}`}> <i className='fa-solid fa-rocket'  id="app-nav-bar-logo" /></Link>
             <Search />
-             <AccountButton />
+            <div className="header__menuContainer">
+            <div className="header__menuItems">
+                <a href="">Free Stocks</a>
+                <Link to={`/portfolios/${sessionUser?.id}`}>Portfolio</Link>
+                <a href="">Cash</a>
+                <a href="">Messages</a>
+
+            </div>
+            </div>
+
+            <AccountButton />
+            {/* <div className="spacer" /> */}
+
         </div>
     );
 };

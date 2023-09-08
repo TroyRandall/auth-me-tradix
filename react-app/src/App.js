@@ -56,7 +56,7 @@ function App() {
           <AppHome />
         </Route> */}
         <Route path="/stocks/:ticker">
-          <LandingPageNav />
+          <AppMainNavBar />
           <StockDetails />
         </Route>
         <Route path="/portfolios/:userId">

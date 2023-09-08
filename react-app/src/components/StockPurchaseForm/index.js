@@ -173,17 +173,17 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               change === "+" ? "form-submit-button" : "form-submit-button-minus"
             }
           >
-            Add To Portfolio
+            <span>Add to portfolio</span>
           </div>
           <p id="form-buying-power-available">
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
           <button onClick={() => setShow(true)} className="addTolist">
-							Add to Watchlist
+          <span>Add to Watchlist</span>
 						</button>
           <Modal
-							title={`Add ${ticker} to a Watchlist`}
+							title={`Add ${ticker} to a Watchlist ?`}
 							show={show}
 							onClose={() => setShow(false)}
 						>

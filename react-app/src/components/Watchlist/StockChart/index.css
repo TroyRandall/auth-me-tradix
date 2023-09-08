@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 2rem;
-    height: 60px;
-    min-width: 20rem;
+    height: 50%;
+    width: 100%;
 }
 
 .symbol {
@@ -13,4 +13,29 @@
 
 .symbol:hover {
     color: greenyellow;
+}
+.row__chart{
+    padding : 0 10px;
+    /* width: 100%; */
+
+  }
+
+#row__intro {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    text-align: left;
+  }
+/* .row-intro-name{
+    font-size: 13px;
+    padding-bottom: 2px;
+    text-align: left;
+} */
+.row{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    padding: 0 20px;
+    cursor: pointer
 }
