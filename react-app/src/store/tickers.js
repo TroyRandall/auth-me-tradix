@@ -16,6 +16,22 @@ export const setSymbol = (symbol, name) => ({
   name
 })
 
+// export const searchSymbol = (symbol, name) => async (dispatch) => {
+//   try{
+//     const response = await fetch(`/api/search?symbol=${symbol}&name=${name}`);
+//     if(!response.ok){
+//       throw new Error('Network response was not ok')
+//     }
+//     const data = await response.json();
+//     dispatch(setSymbol(symbol, name, data))
+//   }
+//   catch (err) {
+//     console.log('There is some error', err);
+//   }
+// }
+
+
+
 export const stockTickerInfo = (ticker) => async (dispatch) => {
   const response = await fetch(`/api/stocks/${ticker}`);
   if (response.ok) {
@@ -35,10 +51,10 @@ export const stockTickerSearch = (ticker) => async (dispatch) => {
 }
 
 const initialState = { tickers: null };
-const iniState = {
-  symbol: 'AAPL',
-  name: 'Apple Inc.'
-}
+// const iniState = {
+//   symbol: 'AAPL',
+//   name: 'Apple Inc.'
+// }
 
 const tickersReducer = (state = initialState, action) => {
   let newState;
@@ -51,8 +67,9 @@ const tickersReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.bestMatches = action.payload['bestMatches'];
       return newState;
-    case SET_SYMBOL:
-      return {symbol: action.symbol, name: action.name}
+    // case SET_SYMBOL:
+    //   state = iniState;
+    //   return {symbol: action.symbol, name: action.name}
     default:
       return state;
   }

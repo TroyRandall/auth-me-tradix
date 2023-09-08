@@ -11,6 +11,7 @@ import portfolioReducer from './portfolio'
 import newsReducer from './news';
 import priceReducer from './price';
 import watchlistStockReducer from './watchlistStock';
+import searchReducer from './search';
 
 
 const rootReducer = combineReducers({
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   news: newsReducer,
   portfolios: portfolioReducer,
   price: priceReducer,
-  watchlistStocks: watchlistStockReducer
+  watchlistStocks: watchlistStockReducer,
+  search: searchReducer
 });
 
 
