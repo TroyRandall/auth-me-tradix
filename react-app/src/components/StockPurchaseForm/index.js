@@ -8,9 +8,9 @@ import "./stockPurchaseForm.css";
 
 function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
-  console.log(ticker)
+
   const {stockId} = useParams();
-  console.log(stockId)
+
   const [show, setShow] = useState(false);
 
   const uppercaseTicker = ticker.toUpperCase();

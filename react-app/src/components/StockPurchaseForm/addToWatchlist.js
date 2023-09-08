@@ -29,14 +29,12 @@ function AddToWatchlist  ({ change })  {
 
     const addToWL = (e) => {
         e.preventDefault()
-        console.log(userWatchlist)
         setCalled(true);
   }
     const checkCalled = () => {
         if(called){
            return  (Object.values(userWatchlist).map((watchlist) => {
-                console.log(watchlist)
-                return (<div id = 'watchlist-name' onClick={async() => {
+                   return (<div id = 'watchlist-name' onClick={async() => {
                      dispatch(watchlistAction.addStockToWatchlist(watchlist.id, symbol))
                     setCalled(false);
                 }} >{watchlist.name}</div>)
@@ -48,7 +46,6 @@ function AddToWatchlist  ({ change })  {
 
     const handleSubmit = (e) => {
             let response = dispatch(watchlistAction.addStockToWatchlist(watchlistId, symbol))
-            console.log(response)
             setCalled(false);
     }
 
@@ -65,7 +62,6 @@ function AddToWatchlist  ({ change })  {
           Add To watchlist
         </div>
         <div id={changeId} >{called ?   Object.values(userWatchlist.watchlists).map((watchlist) => {
-                console.log(watchlist)
                 return (<div id = 'watchlist-name' onClick={handleSubmit} watchlistId = {watchlist.id} >{watchlist.name}</div>)}) : ''}
         </div>
         </div>

@@ -25,7 +25,6 @@ const List = () => {
         e.preventDefault();
         setShowNewWatchlist(!showNewWatchlist)
         if(!sessionUser) return;
-        console.log(watchlists)
         await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
     }
     if (!watchlists){

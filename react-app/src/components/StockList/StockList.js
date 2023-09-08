@@ -1,10 +1,12 @@
 import "./StockList.css";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux"
+import { useParams } from 'react-router-dom'
 import * as watchlistAction from '../../store/watchlist';
 
 function StockList({ assetID, assetSymbol }) {
     const dispatch = useDispatch();
+    const { ticker } = useParams()
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
     const [newEditName, setNewEditName] = useState("");
@@ -16,6 +18,7 @@ function StockList({ assetID, assetSymbol }) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+
       if (sessionUser) {
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id));
       }
@@ -31,7 +34,7 @@ function StockList({ assetID, assetSymbol }) {
     };
 
     const submitAddAsset = async e => {
-      dispatch(watchlistAction.addToWatchlist(mainWatchlist, assetID)).then(() =>
+      dispatch(watchlistAction.addToWatchlist(mainWatchlist, ticker)).then(() =>
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id))
       );
 
@@ -137,7 +140,7 @@ function StockList({ assetID, assetSymbol }) {
                 fontWeight: "1000",
               }}
             >
-              {assetSymbol} has been added to {watchlists[mainWatchlist].name}
+              {assetSymbol} has been added to {watchlists[mainWatchlist]?.name}
             </p>
           ) : (
             <p

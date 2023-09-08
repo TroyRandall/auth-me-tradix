@@ -52,8 +52,8 @@ const addAssestToList = watchlists => ({
     payload: watchlists,
   });
   export const addToWatchlist = (watchlistId, symbol) => async dispatch => {
-
-    const res = await fetch(`/api/watchlists/addAsset`, {
+    console.log(watchlistId, symbol)
+    const res = await fetch(`/api/watchlists/${watchlistId}/addAsset`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,6 +63,9 @@ const addAssestToList = watchlists => ({
     if (res.ok) {
       const data = await res.json();
       dispatch(addAssestToList(data));
+    } else {
+        const data = await res.json();
+
     }
   };
 
@@ -154,7 +157,7 @@ export const deleteWatchlist = (watchlistId) => async dispatch => {
 }
 
 export const addStockToWatchlist = (watchlistId, symbol) => async dispatch => {
- 
+
 
     try {
         const response = await fetch(`/api/watchlists/${watchlistId}/stocks`, {
