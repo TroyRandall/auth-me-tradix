@@ -72,7 +72,7 @@ export const fetchUserWatchlists = () => async dispatch => {
     if (response.ok) {
         const data = await response.json();
         dispatch(loadWatchlists(data.watchlists));
-        return response
+        return data
     }
 
 }
@@ -153,8 +153,8 @@ export const deleteWatchlist = (watchlistId) => async dispatch => {
     }
 }
 
-export const addStockToWatchlist = (info) => async dispatch => {
-    const { watchlistId, symbol } = info;
+export const addStockToWatchlist = (watchlistId, symbol) => async dispatch => {
+ 
 
     try {
         const response = await fetch(`/api/watchlists/${watchlistId}/stocks`, {

@@ -15,6 +15,7 @@ class Portfolio(db.Model):
     name = db.Column(db.String, nullable = False)
     quantity = db.Column(db.Float, nullable=False)
     avg_price = db.Column(db.Float, nullable=False)
+    sold_at = db.Column(db.Date, nullable=True)
     created_at = db.Column(db.Date, default = datetime.now)
     updated_at = db.Column(db.Date, default = datetime.now)
 
@@ -27,5 +28,7 @@ class Portfolio(db.Model):
             'quantity': self.quantity,
             'avgPrice': self.avg_price,
             'user_id': self.user_id,
-            'created_at': self.created_at
+            'created_at': self.created_at,
+            'sold_at': self.sold_at,
+            'id': self.id
         }

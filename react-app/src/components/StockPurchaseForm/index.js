@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import StockList from "../StockList/StockList";
@@ -15,12 +15,14 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
+  const purchaseRef = useRef();
   const [tickerSymbol, setTickerSymbol] = useState("");
+  const [called, setCalled] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [avgPrice, setAvgPrice] = useState("");
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
-  const [backendToggle, setBackendToggle] = useState(false);
+  const [backendErrors, setBackendErrors] = useState(false);
   const [errors, setErrors] = useState({});
   const currentUser = useSelector((state) => state.session.user);
 
@@ -30,38 +32,102 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     if (submitToggle) {
       let newErrors = {};
 
-      if (currentUser === null) newErrors.user = "You Must Be Logged In To Purchase Stock";
-      if(currentUser !== null) {
-           if (currentUser?.buying_power < estimate) newErrors.buying_power = "You Do Not Have Enough Buying Power";
-        if(quantity <= 0) newErrors.quantity = "Quantity is Required"
-        if(tickerSymbol === '') newErrors.ticker = "Ticker Symbol is required"
-        if(avgPrice <= 0) newErrors.price = "Price is Required"
+      if (currentUser === null)
+        newErrors.user = "You Must Be Logged In To Purchase Stock";
+      if (currentUser !== null) {
+        if (currentUser?.buyingPower < estimate)
+          newErrors.buyingPower = "You Do Not Have Enough Buying Power";
+        if (quantity <= 0) newErrors.quantity = "Quantity is Required";
+        if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+        if (avgPrice <= 0) newErrors.price = "Price is Required";
       }
-
 
       setErrors({ ...newErrors });
       if (errors && Object.values(newErrors).length > 0) return errors;
-      else {
-        setBackendToggle(true);
-      }
     }
-  }, [avgPrice, quantity, submitToggle]);
 
-  const handleSubmit = (e) => {
+    const closeModal = (e) => {
+
+      setCalled(false);
+      setSubmitToggle(false);
+      setTickerSymbol("");
+      setAvgPrice("");
+      setQuantity("");
+      setEstimate("");
+
+
+    };
+
+    if (called) {
+      document.addEventListener("click", closeModal);
+
+      return () => document.removeEventListener("click", closeModal);
+    }
+  }, [avgPrice, quantity, submitToggle, called]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSubmitToggle(true)
+    setSubmitToggle(true);
     let id = currentUser?.id;
     let portfolio = { id, tickerSymbol, quantity, avgPrice };
-    if (backendToggle) {
+    if (!Object.values(errors).length) {
+      const response = await dispatch(
+        portfolioActions.addPortfolioItem(portfolio)
+      ).catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setBackendErrors(data.errors);
+      });
+      setCalled(true);
+      return response;
+    }
+  };
+
+  const UlClassName = "overlay" + (called ? "" : "hidden");
+
+  const checkModal = () => {
+    if (called) {
+      return (
+      <div className={UlClassName}>
+        {Object.values(backendErrors).length ? (
+          <div id="failed-purchase">
+            <h3 id="purchase-title"> Order Not Executed</h3>
+            <p>
+              {Object.values(backendErrors)?.map((error) => {
+                return <p id="purchase-message-failed"> {error} </p>;
+              })}
+            </p>
+          </div>
+        ) : (
+          <div id="successful-purchase">
+            <h3 id="purchase-title">Congratulations</h3>
+            <p id="purchase-message-success">
+              Your Market Order for {quantity} Shares of {tickerSymbol} for $
+              {avgPrice} Is Completed
+            </p>
+          </div>
+        )}
+      </div>)
     }
   };
   return (
     isLoaded && (
       <>
-        <form id={Object.values(errors).length > 0 ? 'purchase-form-errors' : 'purchase-form'}>
+        <form
+          id={
+            Object.values(errors).length > 0
+              ? "purchase-form-errors"
+              : "purchase-form"
+          }
+        >
           <h5 id="form-title">Buy {uppercaseTicker}</h5>
-          {<p id='errors-errors'>{Object.values(errors).map(error => <li>{error}</li>)}</p>}
+          {
+            <p id="errors-errors">
+              {Object.values(errors).map((error) => (
+                <li>{error}</li>
+              ))}
+            </p>
+          }
           <p id="form-field1">Order Type</p> <p id="form-field2">Buy Order</p>
           <label id="form-ticker-label">Stock Ticker</label>
           <input
@@ -111,7 +177,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           </div>
           <p id="form-buying-power-available">
             Buying Power Available $
-            {currentUser?.buying_power ? currentUser?.buying_power : 0}
+            {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
           <button onClick={() => setShow(true)} className="addTolist">
 							Add to Watchlist
@@ -135,6 +201,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Add To watchlist
           </button> */}
         </form>
+        <div id="modal-form" ref={purchaseRef}>
+          <div>{checkModal()}</div>
+        </div>
       </>
     )
   );
