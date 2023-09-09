@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory, Redirect} from "react-router-dom";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -15,14 +15,15 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart() {
+function PortfolioChart({current}) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
   const { userId } = useParams();
   const dispatch = useDispatch();
+  const history=useHistory();
   const [hoverPrice, setHoverPrice] = useState(false);
-  const [tickerCheck, setTickerCheck] = useState({})
+  const [tickerCheck, setTickerCheck] = useState({});
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -40,25 +41,25 @@ function PortfolioChart() {
 
   useEffect(() => {
     const getData = async () => {
-
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
-      const newTickers = {}
+      const newTickers = {};
       tickers.forEach((ticker) => {
-        if(!newTickers[ticker.symbol]) newTickers[ticker.symbol] = ticker.symbol
-      })
+        if (!newTickers[ticker.symbol])
+          newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];
+      });
       if (tickers.length > 0) {
         setTickerData(tickers);
         let created = tickers[0]?.created_at;
         Object.values(newTickers).forEach(async (ticker) => {
-          if (isBefore(new Date(ticker.created_at), new Date(created))) {
-            created = ticker.created_at;
+          if (isBefore(new Date(ticker[1]), new Date(created))) {
+            created = ticker[1];
           }
 
           // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
-          await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
+          let test = await dispatch(stockActions.stockDataDaily(ticker[0]));
+          await dispatch(monthlyActions.stockDataMonthly(ticker[0]));
+          await dispatch(weeklyActions.stockDataWeekly(ticker[0]));
         });
         setCreatedAt(created);
       } else {
@@ -68,7 +69,13 @@ function PortfolioChart() {
       }
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000));
+    getData()
+      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
+      .then(() => {
+        if (!current) history.push("/login");
+        else if (current?.id !== userId)
+         return <Redirect to={`/portfolios/${userId}`} />;
+      });
   }, [dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
@@ -195,7 +202,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "stock_details_percent_change_plus"
         : "stock_details_percent_change_minus"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "stock_details_percent_change_plus" :"stock_details_percent_change_minus")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "stock_details_percent_change_plus"
+      : "stock_details_percent_change_minus"
     : weekly
     ? formattedChangeWeekly() >= 0
       ? "stock_details_percent_change_plus"
@@ -209,7 +224,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "rgb(0, 243, 0)"
         : "rgb(255, 0, 0)"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "rgb(0, 243, 0)" :"rgb(255, 0, 0)")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)"
     : weekly
     ? formattedChangeWeekly() > 0
       ? "rgb(0, 243, 0)"
@@ -351,13 +374,17 @@ function PortfolioChart() {
     return count;
   };
 
-  const formattedChange =
-    Number(
-      daily
-        ? formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2]
-        : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-            data?.datasets[0].data[0]
-    );
+  const formattedChange = Number(
+    daily
+      ? formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ]
+      : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+          data?.datasets[0].data[0]
+  );
 
   const formattedPercentChange =
     stocksIsLoaded &&
@@ -401,9 +428,11 @@ function PortfolioChart() {
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {tickerData
-              ? (formattedPercentChange >= 0 ?  formattedPercentChange >= 0
-                ? "+" + formattedPercentChange
-                : `${formattedPercentChange}` : 0)
+              ? formattedPercentChange >= 0
+                ? formattedPercentChange >= 0
+                  ? "+" + formattedPercentChange
+                  : `${formattedPercentChange}`
+                : 0
               : 0}
             %){" "}
             {tickerData
