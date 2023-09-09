@@ -47,6 +47,7 @@ export const stockTickerSearch = (ticker) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(tickerSearch(data));
+    return data
   }
 }
 

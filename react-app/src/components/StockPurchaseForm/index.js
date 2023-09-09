@@ -103,7 +103,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           </div>
         ) : (
           <div id="successful-purchase">
-            <h3 id="purchase-title">Congratulations</h3>
+            <h3 id="purchase-title">Congratulations ! </h3>
             <p id="purchase-message-success">
               Your Market Order for {quantity} Shares of {tickerSymbol} for $
               {avgPrice} Is Completed

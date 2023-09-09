@@ -15,14 +15,15 @@
   flex-shrink: 0;
   font-family: "Capsule Sans Text", -apple-system, BlinkMacSystemFont,
     sans-serif;
+    border: 1px solid #e1e1e1;
   font-size: 1.25em;
   font-weight: 400;
   letter-spacing: -0.1px;
   line-height: 20px;
   margin-left: -12px;
   margin-right: -400px;
-  outline-color: rgb(51, 160, 206);
-  outline-style: solid;
+  /* outline-color: rgb(51, 160, 206); */
+  /* outline-style: solid; */
   outline-width: 1px;
   padding-bottom: 24px;
   padding-left: 24px;
@@ -51,6 +52,7 @@
   grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr));
   box-sizing: content-box;
   color: rgb(0, 0, 0);
+  border: 1px solid #e1e1e1;
   color-scheme: light;
   flex-basis: calc(25% - 24px);
   flex-grow: 0;
@@ -63,8 +65,8 @@
   line-height: 20px;
   margin-left: -12px;
   margin-right: -400px;
-  outline-color: rgb(51, 160, 206);
-  outline-style: solid;
+  /* outline-color: rgb(51, 160, 206);
+  outline-style: solid; */
   outline-width: 1px;
   padding-bottom: 24px;
   padding-left: 24px;
@@ -82,7 +84,7 @@
   background-color: #fff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   max-width: 320px;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 #form-title {
@@ -136,8 +138,9 @@
   font-size:18px;
   margin-right: 0px;
   width: 8vw;
-  background-color: rgba(7, 255, 69, 0.2);
-  border: 2px solid rgb(131, 131, 131);
+  /* background-color: rgba(7, 255, 69, 0.2); */
+  border: 1px solid #cccccc;
+  border-radius: 2px;
 }
 
 #form-quantity-label {
@@ -156,8 +159,8 @@
   font-size:18px;
   margin-right: 0px;
   width: 8vw;
-  background-color: rgba(7, 255, 69, 0.2);
-  border: 2px solid rgb(131, 131, 131);
+  border: 1px solid #cccccc;
+  border-radius: 2px;
 }
 
 #form-price-label {
@@ -176,8 +179,8 @@
   font-size: 18px;
   margin-right: 0px;
   width: 8vw;
-  background-color: rgba(7, 255, 69, 0.2);
-  border: 2px solid rgb(131, 131, 131);
+  border: 1px solid #cccccc;
+  border-radius: 2px;
 }
 
 #form-purchaseIn-label {
@@ -196,8 +199,8 @@
   font-size: 18px;
   margin-right: 0px;
   width: 8vw;
-  background-color: rgba(7, 255, 69, 0.2);
-  border: 2px solid rgb(131, 131, 131);
+  border: 1px solid #cccccc;
+  border-radius: 2px;
 }
 
 #form-submit-button {
@@ -284,7 +287,9 @@
 #form-submit-button:active:after {
   box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
 }
-
+#form-submit-button-minus span {
+  font-size: 1.3rem;
+}
 #form-submit-button-minus {
     grid-row: 7/9;
     grid-column: 1/2;
@@ -299,7 +304,7 @@
     font-size: 1.25em;
     background-color: #ff0000;
     color: #fff;
-    text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
+    /* text-shadow: 0 2px 0 rgb(0 0 0 / 25%); */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -535,7 +540,7 @@
 
 #successful-purchase {
   width: 300px;
-  height: 100px;
+  height: 130px;
   position: sticky;
   top: 48vh;
   left: 48vw;
@@ -544,14 +549,14 @@
   z-index: 100;
   background-color: whitesmoke;
   border-radius: 25px;
-  border: 2px solid lightgreen;
+  border: 1px solid #cccccc;
   align-items: center;
   justify-content: center;
 }
 
 #failed-purchase {
   width: 400px;
-  height: 150px;
+  height: 130px;
   position: sticky;
   top: 48vh;
   left: 48vw;
@@ -562,15 +567,16 @@
   z-index: 100;
   background-color: whitesmoke;
   border-radius: 25px;
-  border: 2px solid red;
+  border: 1px solid #cccccc;
   align-items: center;
   justify-content: center;
 }
 
 #purchase-title {
   font-size: 35px;
-  font-family: cursive;
+  /* font-family: cursive; */
   font-style: italic;
+  padding: 5px
 }
 
 #purchase-item-success {
