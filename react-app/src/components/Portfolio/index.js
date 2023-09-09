@@ -50,7 +50,7 @@ function PortfolioChart({ current }) {
           portfolioActions.getPortfoliosByUser(userId)
         );
         let tickers = Object.values(res[`${userId}`]);
-        const newTickers = {};
+        let newTickers = {};
         tickers.forEach((ticker) => {
           if (!newTickers[ticker.symbol])
             newTickers[ticker.symbol] = ticker.symbol;
