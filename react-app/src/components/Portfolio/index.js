@@ -25,7 +25,7 @@ function PortfolioChart({current}) {
   const history = useHistory();
   const { userId } = useParams()
   const [hoverPrice, setHoverPrice] = useState(false);
-  const [tickerCheck, setTickerCheck] = useState({});
+  const [stockData, setStockData] = useState(false);
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -91,6 +91,9 @@ function PortfolioChart({current}) {
         else if (current?.id !== userId)
          return <Redirect to={`/portfolios/${userId}`} />;
       });
+
+      if(Object.values(stockInfo).length > 1)
+      setStockData(true)
    },[dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
@@ -427,7 +430,7 @@ function PortfolioChart({current}) {
           100
         ).toFixed(2));
 
-  return stocksIsLoaded ? (
+  return stockData ? (
     <>
       <div id="portfolio_container">
         <DeletePortfolioForm
