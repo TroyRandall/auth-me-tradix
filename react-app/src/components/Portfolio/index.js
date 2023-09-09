@@ -83,7 +83,7 @@ function PortfolioChart({ current}) {
     };
 
     getData()
-      .then(() => setStocksIsLoaded(true))
+      .then(setTimeout(setStocksIsLoaded(true), 5000))
       .then(() => {
         if (!currentUser) history.push("/login");
         else if (currentUser?.id !== userId)
@@ -128,12 +128,12 @@ function PortfolioChart({ current}) {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["PLNT"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["PLNT"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["PLNT"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );
@@ -428,7 +428,7 @@ function PortfolioChart({ current}) {
 
   return stocksIsLoaded ? (
     <>
-      {/* <div id="portfolio_container">
+      <div id="portfolio_container">
         <DeletePortfolioForm
           price={data.datasets[0].data[data.datasets[0].data.length - 1]}
         />
@@ -511,7 +511,7 @@ function PortfolioChart({ current}) {
             <div className="stock-asset-item">Purchased On</div>
             <div className="stock-asset-item">Sold On</div>
             <div className="stock-asset-item">Sell Stock Button</div>
-          </div> */}
+          </div>
           {stocksIsLoaded &&
             Object.values(portfolios).map((portfolio) => {
               return (
@@ -521,8 +521,8 @@ function PortfolioChart({ current}) {
                 />
               );
             })}
-        {/* </div>
-      </div> */}
+        </div>
+      </div>
     </>
   ) : (
     <LoadingSymbol />
