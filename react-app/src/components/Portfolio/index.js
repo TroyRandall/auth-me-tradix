@@ -55,13 +55,13 @@ function PortfolioChart() {
         let created = tickers[0]?.created_at;
         Object.values(newTickers).forEach(async (ticker) => {
           if (isBefore(new Date(ticker.created_at), new Date(created))) {
-            created = ticker.created_at;
+            created = ticker?.created_at;
           }
 
           // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
-          await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
+          let test = await dispatch(stockActions.stockDataDaily(ticker?.symbol));
+          await dispatch(monthlyActions.stockDataMonthly(ticker?.symbol));
+          await dispatch(weeklyActions.stockDataWeekly(ticker?.symbol));
         });
         setCreatedAt(created);
       } else {
