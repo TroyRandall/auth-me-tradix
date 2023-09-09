@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {searchSymbolData }from '../../store/search'
+import * as searchActions from '../../store/search'
 import { Link } from 'react-router-dom'
 import styles from './style.module.css'
+import { stockTickerSearch } from '../../store/tickers'
 
 
 const Search = () => {
@@ -32,16 +33,22 @@ const Search = () => {
       <><span>{str.substring(0, idx)}</span><span className={styles.searchKeyword}>{str.substring(idx, idx + len)}</span><span>{str.substring(idx + len)}</span></>
     ) : <span>{str}</span>
   }
+  const handleSearch = async(keyword) => {
+    let test = await dispatch(stockTickerSearch(keyword));
+    console.log(test)
+
+  };
 
   useEffect(() => {
       setIsSearchLoaded(false)
 
-      if(keyword.length){
+      if (Object.values(keyword).length > 1) {
         setShowSearchRes(true)
-        const url = '/api/stock/search/' + keyword
+        const url = `/api/stocks/${keyword}`
 
-        fetch(url)
-            .then(res => res.json())
+        dispatch(stockTickerSearch(keyword))
+            // .then(res => res.json())
+
             .then(res => {
             setSearchRes(res)
             setIsSearchLoaded(true)
@@ -78,8 +85,10 @@ const Search = () => {
                   <li
                       className={styles.resultItem}
                       key={res.symbol}
+                      onChange={handleSearch}
                       onClick={() => {
-                        dispatch(searchSymbolData(res.ticker))
+                        // handleSearch(res.ticker)
+                        // dispatch(stockTickerSearch(res.ticker))
                         setIsHoveringOnSearchRes(false)
                         setKeyword('')
                         setSearchRes([])
