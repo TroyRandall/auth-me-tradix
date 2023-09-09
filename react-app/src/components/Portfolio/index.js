@@ -17,7 +17,7 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart() {
+function PortfolioChart({ current }) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
@@ -44,6 +44,8 @@ function PortfolioChart() {
   useEffect(() => {
     const getData = async () => {
       if (userId) {
+         if (!current) return <Redirect to={"/login"} />;
+          else if (current?.id !== userId) history.push(`/portfolios/${userId}`)
         const res = await dispatch(
           portfolioActions.getPortfoliosByUser(userId)
         );
@@ -61,18 +63,20 @@ function PortfolioChart() {
               created = ticker?.created_at;
             }
 
+            console.log(ticker)
+
             // await dispatch(stockActions.stockDataDaily(ticker.symbol));
             let test = await dispatch(
-              stockActions.stockDataDaily(ticker?.symbol)
+              stockActions.stockDataDaily(ticker)
             );
-            await dispatch(monthlyActions.stockDataMonthly(ticker?.symbol));
-            await dispatch(weeklyActions.stockDataWeekly(ticker?.symbol));
+            await dispatch(monthlyActions.stockDataMonthly(ticker));
+            await dispatch(weeklyActions.stockDataWeekly(ticker));
           });
           setCreatedAt(created);
         } else {
-          await dispatch(stockActions.stockDataDaily("tsla"));
-          await dispatch(weeklyActions.stockDataWeekly("tsla"));
-          await dispatch(monthlyActions.stockDataMonthly("tsla"));
+          await dispatch(stockActions.stockDataDaily("TSLA"));
+          await dispatch(weeklyActions.stockDataWeekly("TSLA"));
+          await dispatch(monthlyActions.stockDataMonthly("TSLA"));
         }
       }
     };
@@ -124,12 +128,12 @@ function PortfolioChart() {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["tsla"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["tsla"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["tsla"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );

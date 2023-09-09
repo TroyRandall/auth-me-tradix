@@ -30,7 +30,8 @@ const AppHome = () => {
         <div className="app-home">
           <div className="app-home-left">
             <div id="app-home-chart-container">
-              <PortfolioChart />
+              <PortfolioChart current = {currentUser}/>
+
               {/* had to move this into the portfolio Chart item itself to allow it to format with the stock assets items below */}
               {/* <div className="buying-power-section">
                             <p className="buying-power-section-label">Buying Power</p>
@@ -43,7 +44,7 @@ const AppHome = () => {
           </div>
           <div className="app-home-right">
             <List />
-            {/* <Watchlist /> */}
+            <Watchlist />
           </div>
         </div>
       </div>

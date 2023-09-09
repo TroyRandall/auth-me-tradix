@@ -4,7 +4,7 @@ import './loadingSymbol.css'
 
 function LoadingSymbol () {
     return (
-           <div className="loader"></div>
+           <div className="loader" id='portfolio-loader'></div>
     )
 
 }

@@ -102,3 +102,19 @@ h1 {
   position: relative;
   bottom: 35px;
 }
+
+#loader-portfolio {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 45px;
+  height: 80px;
+  left: 30%;
+  top: 20vh;
+  border-top: 5px solid #363636;
+  border-bottom: 5px solid #363636;
+  position: relative;
+  background: linear-gradient(#FF3D00 30px, transparent 0) no-repeat;
+  background-size: 2px 40px;
+  background-position: 50% 0px;
+  animation: spinx 5s linear infinite;
+}
