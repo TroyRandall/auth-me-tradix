@@ -8,6 +8,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
+import DeletePortfolioForm from "../DeletePortfolioForm";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -19,9 +20,10 @@ function PortfolioChart({current}) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
-  const { userId } = useParams();
+
   const dispatch = useDispatch();
-  const history=useHistory();
+  const history = useHistory();
+  const { userId } = useParams()
   const [hoverPrice, setHoverPrice] = useState(false);
   const [tickerCheck, setTickerCheck] = useState({});
   const [daily, setDaily] = useState(true);
@@ -61,13 +63,26 @@ function PortfolioChart({current}) {
           await dispatch(monthlyActions.stockDataMonthly(ticker[0]));
           await dispatch(weeklyActions.stockDataWeekly(ticker[0]));
         });
-        setCreatedAt(created);
-      } else {
-        await dispatch(stockActions.stockDataDaily("tsla"));
-        await dispatch(weeklyActions.stockDataWeekly("tsla"));
-        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        if (tickers.length > 0) {
+          setTickerData(tickers);
+          let created = tickers[0]?.created_at;
+          Object.values(newTickers).forEach(async (ticker) => {
+            if (isBefore(new Date(ticker.created_at), new Date(created))) {
+              created = ticker?.created_at;
+            }
+
+            console.log(ticker)
+
+            // await dispatch(stockActions.stockDataDaily(ticker.symbol));
+            let test = await dispatch(
+              stockActions.stockDataDaily(ticker)
+            );
+            await dispatch(monthlyActions.stockDataMonthly(ticker));
+            await dispatch(weeklyActions.stockDataWeekly(ticker));
+          });
+          setCreatedAt(created);
       }
-    };
+    };}
 
     getData()
       .then(setTimeout(() => setStocksIsLoaded(true), 5000))
@@ -76,7 +91,7 @@ function PortfolioChart({current}) {
         else if (current?.id !== userId)
          return <Redirect to={`/portfolios/${userId}`} />;
       });
-  }, [dispatch, userId, daily, monthly, weekly]);
+   },[dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
     let data2 =
@@ -114,12 +129,12 @@ function PortfolioChart({current}) {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["tsla"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["tsla"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["tsla"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );
@@ -129,7 +144,7 @@ function PortfolioChart({current}) {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    if (tickerData) {
+    if (portfolios) {
       Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
@@ -162,6 +177,8 @@ function PortfolioChart({current}) {
                     newData[`${count}`] + data * stock.quantity)
                 : (newData[`${count}`] = data * stock.quantity);
             } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+              else
+              {newData[`${count}`] = newData[`${count}`] - (data * stock.quantity)}
             count++;
           }
         });
@@ -413,6 +430,9 @@ function PortfolioChart({current}) {
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
+        <DeletePortfolioForm
+          price={data.datasets[0].data[data.datasets[0].data.length - 1]}
+        />
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
@@ -454,7 +474,7 @@ function PortfolioChart({current}) {
               onClick={dailyToggle}
               checked={daily || false}
             />
-            <span className="name">Daily</span>
+            <span className="name">1D</span>
           </label>
           <label className="chart-radio">
             <input
@@ -463,7 +483,7 @@ function PortfolioChart({current}) {
               onClick={weeklyToggle}
               checked={weekly || false}
             />
-            <span className="name">Weekly</span>
+            <span className="name">1W</span>
           </label>
 
           <label className="chart-radio">
@@ -473,7 +493,7 @@ function PortfolioChart({current}) {
               onClick={monthlyToggle}
               checked={monthly || false}
             />
-            <span className="name">Monthly</span>
+            <span className="name">1M</span>
           </label>
         </div>
         <div className="buying-power-section">

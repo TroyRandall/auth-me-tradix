@@ -19,11 +19,11 @@ def seed_watchlists():
     )
     watchlist5=Watchlist(
         name='My Favorite Stocks',
-        user_id=4
+        user_id=1
     )
     watchlist6 = Watchlist(
         name='Penny Stocks',
-        user_id=5
+        user_id=1
     )
     db.session.add(watchlist1)
     db.session.add(watchlist2)

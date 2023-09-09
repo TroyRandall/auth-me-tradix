@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector,  } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect} from "react";
+import { useDispatch, useSelector,   } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import * as portfolioActions from "../../store/portfolio";
 import './StockSellForm.css'
 
 function SellStockForm({ portfolio }) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const { userId } = useParams()
   const currentUser = useSelector((state) => state.session.user);
   const stockInfo = useSelector((state) => state.stocks)
-  const portfolios = useSelector((state) => state.portfolios[portfolio.id]);
+  const portfolios = useSelector((state) => state.portfolios[userId]);
   const [isLoaded, setIsLoaded] = useState(false)
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState({});
@@ -21,7 +21,6 @@ function SellStockForm({ portfolio }) {
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
 
-  if (!currentUser) history.push("/login");
 
   useEffect(() => {
 
@@ -50,7 +49,7 @@ function SellStockForm({ portfolio }) {
     let sold_at = new Date()
     let portfolio = { id, tickerSymbol, quantity, avgPrice, sold_at, portfolioId};
     if (!Object.values(errors).length) {
-      const response = await dispatch(
+      const response = dispatch(
         portfolioActions.updatePortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = res;
@@ -139,15 +138,15 @@ function SellStockForm({ portfolio }) {
 
   return ( portfolio?.quantity === 0 || portfolio?.sold_at ? null:
     <div id="stock-asset-container">
-      <div className="stock-asset-item">{portfolio.name}</div>
-      <div className="stock-asset-item">{portfolio.symbol}</div>
-      <div className="stock-asset-item">{portfolio.quantity}</div>
-      <div className="stock-asset-item">${portfolio.avgPrice}</div>
-      <div className="stock-asset-item">{portfolio.created_at}</div>
-      <div className="stock-asset-item">
+      <div className="stock-asset-item2">{portfolio.name}</div>
+      <div className="stock-asset-item2">{portfolio.symbol}</div>
+      <div className="stock-asset-item2">{portfolio.quantity}</div>
+      <div className="stock-asset-item2">${portfolio.avgPrice}</div>
+      <div className="stock-asset-item2">{portfolio.created_at}</div>
+      <div className="stock-asset-item2">
         {portfolio.sold_at ? portfolio.sold_at : ""}
       </div>
-      <button className="stock-asset-item" onClick={toggleModal}>
+      <button className="stock-asset-item2" onClick={toggleModal}>
         Sell Stock
       </button>
       {checkModal()}
