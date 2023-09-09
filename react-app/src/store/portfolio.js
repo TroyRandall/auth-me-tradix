@@ -101,6 +101,7 @@ export const updatePortfolioItem = (portfolio) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(updatePortfolio(data));
+    console.log(data)
     return data;
   } else if (response.status < 500) {
     const data = await response.json();
@@ -139,7 +140,7 @@ const portfolioReducer = (state = initialState, action) => {
       return newState
     case UPDATE_PORTFOLIO_ITEM:
       newState = Object.assign({}, state);
-      newState = action.payload.data;
+      newState = action.payload;
       return newState
     case DELETE_TRADIX_PORTFOLIO:
       newState = Object.assign({}, state);

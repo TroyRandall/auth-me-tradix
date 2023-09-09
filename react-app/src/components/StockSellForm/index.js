@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector,  } from "react-redux";
+import { useState, useEffect} from "react";
+import { useDispatch, useSelector,   } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import * as portfolioActions from "../../store/portfolio";
 import './StockSellForm.css'
 
 function SellStockForm({ portfolio }) {
   const dispatch = useDispatch();
+  const { userId } = useParams()
   const currentUser = useSelector((state) => state.session.user);
   const stockInfo = useSelector((state) => state.stocks)
-  const portfolios = useSelector((state) => state.portfolios[portfolio.id]);
+  const portfolios = useSelector((state) => state.portfolios[userId]);
   const [isLoaded, setIsLoaded] = useState(false)
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState({});
@@ -47,7 +49,7 @@ function SellStockForm({ portfolio }) {
     let sold_at = new Date()
     let portfolio = { id, tickerSymbol, quantity, avgPrice, sold_at, portfolioId};
     if (!Object.values(errors).length) {
-      const response = await dispatch(
+      const response = dispatch(
         portfolioActions.updatePortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = res;

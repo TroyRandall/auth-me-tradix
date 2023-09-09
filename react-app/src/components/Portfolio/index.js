@@ -17,13 +17,14 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart({ current, userId }) {
+function PortfolioChart({ current}) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const { userId } = useParams()
   const [hoverPrice, setHoverPrice] = useState(false);
   const [tickerCheck, setTickerCheck] = useState({});
   const [daily, setDaily] = useState(true);
@@ -82,7 +83,7 @@ function PortfolioChart({ current, userId }) {
     };
 
     getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
+      .then(() => setStocksIsLoaded(true))
       .then(() => {
         if (!currentUser) history.push("/login");
         else if (currentUser?.id !== userId)
@@ -127,12 +128,12 @@ function PortfolioChart({ current, userId }) {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["PLNT"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["PLNT"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["PLNT"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );
@@ -143,7 +144,7 @@ function PortfolioChart({ current, userId }) {
     let newData = {};
     let count;
     if (portfolios) {
-      Object.values(portfolios).forEach((stock) => {
+      Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
         count = 0;
@@ -427,7 +428,7 @@ function PortfolioChart({ current, userId }) {
 
   return stocksIsLoaded ? (
     <>
-      <div id="portfolio_container">
+      {/* <div id="portfolio_container">
         <DeletePortfolioForm
           price={data.datasets[0].data[data.datasets[0].data.length - 1]}
         />
@@ -510,7 +511,7 @@ function PortfolioChart({ current, userId }) {
             <div className="stock-asset-item">Purchased On</div>
             <div className="stock-asset-item">Sold On</div>
             <div className="stock-asset-item">Sell Stock Button</div>
-          </div>
+          </div> */}
           {stocksIsLoaded &&
             Object.values(portfolios).map((portfolio) => {
               return (
@@ -520,8 +521,8 @@ function PortfolioChart({ current, userId }) {
                 />
               );
             })}
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
     </>
   ) : (
     <LoadingSymbol />

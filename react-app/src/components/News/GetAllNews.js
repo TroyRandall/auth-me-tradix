@@ -9,7 +9,7 @@ const AllNews = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getArticlesFromDb());
+        // dispatch(getArticlesFromDb());
         fetch("/api/news").then(r => r.json()).then(r => r.error ? setArticles([{ tickers: [] }]) : setArticles(r));
     }, []);
 
