@@ -39,7 +39,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           newErrors.buyingPower = "You Do Not Have Enough Buying Power";
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+        if (tickerSymbol !== ticker && !newErrors.ticker) newErrors.ticker ='Ticker Symbol Must Be The Symbol Assosicated With This Stock'
         if (avgPrice <= 0) newErrors.price = "Price is Required";
+        if (avgPrice < average && !newErrors.price) newErrors.price = 'Orders with a Price below the Average Stock Price Will Not Be Filled'
+
       }
 
       setErrors({ ...newErrors });
@@ -128,9 +131,11 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               ))}
             </p>
           }
-          <p id="form-field1">Order Type</p> <p id="form-field2">Buy Order</p>
-          <label id="form-ticker-label">Stock Ticker : </label>
+          <p id="form-field1" className='stock-purchase-item'>Order Type</p> <p className='stock-purchase-item' id="form-field2">Buy Order</p>
+         <div className='stock-purchase-item'>
+          <label id="form-ticker-label" className='stock-purchase-item'>Stock Ticker</label>
           <input
+          className='stock-purchase-item'
             id="form-ticker-input"
             name="symbol"
             placeholder="Ticker Symbol"
@@ -138,7 +143,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             onChange={(e) => setTickerSymbol(e.target.value)}
             required
           ></input>
-          <label id="form-quantity-label">Quantity : </label>
+          </div>
+          <div className='stock-purchase-item'> <label className='stock-purchase-item' id="form-quantity-label">Quantity</label>
           <input
             id="form-quantity-input"
             name="quantity"
@@ -146,7 +152,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             required
-          ></input>
+          ></input> </div>
+
           <label id="form-price-label">Average Price</label>
           <input
             id="form-price-input"

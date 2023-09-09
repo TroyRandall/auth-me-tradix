@@ -33,13 +33,15 @@ function StockDetails() {
 
   useEffect(() => {
     const loadData = async () => {
-      await dispatch(stockActions.stockDataDaily(ticker));
+      if(ticker) {
+          await dispatch(stockActions.stockDataDaily(ticker));
       await dispatch(companyActions.companyDataFetch(ticker));
       await dispatch(tickerActions.stockTickerInfo(ticker));
       await dispatch(monthlyActions.stockDataMonthly(ticker));
       await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() =>
         setIsLoaded(true)
       );
+      }
     };
 
     loadData();

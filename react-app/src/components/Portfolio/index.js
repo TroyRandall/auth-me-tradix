@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -8,6 +9,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
+import DeletePortfolioForm from "../DeletePortfolioForm";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -15,14 +17,16 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart() {
+function PortfolioChart({ current}) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
-  const { userId } = useParams();
+
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { userId } = useParams()
   const [hoverPrice, setHoverPrice] = useState(false);
-  const [tickerCheck, setTickerCheck] = useState({})
+  const [tickerCheck, setTickerCheck] = useState({});
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -40,36 +44,47 @@ function PortfolioChart() {
 
   useEffect(() => {
     const getData = async () => {
-
-      const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
-      let tickers = Object.values(res[`${userId}`]);
-      const newTickers = {}
-      tickers.forEach((ticker) => {
-        if(!newTickers[ticker.symbol]) newTickers[ticker.symbol] = ticker.symbol
-      })
-      if (tickers.length > 0) {
-        setTickerData(tickers);
-        let created = tickers[0]?.created_at;
-        Object.values(newTickers).forEach(async (ticker) => {
-          if (isBefore(new Date(ticker.created_at), new Date(created))) {
-            created = ticker.created_at;
-          }
-
-          // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          await dispatch(monthlyActions.stockDataMonthly(ticker.symbol));
-          await dispatch(weeklyActions.stockDataWeekly(ticker.symbol));
+         if (!current) return <Redirect to={"/login"} />;
+          else if (current?.id !== userId) history.push(`/portfolios/${userId}`)
+        const res = await dispatch(
+          portfolioActions.getPortfoliosByUser(userId)
+        );
+        let tickers = Object.values(res[`${userId}`]);
+        let newTickers = {};
+        tickers.forEach((ticker) => {
+          if (!newTickers[ticker.symbol])
+            newTickers[ticker.symbol] = ticker.symbol;
         });
-        setCreatedAt(created);
-      } else {
-        await dispatch(stockActions.stockDataDaily("tsla"));
-        await dispatch(weeklyActions.stockDataWeekly("tsla"));
-        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        if (tickers.length > 0) {
+          setTickerData(tickers);
+          let created = tickers[0]?.created_at;
+          Object.values(newTickers).forEach(async (ticker) => {
+            if (isBefore(new Date(ticker.created_at), new Date(created))) {
+              created = ticker?.created_at;
+            }
+
+            console.log(ticker)
+
+            // await dispatch(stockActions.stockDataDaily(ticker.symbol));
+            let test = await dispatch(
+              stockActions.stockDataDaily(ticker)
+            );
+            await dispatch(monthlyActions.stockDataMonthly(ticker));
+            await dispatch(weeklyActions.stockDataWeekly(ticker));
+          });
+          setCreatedAt(created);
       }
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000));
-  }, [dispatch, userId, daily, monthly, weekly]);
+    getData()
+      .then(setTimeout(setStocksIsLoaded(true), 5000))
+      .then(() => {
+        if (!currentUser) history.push("/login");
+        else if (currentUser?.id !== userId)
+          history.push(`/portfolios/${userId}`);
+      });
+  }, [dispatch, userId, daily, monthly, weekly, currentUser]);
+
 
   function formattedData(ticker, state) {
     let data2 =
@@ -107,12 +122,12 @@ function PortfolioChart() {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["tsla"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["tsla"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["tsla"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );
@@ -122,7 +137,7 @@ function PortfolioChart() {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    if (tickerData) {
+    if (portfolios) {
       Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
@@ -155,6 +170,8 @@ function PortfolioChart() {
                     newData[`${count}`] + data * stock.quantity)
                 : (newData[`${count}`] = data * stock.quantity);
             } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+              else
+              {newData[`${count}`] = newData[`${count}`] - (data * stock.quantity)}
             count++;
           }
         });
@@ -195,7 +212,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "stock_details_percent_change_plus"
         : "stock_details_percent_change_minus"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "stock_details_percent_change_plus" :"stock_details_percent_change_minus")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "stock_details_percent_change_plus"
+      : "stock_details_percent_change_minus"
     : weekly
     ? formattedChangeWeekly() >= 0
       ? "stock_details_percent_change_plus"
@@ -209,7 +234,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "rgb(0, 243, 0)"
         : "rgb(255, 0, 0)"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "rgb(0, 243, 0)" :"rgb(255, 0, 0)")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)"
     : weekly
     ? formattedChangeWeekly() > 0
       ? "rgb(0, 243, 0)"
@@ -351,13 +384,17 @@ function PortfolioChart() {
     return count;
   };
 
-  const formattedChange =
-    Number(
-      daily
-        ? formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2]
-        : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-            data?.datasets[0].data[0]
-    );
+  const formattedChange = Number(
+    daily
+      ? formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ]
+      : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+          data?.datasets[0].data[0]
+  );
 
   const formattedPercentChange =
     stocksIsLoaded &&
@@ -386,6 +423,9 @@ function PortfolioChart() {
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
+        <DeletePortfolioForm
+          price={data.datasets[0].data[data.datasets[0].data.length - 1]}
+        />
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
@@ -401,9 +441,11 @@ function PortfolioChart() {
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {tickerData
-              ? (formattedPercentChange >= 0 ?  formattedPercentChange >= 0
-                ? "+" + formattedPercentChange
-                : `${formattedPercentChange}` : 0)
+              ? formattedPercentChange >= 0
+                ? formattedPercentChange >= 0
+                  ? "+" + formattedPercentChange
+                  : `${formattedPercentChange}`
+                : 0
               : 0}
             %){" "}
             {tickerData

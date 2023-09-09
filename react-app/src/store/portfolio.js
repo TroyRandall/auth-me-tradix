@@ -1,6 +1,9 @@
+import { DatasetController } from "chart.js";
+
 const ADD_PORTFOLIO_ITEM = "portfolio/ADD_PORTFOLIO_ITEM";
 const GET_TRADIX_PORTFOLIOS = "portfolio/GET_TRADIX_PORTFOLIOS";
-const UPDATE_PORTFOLIO_ITEM = 'portfolio/UPDATE_PORTFOLIO_ITEM'
+const UPDATE_PORTFOLIO_ITEM = "portfolio/UPDATE_PORTFOLIO_ITEM";
+const DELETE_TRADIX_PORTFOLIO = "portfolio/DELETE_TRADIX_PORTFOLIO";
 
 const addPortfolio = (data) => ({
   type: ADD_PORTFOLIO_ITEM,
@@ -17,8 +20,13 @@ const getTradixPortfolios = (data, id) => ({
 
 const updatePortfolio = (data) => ({
   type: UPDATE_PORTFOLIO_ITEM,
-  payload: data
-})
+  payload: data,
+});
+
+const deletePortfolio = (id) => ({
+  type: DELETE_TRADIX_PORTFOLIO,
+  payload: id,
+});
 
 export const addPortfolioItem = (portfolio) => async (dispatch) => {
   let { id, tickerSymbol, quantity, avgPrice } = portfolio;
@@ -51,19 +59,31 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
 
 //still working on this route for the reducer will continue tomorrow
 
-// export const deletePortfolioItem = (id, name) => (dispatch) => {
-//     const response = await fetch(`/api/portolfios/${id}`, {
-//         method: 'POST',
-//         headers: {
-// 			"Content-Type": "application/json",
-// 		},
+export const deletePortfolioItem = (id, value) => async (dispatch) => {
+  const response = await fetch(`/api/portolfios/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      value: value
+    }),
+  });
 
-//     }
-//     )
-// }
+  if(response.ok){
+    const data = await response.json();
+    dispatch(deletePortfolio(id));
+    return data;
+  } else {
+    const data = await response.json();
+    if(data.error) return data
+  }
+
+
+};
 
 export const updatePortfolioItem = (portfolio) => async (dispatch) => {
-  const { id, tickerSymbol, quantity, avgPrice, portfolioId} = portfolio
+  const { id, tickerSymbol, quantity, avgPrice, portfolioId } = portfolio;
   const response = await fetch(`/api/portfolio/${id}`, {
     method: "PUT",
     headers: {
@@ -81,6 +101,7 @@ export const updatePortfolioItem = (portfolio) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(updatePortfolio(data));
+    console.log(data)
     return data;
   } else if (response.status < 500) {
     const data = await response.json();
@@ -90,7 +111,7 @@ export const updatePortfolioItem = (portfolio) => async (dispatch) => {
   } else {
     return ["An error occurred. Please try again."];
   }
-  }
+};
 
 export const getPortfoliosByUser = (id) => async (dispatch) => {
   const response = await fetch(`/api/portfolio/${id}`);
@@ -114,7 +135,17 @@ const portfolioReducer = (state = initialState, action) => {
       return newState;
     case ADD_PORTFOLIO_ITEM:
       newState = Object.assign({}, state);
-      newState[action.payload.id] = newState[action.payload.id] + action.payload
+      newState[action.payload.id] =
+      newState[action.payload.id] + action.payload;
+      return newState
+    case UPDATE_PORTFOLIO_ITEM:
+      newState = Object.assign({}, state);
+      newState = action.payload;
+      return newState
+    case DELETE_TRADIX_PORTFOLIO:
+      newState = Object.assign({}, state);
+      delete newState[action.payload]
+      return newState
     default:
       return state;
   }
