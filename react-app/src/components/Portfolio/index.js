@@ -90,7 +90,6 @@ function PortfolioChart({ current, userId }) {
       });
   }, [dispatch, userId, daily, monthly, weekly, currentUser]);
 
-  const checkUser = () => {};
 
   function formattedData(ticker, state) {
     let data2 =
