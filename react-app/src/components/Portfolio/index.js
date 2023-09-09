@@ -43,43 +43,50 @@ function PortfolioChart() {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
-      let tickers = Object.values(res[`${userId}`]);
-      const newTickers = {};
-      tickers.forEach((ticker) => {
-        if (!newTickers[ticker.symbol])
-          newTickers[ticker.symbol] = ticker.symbol;
-      });
-      if (tickers.length > 0) {
-        setTickerData(tickers);
-        let created = tickers[0]?.created_at;
-        Object.values(newTickers).forEach(async (ticker) => {
-          if (isBefore(new Date(ticker.created_at), new Date(created))) {
-            created = ticker?.created_at;
-          }
-
-          // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker?.symbol));
-          await dispatch(monthlyActions.stockDataMonthly(ticker?.symbol));
-          await dispatch(weeklyActions.stockDataWeekly(ticker?.symbol));
+      if (userId) {
+        const res = await dispatch(
+          portfolioActions.getPortfoliosByUser(userId)
+        );
+        let tickers = Object.values(res[`${userId}`]);
+        const newTickers = {};
+        tickers.forEach((ticker) => {
+          if (!newTickers[ticker.symbol])
+            newTickers[ticker.symbol] = ticker.symbol;
         });
-        setCreatedAt(created);
-      } else {
-        await dispatch(stockActions.stockDataDaily("tsla"));
-        await dispatch(weeklyActions.stockDataWeekly("tsla"));
-        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        if (tickers.length > 0) {
+          setTickerData(tickers);
+          let created = tickers[0]?.created_at;
+          Object.values(newTickers).forEach(async (ticker) => {
+            if (isBefore(new Date(ticker.created_at), new Date(created))) {
+              created = ticker?.created_at;
+            }
+
+            // await dispatch(stockActions.stockDataDaily(ticker.symbol));
+            let test = await dispatch(
+              stockActions.stockDataDaily(ticker?.symbol)
+            );
+            await dispatch(monthlyActions.stockDataMonthly(ticker?.symbol));
+            await dispatch(weeklyActions.stockDataWeekly(ticker?.symbol));
+          });
+          setCreatedAt(created);
+        } else {
+          await dispatch(stockActions.stockDataDaily("tsla"));
+          await dispatch(weeklyActions.stockDataWeekly("tsla"));
+          await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        }
       }
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000)).then(() => {
-       if (!currentUser) history.push("/login");
-    else if (currentUser?.id !== userId ) history.push(`/portfolios/${userId}`);
-    });
-
+    getData()
+      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
+      .then(() => {
+        if (!currentUser) history.push("/login");
+        else if (currentUser?.id !== userId)
+          history.push(`/portfolios/${userId}`);
+      });
   }, [dispatch, userId, daily, monthly, weekly, currentUser]);
 
-  const checkUser = () => {
-  };
+  const checkUser = () => {};
 
   function formattedData(ticker, state) {
     let data2 =
@@ -415,7 +422,6 @@ function PortfolioChart() {
 
   return stocksIsLoaded ? (
     <>
-
       <div id="portfolio_container">
         <DeletePortfolioForm
           price={data.datasets[0].data[data.datasets[0].data.length - 1]}
