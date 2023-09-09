@@ -39,7 +39,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           newErrors.buyingPower = "You Do Not Have Enough Buying Power";
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+        if (tickerSymbol !== ticker && !newErrors.ticker) newErrors.ticker ='Ticker Symbol Must Be The Symbol Assosicated With This Stock'
         if (avgPrice <= 0) newErrors.price = "Price is Required";
+        if (avgPrice < average && !newErrors.price) newErrors.price = 'Orders with a Price below the Average Stock Price Will Not Be Filled'
+        
       }
 
       setErrors({ ...newErrors });

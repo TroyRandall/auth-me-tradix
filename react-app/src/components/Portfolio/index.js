@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -8,6 +9,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
+import DeletePortfolioForm from "../DeletePortfolioForm";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -21,8 +23,9 @@ function PortfolioChart() {
   const [createdAt, setCreatedAt] = useState(false);
   const { userId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [hoverPrice, setHoverPrice] = useState(false);
-  const [tickerCheck, setTickerCheck] = useState({})
+  const [tickerCheck, setTickerCheck] = useState({});
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -40,13 +43,13 @@ function PortfolioChart() {
 
   useEffect(() => {
     const getData = async () => {
-
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
-      const newTickers = {}
+      const newTickers = {};
       tickers.forEach((ticker) => {
-        if(!newTickers[ticker.symbol]) newTickers[ticker.symbol] = ticker.symbol
-      })
+        if (!newTickers[ticker.symbol])
+          newTickers[ticker.symbol] = ticker.symbol;
+      });
       if (tickers.length > 0) {
         setTickerData(tickers);
         let created = tickers[0]?.created_at;
@@ -68,8 +71,15 @@ function PortfolioChart() {
       }
     };
 
-    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000));
-  }, [dispatch, userId, daily, monthly, weekly]);
+    getData().then(setTimeout(() => setStocksIsLoaded(true), 5000)).then(() => {
+       if (!currentUser) history.push("/login");
+    else if (currentUser?.id !== userId ) history.push(`/portfolios/${userId}`);
+    });
+
+  }, [dispatch, userId, daily, monthly, weekly, currentUser]);
+
+  const checkUser = () => {
+  };
 
   function formattedData(ticker, state) {
     let data2 =
@@ -195,7 +205,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "stock_details_percent_change_plus"
         : "stock_details_percent_change_minus"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "stock_details_percent_change_plus" :"stock_details_percent_change_minus")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "stock_details_percent_change_plus"
+      : "stock_details_percent_change_minus"
     : weekly
     ? formattedChangeWeekly() >= 0
       ? "stock_details_percent_change_plus"
@@ -209,7 +227,15 @@ function PortfolioChart() {
       ? formattedChange >= 0
         ? "rgb(0, 243, 0)"
         : "rgb(255, 0, 0)"
-      : (formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2] >=0 ? "rgb(0, 243, 0)" :"rgb(255, 0, 0)")
+      : formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ] >=
+        0
+      ? "rgb(0, 243, 0)"
+      : "rgb(255, 0, 0)"
     : weekly
     ? formattedChangeWeekly() > 0
       ? "rgb(0, 243, 0)"
@@ -351,13 +377,17 @@ function PortfolioChart() {
     return count;
   };
 
-  const formattedChange =
-    Number(
-      daily
-        ? formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -1] - formattedDataPortfolio(stockInfo)[formattedDataPortfolio(stockInfo).length -2]
-        : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
-            data?.datasets[0].data[0]
-    );
+  const formattedChange = Number(
+    daily
+      ? formattedDataPortfolio(stockInfo)[
+          formattedDataPortfolio(stockInfo).length - 1
+        ] -
+          formattedDataPortfolio(stockInfo)[
+            formattedDataPortfolio(stockInfo).length - 2
+          ]
+      : data?.datasets[0].data[data?.datasets[0].data.length - 1] -
+          data?.datasets[0].data[0]
+  );
 
   const formattedPercentChange =
     stocksIsLoaded &&
@@ -385,7 +415,11 @@ function PortfolioChart() {
 
   return stocksIsLoaded ? (
     <>
+
       <div id="portfolio_container">
+        <DeletePortfolioForm
+          price={data.datasets[0].data[data.datasets[0].data.length - 1]}
+        />
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
@@ -401,9 +435,11 @@ function PortfolioChart() {
               : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
             (
             {tickerData
-              ? (formattedPercentChange >= 0 ?  formattedPercentChange >= 0
-                ? "+" + formattedPercentChange
-                : `${formattedPercentChange}` : 0)
+              ? formattedPercentChange >= 0
+                ? formattedPercentChange >= 0
+                  ? "+" + formattedPercentChange
+                  : `${formattedPercentChange}`
+                : 0
               : 0}
             %){" "}
             {tickerData

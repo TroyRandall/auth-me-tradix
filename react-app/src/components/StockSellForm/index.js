@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector,  } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import * as portfolioActions from "../../store/portfolio";
 import './StockSellForm.css'
 
 function SellStockForm({ portfolio }) {
   const dispatch = useDispatch();
-  const history = useHistory();
   const currentUser = useSelector((state) => state.session.user);
   const stockInfo = useSelector((state) => state.stocks)
   const portfolios = useSelector((state) => state.portfolios[portfolio.id]);
@@ -21,7 +19,6 @@ function SellStockForm({ portfolio }) {
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
 
-  if (!currentUser) history.push("/login");
 
   useEffect(() => {
 
