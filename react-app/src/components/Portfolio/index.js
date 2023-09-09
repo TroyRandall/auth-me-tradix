@@ -44,7 +44,6 @@ function PortfolioChart({ current}) {
 
   useEffect(() => {
     const getData = async () => {
-      if (userId) {
          if (!current) return <Redirect to={"/login"} />;
           else if (current?.id !== userId) history.push(`/portfolios/${userId}`)
         const res = await dispatch(
@@ -74,11 +73,6 @@ function PortfolioChart({ current}) {
             await dispatch(weeklyActions.stockDataWeekly(ticker));
           });
           setCreatedAt(created);
-        } else {
-          await dispatch(stockActions.stockDataDaily("TSLA"));
-          await dispatch(weeklyActions.stockDataWeekly("TSLA"));
-          await dispatch(monthlyActions.stockDataMonthly("TSLA"));
-        }
       }
     };
 

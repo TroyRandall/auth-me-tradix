@@ -20,6 +20,7 @@ import PortfolioPage from "./components/Portfolio";
 import ProfilePage from "./components/Portfolio/Profilepage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
+import Testing from './components/Portfolio/Testing'
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -55,6 +56,10 @@ function App() {
         {/* <Route path="/app" exact={true}>
           <AppHome />
         </Route> */}
+
+        <Route path='/testing'>
+          <Testing></Testing>
+        </Route>
         <Route path="/stocks/:ticker">
           <AppMainNavBar />
           <StockDetails />
