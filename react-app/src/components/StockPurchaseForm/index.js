@@ -100,7 +100,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           </div>
         ) : (
           <div id="successful-purchase">
-            <h3 id="purchase-title">Congratulations</h3>
+            <h3 id="purchase-title">Congratulations ! </h3>
             <p id="purchase-message-success">
               Your Market Order for {quantity} Shares of {tickerSymbol} for $
               {avgPrice} Is Completed
@@ -129,7 +129,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             </p>
           }
           <p id="form-field1">Order Type</p> <p id="form-field2">Buy Order</p>
-          <label id="form-ticker-label">Stock Ticker</label>
+          <label id="form-ticker-label">Stock Ticker : </label>
           <input
             id="form-ticker-input"
             name="symbol"
@@ -138,7 +138,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             onChange={(e) => setTickerSymbol(e.target.value)}
             required
           ></input>
-          <label id="form-quantity-label">Quantity</label>
+          <label id="form-quantity-label">Quantity : </label>
           <input
             id="form-quantity-input"
             name="quantity"

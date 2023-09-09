@@ -139,15 +139,15 @@ function SellStockForm({ portfolio }) {
 
   return ( portfolio?.quantity === 0 || portfolio?.sold_at ? null:
     <div id="stock-asset-container">
-      <div className="stock-asset-item">{portfolio.name}</div>
-      <div className="stock-asset-item">{portfolio.symbol}</div>
-      <div className="stock-asset-item">{portfolio.quantity}</div>
-      <div className="stock-asset-item">${portfolio.avgPrice}</div>
-      <div className="stock-asset-item">{portfolio.created_at}</div>
-      <div className="stock-asset-item">
+      <div className="stock-asset-item2">{portfolio.name}</div>
+      <div className="stock-asset-item2">{portfolio.symbol}</div>
+      <div className="stock-asset-item2">{portfolio.quantity}</div>
+      <div className="stock-asset-item2">${portfolio.avgPrice}</div>
+      <div className="stock-asset-item2">{portfolio.created_at}</div>
+      <div className="stock-asset-item2">
         {portfolio.sold_at ? portfolio.sold_at : ""}
       </div>
-      <button className="stock-asset-item" onClick={toggleModal}>
+      <button className="stock-asset-item2" onClick={toggleModal}>
         Sell Stock
       </button>
       {checkModal()}

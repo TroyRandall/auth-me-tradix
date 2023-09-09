@@ -5,8 +5,8 @@
     justify-content: center;
     align-self: center;
     width: 100%;
-    border: 2px solid grey;
-    border-radius: 20px;
+    /* border: 1px solid #cccccc; */
+    border-radius: 3px;
     margin: 10px;
   }
 
@@ -14,7 +14,17 @@
     width: 100%;
     align-self: center;
     padding: 5px;
-    font-size: 16px;
+    font-size: 13.5px;
+    font-weight: 666;
+  }
+  .stock-asset-item2{
+    width: 100%;
+    align-self: center;
+    padding: 5px;
+    font-size: 13.5px;
+  }
+  .stock-asset-item2:hover{
+    color:  #00C805
   }
 
   #sell-stock-form {
@@ -32,4 +42,3 @@
     /* border: 2px solid #1dfd1d; */
     justify-content: space-between;
   }
-  

@@ -425,7 +425,7 @@ function PortfolioChart() {
               onClick={dailyToggle}
               checked={daily || false}
             />
-            <span className="name">Daily</span>
+            <span className="name">1D</span>
           </label>
           <label className="chart-radio">
             <input
@@ -434,7 +434,7 @@ function PortfolioChart() {
               onClick={weeklyToggle}
               checked={weekly || false}
             />
-            <span className="name">Weekly</span>
+            <span className="name">1W</span>
           </label>
 
           <label className="chart-radio">
@@ -444,7 +444,7 @@ function PortfolioChart() {
               onClick={monthlyToggle}
               checked={monthly || false}
             />
-            <span className="name">Monthly</span>
+            <span className="name">1M</span>
           </label>
         </div>
         <div className="buying-power-section">
