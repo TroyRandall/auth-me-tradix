@@ -17,11 +17,11 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart({ current }) {
+function PortfolioChart({ current, userId }) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
-  const { userId } = useParams();
+
   const dispatch = useDispatch();
   const history = useHistory();
   const [hoverPrice, setHoverPrice] = useState(false);
@@ -143,8 +143,8 @@ function PortfolioChart({ current }) {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    if (tickerData) {
-      Object.values(tickerData).forEach((stock) => {
+    if (portfolios) {
+      Object.values(portfolios).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
         count = 0;
@@ -176,6 +176,8 @@ function PortfolioChart({ current }) {
                     newData[`${count}`] + data * stock.quantity)
                 : (newData[`${count}`] = data * stock.quantity);
             } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+              else
+              {newData[`${count}`] = newData[`${count}`] - (data * stock.quantity)}
             count++;
           }
         });
