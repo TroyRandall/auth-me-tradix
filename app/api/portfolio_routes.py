@@ -54,7 +54,8 @@ def portfolio_add(id):
 @portfolio_routes.route("/<int:id>", methods=["PUT"])
 @login_required
 def portfolio_update(id):
-    currentUser = User.query.get(current_user.id)
+    currentUser = User.query.get(id)
+    print(currentUser)
     form = PortfolioSellForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     if form.validate():
@@ -73,21 +74,27 @@ def portfolio_update(id):
                 )
                 userPortfolio.quantity = form.data["quantity"]
                 userPortfolio.sold_at = datetime.now()
+                currentUser = User.query.get(id)
+                print(currentUser.to_dict())
                 currentUser.buying_power = currentUser.buying_power + (
                     form.data["avg_price"] * form.data["quantity"]
             )
+                print(currentUser.to_dict())
+
+                allPortfolios = Portfolio.query.filter(Portfolio.user_id == userPortfolio.user_id).all()
                 db.session.add(newPortfolio)
                 db.session.commit()
-                return {'portfolios': [newPortfolio.to_dict(), userPortfolio.to_dict()]}
+                return {id: [portfolio.to_dict() for portfolio in allPortfolios]}
             else:
                 userPortfolio.quantity = 0
                 userPortfolio.sold_at = datetime.now()
                 currentUser.buying_power = currentUser.buying_power + (
                     form.data["avg_price"] * form.data["quantity"]
             )
-            allPortfolios = Portfolio.query.filter(Portfolio.user_id == userPortfolio.user_id)
-            db.session.commit()
-            return {id: [portfolio.to_dict() for portfolio in allPortfolios]}
+                allPortfolios = Portfolio.query.filter(Portfolio.user_id == userPortfolio.user_id).all()
+                print(allPortfolios)
+                db.session.commit()
+                return {id: [portfolio.to_dict() for portfolio in allPortfolios]}
         else:
             return {"errors": "Portfolio does not exist"}
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401

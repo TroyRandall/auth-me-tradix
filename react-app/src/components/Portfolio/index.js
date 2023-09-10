@@ -505,8 +505,8 @@ function PortfolioChart({ current }) {
             <div className="stock-asset-item">Sold On</div>
             <div className="stock-asset-item">Sell Stock Button</div>
           </div>
-          {stocksIsLoaded &&
-            Object.values(portfolios).map((portfolio) => {
+          {(stocksIsLoaded && portfolios?.length > 1) &&
+            Object.values(portfolios)?.map((portfolio) => {
               return (
                 <SellStockForm
                   portfolio={portfolio}
