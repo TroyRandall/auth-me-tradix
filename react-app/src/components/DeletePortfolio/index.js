@@ -29,8 +29,10 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     const noButton = document.getElementById("deny-portfolio-reset");
     if (e.target === overlay || e.target === noButton) setToggle(false);
     else if (e.target === yesButton) {
-      if(price === 0) setErrors({'errors':'You Have no Assets or History To Delete'})
-      if (!errors.length) {
+      if(price === 0 || Object.values(portfolios).length < 1) {
+        setErrors({'errors':'You Have no Assets or History To Delete'})
+        return errors }
+      if (!Object.values(errors).length) {
         const response = await dispatch(
           portfolioActions.deletePortfolioItem(userId, price)
         ).catch(async (res) => {
@@ -42,8 +44,10 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         }
         console.log(currentUser)
         await dispatch(portfolioActions.getPortfoliosByUser(userId));
+        await dispatch(authenticate());
         reset()
         console.log(currentUser)
+        setToggle(false);
         return response;
       } else {
         setToggle(false);
@@ -63,7 +67,9 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       return (
         <div className={UlClassName} onClick={cancelModal} id="overlay">
           <div id="delete-portfolio">
-            <div>{errors}</div>
+            <div>{Object.values(errors).map((error) => {
+              <li id='errors-errors'>{error}</li>
+            })}</div>
             <h3>Are You Sure You Would Like To Reset Your Portfolio?</h3>
             <p>
               Doing So Will Liquidate All of Your Assets and Erase All History
