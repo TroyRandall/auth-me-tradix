@@ -89,8 +89,9 @@ def find_username(username):
 @user_routes.route('/updateBP', methods=['PUT'])
 def updateBP():
     currentUser = User.query.get(current_user.id)
-    value = request.body['value']
-    currentUser.buying_power = currentUser.buyingPower + value
+    value = request.get_json()['value']
+    print(value)
+    currentUser.buying_power = currentUser.buying_power + value
     db.session.commit()
     return {'Success': 'Successfully updated buying power'}
 
