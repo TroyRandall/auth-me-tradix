@@ -72,7 +72,7 @@ function PortfolioChart({ current }) {
     };
 
     getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
+      .then(setTimeout(() => setStocksIsLoaded(true), 8000))
       .then(() => {
         if (!current) history.push("/login");
         else if (current?.id !== userId) {
