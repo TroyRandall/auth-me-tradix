@@ -15,9 +15,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
-  const purchaseRef = useRef();
+  const submitRef = useRef();
   const [tickerSymbol, setTickerSymbol] = useState("");
-  const [called, setCalled] = useState(false);
+  const [backendToggle, setBackendToggle] = useState(false);
+  const[modalToggle, setModalToggle] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [avgPrice, setAvgPrice] = useState('');
   const [estimate, setEstimate] = useState("");
@@ -50,60 +51,56 @@ function PurchaseStockForm({ average, isLoaded, change }) {
       }
 
       setErrors({ ...newErrors });
-      if (errors && Object.values(newErrors).length > 0) return errors;
-      else setCalled(true)
+      if (errors.length > 0 || Object.values(newErrors).length > 0) return errors;
+      else setBackendToggle(true)
     }
 
 
     const closeModal = (e) => {
-          const overlay = document.getElementById('overlay')
-    const submitButton = document.getElementById('form-submit-button')
-    const submitButtonMinus = document.getElementById('form-submit-button-minus')
-      if(e.target !== overlay && (e.target !== submitButton && e.target !== submitButtonMinus)) {
-              setCalled(false);
       setSubmitToggle(false);
-      setTickerSymbol("");
-      setAvgPrice("");
-      setQuantity("");
-      setEstimate("");
-      }
+      setModalToggle(false);
+      setBackendToggle(false);
+      setAvgPrice('');
+      setQuantity('');
+      setTickerSymbol('')
 
     };
 
-    if (called) {
+    if (modalToggle) {
       document.addEventListener("click", closeModal);
 
       return () => document.removeEventListener("click", closeModal);
     }
-  }, [avgPrice, quantity, submitToggle, called]);
+  }, [avgPrice, quantity, submitToggle, modalToggle]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit =  (e) => {
+    const submitButton = document.getElementById('form-submit-button')
+    const submitButtonMinus = document.getElementById('form-submission-button-minus')
     setSubmitToggle(true);
-    if(called) {
+    if(backendToggle && (submitRef.current.contains(e.target))) {
         let id = currentUser?.id;
     let portfolio = { id, tickerSymbol, quantity, avgPrice };
     if (!Object.values(errors).length) {
-      const response = await dispatch(
+      const response =  dispatch(
         portfolioActions.addPortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
-      setCalled(false);
+      setModalToggle(true)
       return response;
     }
 
     }
+    else return null;
   };
 
-  const UlClassName = "overlay" + (called ? "" : "hidden");
+  const UlClassName = "overlay" + (modalToggle ? "" : "hidden");
 
   const checkModal = () => {
-    if (called) {
+    if (modalToggle) {
       return (
-        <div className={UlClassName}>
+        <div >
           {Object.values(backendErrors).length ? (
             <div id="failed-purchase">
               <h3 id="purchase-title"> Order Not Executed</h3>
@@ -200,6 +197,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               </select>
             </div>
             <div
+              ref={submitRef}
               onClick={handleSubmit}
               id={
                 change === "+"
@@ -222,7 +220,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
                 {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
               </p>
             </div>
-            <div id="modal-form" ref={purchaseRef}>
+            <div id="modal-form">
               <div>{checkModal()}</div>
             </div>
             <button onClick={() => setShow(true)} className="addTolist">
