@@ -21,6 +21,7 @@ import ProfilePage from "./components/Portfolio/Profilepage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import Testing from './components/Portfolio/Testing'
+import DarkMode from "./components/DarkMode/DarkMode";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -61,6 +62,7 @@ function App() {
           <Testing></Testing>
         </Route>
         <Route path="/stocks/:ticker">
+          {/* <DarkMode /> */}
           <AppMainNavBar />
           <StockDetails />
         </Route>

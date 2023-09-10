@@ -25,3 +25,8 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+[data-theme="dark"] {
+  --body_background:#0f0f0f;
+  --body_color: #000000;
+  --link_color: rgb(201, 226, 89);
+}
