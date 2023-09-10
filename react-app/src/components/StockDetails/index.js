@@ -288,12 +288,7 @@ function StockDetails() {
       <>
         <div id="company-grid-container">
           <PurchaseStockForm
-            average={
-              Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-                Object.values(stockInfo[ticker]["Time Series (Daily)"]).length -
-                  1
-              ]["4. close"]
-            }
+            average={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
             isLoaded={isLoaded}
             change={change > 0 ? "+" : "-"}
           />

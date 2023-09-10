@@ -19,12 +19,13 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const [tickerSymbol, setTickerSymbol] = useState("");
   const [called, setCalled] = useState(false);
   const [quantity, setQuantity] = useState("");
-  const [avgPrice, setAvgPrice] = useState("");
+  const [avgPrice, setAvgPrice] = useState(0);
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
   const [backendErrors, setBackendErrors] = useState(false);
   const [errors, setErrors] = useState({});
   const currentUser = useSelector((state) => state.session.user);
+  const stockInfo = useSelector((state) => state.stocks)
 
   useEffect(() => {
     setEstimate((avgPrice * quantity).toFixed(2));
@@ -53,10 +54,11 @@ function PurchaseStockForm({ average, isLoaded, change }) {
       else setCalled(true)
     }
 
-    const overlay = document.getElementById('overlay')
+
+    const closeModal = (e) => {
+          const overlay = document.getElementById('overlay')
     const submitButton = document.getElementById('form-submit-button')
     const submitButtonMinus = document.getElementById('form-submit-button-minus')
-    const closeModal = (e) => {
       if(e.target !== overlay && (e.target !== submitButton && e.target !== submitButtonMinus)) {
               setCalled(false);
       setSubmitToggle(false);
@@ -187,7 +189,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
                 value={avgPrice}
                 onChange={(e) => setAvgPrice(e.target.value)}
                 required
-                default={average}
               ></input>
             </div>
             <div className="purchase-form-item">

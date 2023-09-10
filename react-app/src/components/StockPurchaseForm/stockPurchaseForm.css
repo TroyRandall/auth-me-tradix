@@ -546,17 +546,19 @@
   font-size: 1.25em;
   padding-top: 10px;
   border-top: 1px solid #cccccc;
+  margin-top: 15px;
 }
 
 #errors-errors {
   grid-row: 1/2;
   grid-column: 1/2;
   justify-self: center;
-  display: grid;
-  font-size: 1em;
+  display: flex;
+  flex-flow: column;
+  font-size: 1.25em;
   align-items: inherit;
-  color: red;
   list-style-type: none;
+  width: 100%;
   color: #636363;
 }
 

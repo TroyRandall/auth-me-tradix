@@ -29,8 +29,8 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     const noButton = document.getElementById("deny-portfolio-reset");
     if (e.target === overlay || e.target === noButton) setToggle(false);
     else if (e.target === yesButton) {
-      if(price === 0) setErrors('You Have no Assets or History To Delete')
-      if (!errors) {
+      if(price === 0) setErrors({'errors':'You Have no Assets or History To Delete'})
+      if (!errors.length) {
         const response = await dispatch(
           portfolioActions.deletePortfolioItem(userId, price)
         ).catch(async (res) => {
@@ -42,7 +42,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         }
         console.log(currentUser)
         await dispatch(portfolioActions.getPortfoliosByUser(userId));
-        await dispatch(authenticate())
         reset()
         console.log(currentUser)
         return response;
