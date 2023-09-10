@@ -67,6 +67,7 @@ export const deletePortfolioItem = (id, value) => async (dispatch) => {
 
   if(response.ok){
     await fetch(`/api/users/updateBP`, {
+      method: 'PUT',
       headers: {
         "Content-Type": "application/json",
       },

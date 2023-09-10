@@ -9,7 +9,7 @@ import "./stockPurchaseForm.css";
 function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
 
-  const {stockId} = useParams();
+  const { stockId } = useParams();
 
   const [show, setShow] = useState(false);
 
@@ -39,10 +39,13 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           newErrors.buyingPower = "You Do Not Have Enough Buying Power";
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
-        if (tickerSymbol !== ticker && !newErrors.ticker) newErrors.ticker ='Ticker Symbol Must Be The Symbol Assosicated With This Stock'
+        if (tickerSymbol !== ticker && !newErrors.ticker)
+          newErrors.ticker =
+            "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
         if (avgPrice <= 0) newErrors.price = "Price is Required";
-        if (avgPrice < average && !newErrors.price) newErrors.price = 'Orders with a Price below the Average Stock Price Will Not Be Filled'
-
+        if (avgPrice < average && !newErrors.price)
+          newErrors.price =
+            "Orders with a Price below the Average Stock Price Will Not Be Filled";
       }
 
       setErrors({ ...newErrors });
@@ -50,15 +53,12 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     }
 
     const closeModal = (e) => {
-
       setCalled(false);
       setSubmitToggle(false);
       setTickerSymbol("");
       setAvgPrice("");
       setQuantity("");
       setEstimate("");
-
-
     };
 
     if (called) {
@@ -91,125 +91,142 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const checkModal = () => {
     if (called) {
       return (
-      <div className={UlClassName}>
-        {Object.values(backendErrors).length ? (
-          <div id="failed-purchase">
-            <h3 id="purchase-title"> Order Not Executed</h3>
-            <p>
-              {Object.values(backendErrors)?.map((error) => {
-                return <p id="purchase-message-failed"> {error} </p>;
-              })}
-            </p>
-          </div>
-        ) : (
-          <div id="successful-purchase">
-            <h3 id="purchase-title">Congratulations ! </h3>
-            <p id="purchase-message-success">
-              Your Market Order for {quantity} Shares of {tickerSymbol} for $
-              {avgPrice} Is Completed
-            </p>
-          </div>
-        )}
-      </div>)
+        <div className={UlClassName}>
+          {Object.values(backendErrors).length ? (
+            <div id="failed-purchase">
+              <h3 id="purchase-title"> Order Not Executed</h3>
+              <p>
+                {Object.values(backendErrors)?.map((error) => {
+                  return <p id="purchase-message-failed"> {error} </p>;
+                })}
+              </p>
+            </div>
+          ) : (
+            <div id="successful-purchase">
+              <h3 id="purchase-title">Congratulations ! </h3>
+              <p id="purchase-message-success">
+                Your Market Order for {quantity} Shares of {tickerSymbol} for $
+                {avgPrice} Is Completed
+              </p>
+            </div>
+          )}
+        </div>
+      );
     }
   };
   return (
     isLoaded && (
       <>
-      <div className="form-con">
-        <form
-          id={
-            Object.values(errors).length > 0
-              ? "purchase-form-errors"
-              : "purchase-form"
-          }
-        >
-          <h5 id="form-title">Buy {uppercaseTicker}</h5>
-          {
-            <p id="errors-errors">
-              {Object.values(errors).map((error) => (
-                <li>{error}</li>
-              ))}
-            </p>
-          }
-          <p id="form-field1" className='stock-purchase-item'>Order Type</p> <p className='stock-purchase-item' id="form-field2">Buy Order</p>
-
-          <label id="form-ticker-label" className='stock-purchase-item'>Stock Ticker</label>
-          <input
-          className='stock-purchase-item'
-            id="form-ticker-input"
-            name="symbol"
-            placeholder="Ticker Symbol"
-            value={tickerSymbol}
-            onChange={(e) => setTickerSymbol(e.target.value)}
-            required
-          ></input>
-
-          <label className='stock-purchase-item' id="form-quantity-label">Quantity</label>
-          <input
-            id="form-quantity-input"
-            name="quantity"
-            placeholder="Quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          ></input>
-
-          <label id="form-price-label">Average Price</label>
-          <input
-            id="form-price-input"
-            name="Average price"
-            placeholder={average}
-            value={avgPrice}
-            onChange={(e) => setAvgPrice(e.target.value)}
-            required
-            default={average}
-          ></input>
-          <label id="form-purchaseIn-label">Purchase In</label>
-          <select name="purchaseIn" id="form-purchaseIn-input">
-            <option value="shares">Shares</option>
-            <option value="shares">Dollars</option>
-            <option value="shares">Cryptos</option>
-
-          </select>
-          <label id="form-estimated-price">
-            {" "}
-            {estimate > 0
-              ? `Estimated Price is $${estimate.toLocaleString("en-US")}`
-              : ""}
-          </label>
-          <div
-            onClick={handleSubmit}
+        <div className="form-con">
+          <form
             id={
-              change === "+" ? "form-submit-button" : "form-submit-button-minus"
+              Object.values(errors).length > 0
+                ? "purchase-form-errors"
+                : "purchase-form"
             }
           >
-            <span>Add to portfolio</span>
-          </div>
-          <p id="form-buying-power-available">
-            Buying Power Available $
-            {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
-          </p>
-          <div id="modal-form" ref={purchaseRef}>
-          <div>{checkModal()}</div>
-        </div>
-        <button onClick={() => setShow(true)} className="addTolist">
-          <span>Add to Watchlist</span>
-						</button>
+            <h5 id="form-title">Buy {uppercaseTicker}</h5>
+            {
+              <p id="errors-errors">
+                {Object.values(errors).map((error) => (
+                  <li>{error}</li>
+                ))}
+              </p>
+            }
+            <div className="purchase-form-item">
+              <p id="form-field1" className="stock-purchase-item">
+                Order Type
+              </p>{" "}
+              <p className="stock-purchase-item" id="form-field2">
+                Buy Order
+              </p>
+            </div>
+            <div className="purchase-form-item">
+              <label id="form-ticker-label" className="stock-purchase-item">
+                Stock Ticker
+              </label>
+              <input
+                className="stock-purchase-item"
+                id="form-ticker-input"
+                name="symbol"
+                placeholder="Ticker Symbol"
+                value={tickerSymbol}
+                onChange={(e) => setTickerSymbol(e.target.value)}
+                required
+              ></input>
+            </div>
+            <div className="purchase-form-item">
+              <label className="stock-purchase-item" id="form-quantity-label">
+                Quantity
+              </label>
+              <input
+                id="form-quantity-input"
+                name="quantity"
+                placeholder="Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                required
+              ></input>
+            </div>
+            <div className="purchase-form-item">
+              <label id="form-price-label">Average Price</label>
+              <input
+                id="form-price-input"
+                name="Average price"
+                placeholder={average}
+                value={avgPrice}
+                onChange={(e) => setAvgPrice(e.target.value)}
+                required
+                default={average}
+              ></input>
+            </div>
+            <div className="purchase-form-item">
+              <label id="form-purchaseIn-label">Purchase In</label>
+              <select name="purchaseIn" id="form-purchaseIn-input">
+                <option value="shares">Shares</option>
+                <option value="shares">Dollars</option>
+                <option value="shares">Cryptos</option>
+              </select>
+            </div>
+            <div
+              onClick={handleSubmit}
+              id={
+                change === "+"
+                  ? "form-submit-button"
+                  : "form-submit-button-minus"
+              }
+            >
+              <span>Add to portfolio</span>
+            </div>{" "}
+            <div className="purchase-form-item">
+              <label id="form-estimated-price">
+                {" "}
+                {estimate > 0
+                  ? `Estimated Price is $${estimate.toLocaleString("en-US")}`
+                  : ""}
+              </label>
 
-          <Modal
-							title={`Add ${ticker} to a Watchlist ?`}
-							show={show}
-							onClose={() => setShow(false)}
-						>
-							<>
-								<StockList assetID={stockId} assetSymbol={ticker} />
-							</>
-						</Modal>
-
-
-
-          {/* <button
+              <p id="form-buying-power-available">
+                Buying Power Available $
+                {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
+              </p>
+            </div>
+            <div id="modal-form" ref={purchaseRef}>
+              <div>{checkModal()}</div>
+            </div>
+            <button onClick={() => setShow(true)} className="addTolist">
+              <span>Add to Watchlist</span>
+            </button>
+            <Modal
+              title={`Add ${ticker} to a Watchlist ?`}
+              show={show}
+              onClose={() => setShow(false)}
+            >
+              <>
+                <StockList assetID={stockId} assetSymbol={ticker} />
+              </>
+            </Modal>
+            {/* <button
             className={
               change === "+"
                 ? "form-add-to-watchlist"
@@ -218,9 +235,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           >
             Add To watchlist
           </button> */}
-        </form>
+          </form>
         </div>
-
       </>
     )
   );
