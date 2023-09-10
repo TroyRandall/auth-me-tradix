@@ -65,10 +65,9 @@ function PortfolioChart({ current }) {
         });
         setCreatedAt(created);
       } else {
-        await dispatch(stockActions.stockDataDaily('tsla'));
-          await dispatch(monthlyActions.stockDataMonthly('tsla'));
-          await dispatch(weeklyActions.stockDataWeekly('tsla'));
-
+        await dispatch(stockActions.stockDataDaily("tsla"));
+        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        await dispatch(weeklyActions.stockDataWeekly("tsla"));
       }
     };
 
@@ -79,9 +78,7 @@ function PortfolioChart({ current }) {
         else if (current?.id !== userId) {
           return <Redirect to={`/portfolios/${userId}`} />;
         }
-
       });
-
   }, [dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
@@ -93,11 +90,12 @@ function PortfolioChart({ current }) {
         ? Object.values(state[ticker]["Weekly Time Series"])
         : Object.values(state[ticker]["Monthly Time Series"]));
     const newData = [];
-    if (data2.length) {
+    if (data2?.length) {
       data2.forEach((dataPoint) => {
         newData.push(dataPoint["4. close"]);
       });
     }
+
     return newData;
   }
 
@@ -135,7 +133,7 @@ function PortfolioChart({ current }) {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    if (portfolios) {
+    if (tickerData) {
       Object.values(tickerData).forEach((stock) => {
         let oldData = formattedData(stock.symbol, state).reverse();
         let index = 0;
@@ -167,11 +165,13 @@ function PortfolioChart({ current }) {
                 ? (newData[`${count}`] =
                     newData[`${count}`] + data * stock.quantity)
                 : (newData[`${count}`] = data * stock.quantity);
-            } else if (!newData[`${count}`]) newData[`${count}`] = 0;
-            else {
-              newData[`${count}`] = newData[`${count}`] - data * stock.quantity;
+            } else {
+              newData[`${count}`]
+                ? (newData[`${count}`] =
+                    newData[`${count}`])
+                : (newData[`${count}`] = 0);
+              count++;
             }
-            count++;
           }
         });
         index++;
@@ -505,7 +505,8 @@ function PortfolioChart({ current }) {
             <div className="stock-asset-item">Sold On</div>
             <div className="stock-asset-item">Sell Stock Button</div>
           </div>
-          {(stocksIsLoaded && portfolios?.length > 1) &&
+          {stocksIsLoaded &&
+            portfolios?.length > 1 &&
             Object.values(portfolios)?.map((portfolio) => {
               return (
                 <SellStockForm
