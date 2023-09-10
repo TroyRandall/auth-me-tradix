@@ -50,15 +50,22 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       setErrors({ ...newErrors });
       if (errors && Object.values(newErrors).length > 0) return errors;
+      else setCalled(true)
     }
 
+    const overlay = document.getElementById('overlay')
+    const submitButton = document.getElementById('form-submit-button')
+    const submitButtonMinus = document.getElementById('form-submit-button-minus')
     const closeModal = (e) => {
-      setCalled(false);
+      if(e.target !== overlay && (e.target !== submitButton && e.target !== submitButtonMinus)) {
+              setCalled(false);
       setSubmitToggle(false);
       setTickerSymbol("");
       setAvgPrice("");
       setQuantity("");
       setEstimate("");
+      }
+
     };
 
     if (called) {
@@ -72,7 +79,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     e.preventDefault();
 
     setSubmitToggle(true);
-    let id = currentUser?.id;
+    if(called) {
+        let id = currentUser?.id;
     let portfolio = { id, tickerSymbol, quantity, avgPrice };
     if (!Object.values(errors).length) {
       const response = await dispatch(
@@ -81,8 +89,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
-      setCalled(true);
+      setCalled(false);
       return response;
+    }
+
     }
   };
 
@@ -121,15 +131,15 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           <form
             id={
               Object.values(errors).length > 0
-                ? "purchase-form-errors"
+                ? "purchase-form"
                 : "purchase-form"
             }
           >
             <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {
-              <p id="errors-errors">
+              <p id="errors-errors" className='purchase-form-item'>
                 {Object.values(errors).map((error) => (
-                  <li>{error}</li>
+                  <li id='error-item'>{error}</li>
                 ))}
               </p>
             }
@@ -194,11 +204,11 @@ function PurchaseStockForm({ average, isLoaded, change }) {
                 change === "+"
                   ? "form-submit-button"
                   : "form-submit-button-minus"
-              }
+              } className='purchase-form-item'
             >
               <span>Add to portfolio</span>
             </div>{" "}
-            <div className="purchase-form-item">
+            <div className="buying-purchase-form-item">
               <label id="form-estimated-price">
                 {" "}
                 {estimate > 0
