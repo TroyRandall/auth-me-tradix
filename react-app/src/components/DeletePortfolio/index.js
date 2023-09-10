@@ -68,20 +68,24 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         <div className={UlClassName} onClick={cancelModal} id="overlay">
           <div id="delete-portfolio">
             <div>{Object.values(errors).map((error) => {
-              <li id='errors-errors'>{error}</li>
+              <li className='delete-portfolio-items' id='errors-errors'>{error}</li>
             })}</div>
-            <h3>Are You Sure You Would Like To Reset Your Portfolio?</h3>
-            <p>
+            <h3 className='delete-portfolio-items' id='delete-form-title'>!!!ATTENTION!!! </h3>
+            <h3 className='delete-portfolio-items'>You Are About To Delete Your Portfolio</h3>
+            <p className='delete-portfolio-items' id='delete-portfolio-paragraph'>
               Doing So Will Liquidate All of Your Assets and Erase All History
               Of Your Account.
             </p>
-            <p>Would You Like To Continue?</p>
-            <button id="confirm-portfolio-reset" onClick={cancelModal}>
+            <p className='delete-portfolio-items' id='delete-confirm'>Would You Like To Continue?</p>
+            <div className='delete-portfolio-items'>
+               <button className='delete-portfolio-items' id="confirm-portfolio-reset" onClick={cancelModal}>
               Yes
             </button>{" "}
-            <button onClick={cancelModal} id="deny-portfolio-reset">
+            <button className='delete-portfolio-items' onClick={cancelModal} id="deny-portfolio-reset">
               No
             </button>
+            </div>
+
           </div>
         </div>
       );
@@ -89,8 +93,11 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   };
 
   return (
-    <div>
-      <button onClick={changeToggle}>Reset Portfolio</button>
+    <div id="reset-portfolio" >
+      <button id='reset-button'onClick={changeToggle}><span class="shadow"></span>
+  <span class="edge"></span>
+  <span class="front text">Reset Portfolio
+  </span></button>
       <div>{checkModal()}</div>
     </div>
   );
