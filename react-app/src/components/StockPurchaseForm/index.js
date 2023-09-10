@@ -116,6 +116,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   return (
     isLoaded && (
       <>
+      <div className="form-con">
         <form
           id={
             Object.values(errors).length > 0
@@ -132,7 +133,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             </p>
           }
           <p id="form-field1" className='stock-purchase-item'>Order Type</p> <p className='stock-purchase-item' id="form-field2">Buy Order</p>
-         <div className='stock-purchase-item'>
+
           <label id="form-ticker-label" className='stock-purchase-item'>Stock Ticker</label>
           <input
           className='stock-purchase-item'
@@ -143,8 +144,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             onChange={(e) => setTickerSymbol(e.target.value)}
             required
           ></input>
-          </div>
-          <div className='stock-purchase-item'> <label className='stock-purchase-item' id="form-quantity-label">Quantity</label>
+
+          <label className='stock-purchase-item' id="form-quantity-label">Quantity</label>
           <input
             id="form-quantity-input"
             name="quantity"
@@ -152,7 +153,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             required
-          ></input> </div>
+          ></input>
 
           <label id="form-price-label">Average Price</label>
           <input
@@ -167,6 +168,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           <label id="form-purchaseIn-label">Purchase In</label>
           <select name="purchaseIn" id="form-purchaseIn-input">
             <option value="shares">Shares</option>
+            <option value="shares">Dollars</option>
+            <option value="shares">Cryptos</option>
+
           </select>
           <label id="form-estimated-price">
             {" "}
@@ -186,9 +190,13 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Buying Power Available $
             {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
           </p>
-          <button onClick={() => setShow(true)} className="addTolist">
+          <div id="modal-form" ref={purchaseRef}>
+          <div>{checkModal()}</div>
+        </div>
+        <button onClick={() => setShow(true)} className="addTolist">
           <span>Add to Watchlist</span>
 						</button>
+
           <Modal
 							title={`Add ${ticker} to a Watchlist ?`}
 							show={show}
@@ -198,6 +206,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 								<StockList assetID={stockId} assetSymbol={ticker} />
 							</>
 						</Modal>
+
+
+
           {/* <button
             className={
               change === "+"
@@ -208,9 +219,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Add To watchlist
           </button> */}
         </form>
-        <div id="modal-form" ref={purchaseRef}>
-          <div>{checkModal()}</div>
         </div>
+
       </>
     )
   );

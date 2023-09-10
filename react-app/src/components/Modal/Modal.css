@@ -1,5 +1,5 @@
 .addTolist{
-  width: 18rem;
+  /* width: 18rem;
   height: 2.5rem;
   border-radius: 50px;
   border: 1px solid;
@@ -7,13 +7,22 @@
   color: rgb(255, 80, 0, 1);
   font-weight: bold;
   background-color: white;
-  margin-top:1rem;
+
+  display: inline-block; */
+  width: 16rem;
+  height: 2.5rem;
+  border-radius: 50px;
+  /* border: 1px solid rgb(0, 185, 5); */
+  color:rgb(0, 185, 5);
+  font-weight: bold;
+  background-color: white;
+  margin-top: 1rem;
   margin-bottom: 1rem;
-  margin-left: 7rem;
-  display: inline-block;
+  /* margin-left: 7rem; Remove this margin */
+  align-self: center; /* Center horizontally */
 }
 .addTolist span {
-  margin-left: 2rem
+  margin-left: 0.25rem
 
 }
 #editlist1{
@@ -23,7 +32,7 @@
 
 }
 .addTolist:hover{
-  background-color: rgb(255, 80, 0, .8);
+  background-color: rgba(191, 238, 179, 0.8);
   color: white;
   cursor: pointer;
 }

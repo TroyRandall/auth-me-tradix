@@ -82,12 +82,12 @@ h1 {
 }
 
 #stock-lending-title {
-  font-size: 32px;
+  font-size: 27px;
   grid-row: 4/6;
   grid-column: 1/2;
   align-self: center;
-  border-top: 1px solid rgb(131, 131, 131);
-  border-bottom: 1px solid rgb(131, 131, 131);
+  border-top: 1px solid#cccccc;
+  border-bottom: 1px solid #cccccc;
   margin-right: 0px;
   padding-top: 50px;
   padding-bottom: 15px;
@@ -115,11 +115,11 @@ h1 {
 }
 
 #company-description-title {
-  font-size: 32px;
+  font-size: 20px;
   grid-row: 5/7;
   grid-column: 1/3;
   align-self: center;
-  border-bottom: 1px solid rgb(131, 131, 131);
+  border-bottom: 1px solid #cccccc;
   padding-top: 50px;
   padding-bottom: 15px;
   width: 50vw;
@@ -130,7 +130,7 @@ h1 {
   grid-column: 1/3;
   justify-self: center;
   align-self: center;
-  border-bottom: 1px solid rgb(131, 131, 131);
+  border-bottom: 1px solid #cccccc;
   padding-bottom: 55px;
   padding-top: 25px;
   width: 50vw;
@@ -162,8 +162,8 @@ h1 {
 }
 
 .info-div-title {
-  font-weight: 750;
-  font-size: 1.4em;
+  font-weight: 600;
+  font-size: 1.2em;
 }
 
 .info-div-data {
