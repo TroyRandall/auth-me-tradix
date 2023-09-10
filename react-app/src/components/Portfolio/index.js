@@ -166,12 +166,9 @@ function PortfolioChart({ current }) {
                     newData[`${count}`] + data * stock.quantity)
                 : (newData[`${count}`] = data * stock.quantity);
             } else {
-              newData[`${count}`]
-                ? (newData[`${count}`] =
-                    newData[`${count}`])
-                : (newData[`${count}`] = 0);
-              count++;
+              if(!newData[`${count}`]) newData[`${count}`]=0;
             }
+            count++;
           }
         });
         index++;
@@ -250,7 +247,7 @@ function PortfolioChart({ current }) {
     ? "rgb(0, 243, 0)"
     : "rgb(255, 0, 0)";
 
-  let data = {
+  let data = tickerData && {
     labels: formattedLabels(),
     datasets: [
       {
