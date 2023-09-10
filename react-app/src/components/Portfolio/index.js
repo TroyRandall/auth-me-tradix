@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useHistory, Redirect } from "react-router-dom";
+import { useParams, useHistory, Redirect} from "react-router-dom";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -17,7 +16,7 @@ import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
 import { object } from "prop-types";
 
-function PortfolioChart({ current}) {
+function PortfolioChart({current}) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
@@ -44,16 +43,25 @@ function PortfolioChart({ current}) {
 
   useEffect(() => {
     const getData = async () => {
-         if (!current) return <Redirect to={"/login"} />;
-          else if (current?.id !== userId) history.push(`/portfolios/${userId}`)
-        const res = await dispatch(
-          portfolioActions.getPortfoliosByUser(userId)
-        );
-        let tickers = Object.values(res[`${userId}`]);
-        let newTickers = {};
-        tickers.forEach((ticker) => {
-          if (!newTickers[ticker.symbol])
-            newTickers[ticker.symbol] = ticker.symbol;
+      const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
+      let tickers = Object.values(res[`${userId}`]);
+      const newTickers = {};
+      tickers.forEach((ticker) => {
+        if (!newTickers[ticker.symbol])
+          newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];
+      });
+      if (tickers.length > 0) {
+        setTickerData(tickers);
+        let created = tickers[0]?.created_at;
+        Object.values(newTickers).forEach(async (ticker) => {
+          if (isBefore(new Date(ticker[1]), new Date(created))) {
+            created = ticker[1];
+          }
+
+          // await dispatch(stockActions.stockDataDaily(ticker.symbol));
+          let test = await dispatch(stockActions.stockDataDaily(ticker[0]));
+          await dispatch(monthlyActions.stockDataMonthly(ticker[0]));
+          await dispatch(weeklyActions.stockDataWeekly(ticker[0]));
         });
         if (tickers.length > 0) {
           setTickerData(tickers);
@@ -74,17 +82,16 @@ function PortfolioChart({ current}) {
           });
           setCreatedAt(created);
       }
-    };
+    };}
 
     getData()
-      .then(setTimeout(setStocksIsLoaded(true), 5000))
+      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
       .then(() => {
-        if (!currentUser) history.push("/login");
-        else if (currentUser?.id !== userId)
-          history.push(`/portfolios/${userId}`);
+        if (!current) history.push("/login");
+        else if (current?.id !== userId)
+         return <Redirect to={`/portfolios/${userId}`} />;
       });
-  }, [dispatch, userId, daily, monthly, weekly, currentUser]);
-
+   },[dispatch, userId, daily, monthly, weekly]);
 
   function formattedData(ticker, state) {
     let data2 =
