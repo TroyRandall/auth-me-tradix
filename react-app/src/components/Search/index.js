@@ -13,10 +13,6 @@ const Search = () => {
   const [searchRes, setSearchRes] = useState([])
   const [isHoveringOnSearchRes, setIsHoveringOnSearchRes] = useState(false)
   const dispatch = useDispatch()
-  console.log('hihiii '+ keyword)
-  console.log('searchRes:', searchRes);
-  console.log('searchRes.length:', searchRes.length);
-console.log('isSearchLoaded:', isSearchLoaded);
 
   const searchInput = e => {
     if(/^[A-Za-z]*$/.test(e.target.value))
