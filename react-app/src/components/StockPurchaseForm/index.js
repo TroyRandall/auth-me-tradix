@@ -203,7 +203,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 							onClose={() => setShow(false)}
 						>
 							<>
-								<StockList assetID={stockId} assetSymbol={ticker} />
+              <StockList />
+
+								{/* <StockList assetID={stockId} assetSymbol={ticker} /> */}
 							</>
 						</Modal>
 
