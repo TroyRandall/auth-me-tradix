@@ -7,7 +7,7 @@ import { authenticate } from "../../store/session";
 import * as portfolioActions from "../../store/portfolio";
 import './deletePortfolio.css'
 
-function DeletePortfolioForm({ price, setStocksIsLoaded }) {
+function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
@@ -16,7 +16,7 @@ function DeletePortfolioForm({ price, setStocksIsLoaded }) {
   const stockInfo = useSelector((state) => state.stocks)
   const [value, setValue] = useState(0);
   const [toggle, setToggle] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState(false);
 
   if (!currentUser) history.push("/login");
 
@@ -29,7 +29,8 @@ function DeletePortfolioForm({ price, setStocksIsLoaded }) {
     const noButton = document.getElementById("deny-portfolio-reset");
     if (e.target === overlay || e.target === noButton) setToggle(false);
     else if (e.target === yesButton) {
-      if (!errors.length) {
+      if(price === 0) setErrors('You Have no Assets or History To Delete')
+      if (!errors) {
         const response = await dispatch(
           portfolioActions.deletePortfolioItem(userId, price)
         ).catch(async (res) => {
@@ -39,9 +40,11 @@ function DeletePortfolioForm({ price, setStocksIsLoaded }) {
         if (!Object.values(errors).length) {
           setToggle(false);
         }
-        await dispatch(portfolioActions.getPortfoliosByUser(userId+1));
+        console.log(currentUser)
         await dispatch(portfolioActions.getPortfoliosByUser(userId));
         await dispatch(authenticate())
+        reset()
+        console.log(currentUser)
         return response;
       } else {
         setToggle(false);
@@ -61,6 +64,7 @@ function DeletePortfolioForm({ price, setStocksIsLoaded }) {
       return (
         <div className={UlClassName} onClick={cancelModal} id="overlay">
           <div id="delete-portfolio">
+            <div>{errors}</div>
             <h3>Are You Sure You Would Like To Reset Your Portfolio?</h3>
             <p>
               Doing So Will Liquidate All of Your Assets and Erase All History
