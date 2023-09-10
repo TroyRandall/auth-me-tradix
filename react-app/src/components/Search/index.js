@@ -41,6 +41,7 @@ console.log('isSearchLoaded:', isSearchLoaded);
     console.log(test)
 
   };
+  // const tickerSymbol = res["1. symbol"];
 
   useEffect(() => {
       setIsSearchLoaded(false)
@@ -80,31 +81,28 @@ console.log('isSearchLoaded:', isSearchLoaded);
           onMouseEnter={() => setIsHoveringOnSearchRes(true)}
           onMouseLeave={() => setIsHoveringOnSearchRes(false)}
         >
-          {Array.isArray(searchRes.bestMatches) && searchRes.bestMatches.length > 0 ? (
+         {Array.isArray(searchRes.bestMatches) && searchRes.bestMatches.length > 0 ? (
   searchRes.bestMatches.map((res) => (
-    <Link to={`/stocks/${res.ticker}`} key={res.symbol}>
-          {/* {searchRes.length > 0 ? (
-            searchRes.map((res) => (
-              <Link to={`/stocks/${res.ticker}`} key={res.symbol}> */}
-                <li
-                id='namelist'
-                  className={styles.resultItem}
-                  onClick={() => {
-                    setIsHoveringOnSearchRes(false);
-                    setKeyword('');
-                    setSearchRes([]);
-                  }}
-                >
-                  <div className={styles.symbolContainer}>{res.symbol}</div>
-                  <div className={styles.companyContainer}>{res.name}</div>
-                </li>
-              </Link>
-            ))
-          ) : isSearchLoaded ? (
-            <li style={{ padding: '4px 1rem' }}>No search result</li>
-          ) : (
-            <li style={{ padding: '4px 1rem' }}>Loading...</li>
-          )}
+    <Link to={`/stocks/${res["1. symbol"]}`} key={res["1. symbol"]}>
+      <li
+        className={styles.resultItem}
+        onClick={() => {
+          setIsHoveringOnSearchRes(false);
+          setKeyword('');
+          setSearchRes([]);
+        }}
+      >
+        <div className={styles.symbolContainer}>{res["1. symbol"]}</div>
+        <div className={styles.companyContainer}>{res["2. name"]}</div>
+      </li>
+    </Link>
+  ))
+) : isSearchLoaded ? (
+  <li style={{ padding: '4px 1rem' }}>No search result</li>
+) : (
+  <li style={{ padding: '4px 1rem' }}>Loading...</li>
+)}
+
         </ul>
       }
     </div>
