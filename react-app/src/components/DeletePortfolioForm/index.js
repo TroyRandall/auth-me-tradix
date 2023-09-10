@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
-
+import './deletePortfolio.css'
 import * as portfolioActions from "../../store/portfolio";
 
 function DeletePortfolioForm({ price }) {
@@ -73,7 +73,7 @@ function DeletePortfolioForm({ price }) {
   };
 
   return (
-    <div>
+    <div className="resetbtn">
       <button onClick={changeToggle}>Reset Portfolio</button>
       <div>{checkModal()}</div>
     </div>

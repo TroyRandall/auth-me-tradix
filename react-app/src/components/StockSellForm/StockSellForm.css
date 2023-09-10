@@ -24,7 +24,18 @@
     font-size: 13.5px;
   }
   .stock-asset-item2:hover{
-    color:  #00C805
+    color:  #00C805;
+    cursor: pointer;
+  }
+  .stock-asset-item3{
+    width: 100%;
+    align-self: center;
+    padding: 5px;
+    font-size: 13.5px;
+
+  }
+  .stock-asset-item3:hover{
+    color: red
   }
 
   #sell-stock-form {
