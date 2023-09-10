@@ -193,7 +193,7 @@ function PortfolioChart({ current }) {
         .slice(idx - 30);
     }
 
-    if(Object.values(newData)[0] === 0 && portfolios !== null) return formattedDataPortfolio(state)
+    if(Object.values(newData)[0] === 0 && portfolios !== null) return setTimeout(formattedDataPortfolio(state), 3000)
     return Object.values(newData).reverse();
   };
 
