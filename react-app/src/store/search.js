@@ -1,55 +1,78 @@
 const SET_SYMBOL = 'symbol/SET'
 
-// const setSymbol = (symbol, name) => ({
-//     type: SET_SYMBOL,
-//     symbol,
-//     name
-//   })
-  const setSymbol = (keyword) => ({
-    type: SET_SYMBOL,
-    keyword
-  })
-  export const searchSymbolData = (keyword) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/search/${keyword}`);
-      console.log(keyword + "-----right here")
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+export const setSymbol = (symbol, name) => ({
+  type: SET_SYMBOL,
+  symbol,
+  name
+})
 
-      const data = await response.json();
+const initialState = {
+  symbol: 'AAPL',
+  name: 'Apple Inc.',
+}
 
-      dispatch(setSymbol(keyword));
-    } catch (error) {
-      console.error('Error searching data:', error);
-
-    }
-  };
-
-
-  const initialState = {
-    keyword: '',
-    data: [],
-  };
-  const searchReducer = (state = initialState, action) => {
-    switch (action.type) {
+const tickerReducer = ( state = initialState, action ) => {
+  switch(action.type){
       case SET_SYMBOL:
-        console.log('SET_SYMBOL action received:', action);
-        return {
-          ...state,
-          keyword: action.keyword,
-        //   symbol: action.symbol,
-        // //   name: action.name,
-        //   data: action.data,
-        };
-
+          return {symbol: action.symbol, name: action.name}
       default:
-        return state;
-    }
-  };
+          return state
+  }
+}
 
-  export default searchReducer;
+export default tickerReducer
+
+// // const setSymbol = (symbol, name) => ({
+// //     type: SET_SYMBOL,
+// //     symbol,
+// //     name
+// //   })
+//   const setSymbol = (keyword) => ({
+//     type: SET_SYMBOL,
+//     keyword
+//   })
+//   export const searchSymbolData = (keyword) => async (dispatch) => {
+//     try {
+//       const response = await fetch(`/api/search/${keyword}`);
+//       console.log(keyword + "-----right here")
+
+//       if (!response.ok) {
+//         throw new Error('Network response was not ok');
+//       }
+
+//       const data = await response.json();
+
+//       dispatch(setSymbol(keyword));
+//     } catch (error) {
+//       console.error('Error searching data:', error);
+
+//     }
+//   };
+
+
+//   const initialState = {
+//     keyword: '',
+//     data: [],
+//   };
+//   const searchReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//       case SET_SYMBOL:
+//         console.log('SET_SYMBOL action received:', action);
+//         return {
+//           ...state,
+//           keyword: action.keyword,
+//         //   symbol: action.symbol,
+//         // //   name: action.name,
+//         //   data: action.data,
+//         };
+
+//       default:
+//         return state;
+//     }
+//   };
+
+//   export default searchReducer;
 // actions/searchActions.js
 
 // export const SEARCH_START = 'search/START';

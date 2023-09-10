@@ -14,6 +14,9 @@ const Search = () => {
   const [isHoveringOnSearchRes, setIsHoveringOnSearchRes] = useState(false)
   const dispatch = useDispatch()
   console.log('hihiii '+ keyword)
+  console.log('searchRes:', searchRes);
+  console.log('searchRes.length:', searchRes.length);
+console.log('isSearchLoaded:', isSearchLoaded);
 
   const searchInput = e => {
     if(/^[A-Za-z]*$/.test(e.target.value))
@@ -59,52 +62,100 @@ const Search = () => {
       }
 
   }, [keyword])
-
   return (
-      <div className={styles.searchContainer}>
-        <input
-          type='text'
-          onChange={searchInput}
-          onBlur={clearSearch}
-          onFocus={() => {setShowSearchRes(!!(searchRes.length || keyword.length))}}
-          value={keyword}
-          className={styles.searchBar}
-        />
-        <div className={styles.iconContainer}><i className="fa-solid fa-magnifying-glass fa-lg"></i></div>
-        {
-          showSearchRes &&
-          <ul
-            className={styles.searchResult}
-            onMouseEnter={() => setIsHoveringOnSearchRes(true)}
-            onMouseLeave={() => setIsHoveringOnSearchRes(false)}
-          >
-            {
-            !!searchRes.length ?
-              searchRes.map(res =>
-                <Link to={`/stocks/${res.ticker}`}>
-                  <li
-                      className={styles.resultItem}
-                      key={res.symbol}
-                      onChange={handleSearch}
-                      onClick={() => {
-                        // handleSearch(res.ticker)
-                        // dispatch(stockTickerSearch(res.ticker))
-                        setIsHoveringOnSearchRes(false)
-                        setKeyword('')
-                        setSearchRes([])
-                      }}
-                  >
-                    <div className={styles.symbolContainer}>{searchResStyling(res.symbol, keyword)}</div>
-                    <div className={styles.companyContainer}>{searchResStyling(res.name, keyword)}</div>
-                  </li>
-                </Link>) :
-                isSearchLoaded && <li style={{padding: '4px 1rem'}}>No search result</li>
-            }
-          { !isSearchLoaded && <li style={{padding: '4px 1rem'}}>Loading...</li> }
+    <div className={styles.searchContainer}>
+      <input
+        type='text'
+        onChange={searchInput}
+        onBlur={clearSearch}
+        onFocus={() => {setShowSearchRes(!!(searchRes.length || keyword.length))}}
+        value={keyword}
+        className={styles.searchBar}
+      />
+      <div className={styles.iconContainer}><i className="fa-solid fa-magnifying-glass fa-lg"></i></div>
+      {
+        showSearchRes &&
+        <ul
+          className={styles.searchResult}
+          onMouseEnter={() => setIsHoveringOnSearchRes(true)}
+          onMouseLeave={() => setIsHoveringOnSearchRes(false)}
+        >
+          {Array.isArray(searchRes.bestMatches) && searchRes.bestMatches.length > 0 ? (
+  searchRes.bestMatches.map((res) => (
+    <Link to={`/stocks/${res.ticker}`} key={res.symbol}>
+          {/* {searchRes.length > 0 ? (
+            searchRes.map((res) => (
+              <Link to={`/stocks/${res.ticker}`} key={res.symbol}> */}
+                <li
+                id='namelist'
+                  className={styles.resultItem}
+                  onClick={() => {
+                    setIsHoveringOnSearchRes(false);
+                    setKeyword('');
+                    setSearchRes([]);
+                  }}
+                >
+                  <div className={styles.symbolContainer}>{res.symbol}</div>
+                  <div className={styles.companyContainer}>{res.name}</div>
+                </li>
+              </Link>
+            ))
+          ) : isSearchLoaded ? (
+            <li style={{ padding: '4px 1rem' }}>No search result</li>
+          ) : (
+            <li style={{ padding: '4px 1rem' }}>Loading...</li>
+          )}
         </ul>
       }
     </div>
-  )
+  );
+
+
+  // return (
+  //     <div className={styles.searchContainer}>
+  //       <input
+  //         type='text'
+  //         onChange={searchInput}
+  //         onBlur={clearSearch}
+  //         onFocus={() => {setShowSearchRes(!!(searchRes.length || keyword.length))}}
+  //         value={keyword}
+  //         className={styles.searchBar}
+  //       />
+  //       <div className={styles.iconContainer}><i className="fa-solid fa-magnifying-glass fa-lg"></i></div>
+  //       {
+  //         showSearchRes &&
+  //         <ul
+  //           className={styles.searchResult}
+  //           onMouseEnter={() => setIsHoveringOnSearchRes(true)}
+  //           onMouseLeave={() => setIsHoveringOnSearchRes(false)}
+  //         >
+  //           {
+  //           !!searchRes.length ?
+  //             searchRes.map(res =>
+  //               <Link to={`/stocks/${res.ticker}`}>
+  //                 <li
+  //                     className={styles.resultItem}
+  //                     key={res.symbol}
+  //                     onChange={handleSearch}
+  //                     onClick={() => {
+  //                       // handleSearch(res.ticker)
+  //                       // dispatch(stockTickerSearch(res.ticker))
+  //                       setIsHoveringOnSearchRes(false)
+  //                       setKeyword('')
+  //                       setSearchRes([])
+  //                     }}
+  //                 >
+  //                   <div className={styles.symbolContainer}>{searchResStyling(res.symbol, keyword)}</div>
+  //                   <div className={styles.companyContainer}>{searchResStyling(res.name, keyword)}</div>
+  //                 </li>
+  //               </Link>) :
+  //               isSearchLoaded && <li style={{padding: '4px 1rem'}}>No search result</li>
+  //           }
+  //         { !isSearchLoaded && <li style={{padding: '4px 1rem'}}>Loading...</li> }
+  //       </ul>
+  //     }
+  //   </div>
+  // )
 
 }
 

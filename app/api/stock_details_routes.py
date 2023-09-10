@@ -53,34 +53,10 @@ def stock_ticker_details(ticker):
 
 @stock_routes.route('/search/<string:keyword>')
 def search_symbols(keyword):
-    try:
-        alpha_vantage_url = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={key}'
-        alpha_vantage_response = requests.get(alpha_vantage_url)
-        alpha_vantage_data = alpha_vantage_response.json()
+    result = [{'symbol': item.stock_symbol, 'name': item.company} for item in StockSymbol.query.filter(StockSymbol.stock_symbol.ilike(f'%{keyword}%') | StockSymbol.company.ilike(
+        f'%{keyword}%')).order_by(case((StockSymbol.stock_symbol.startswith(keyword), 0), (StockSymbol.company.startswith(keyword), 1), else_=2)).limit(7)]
 
-        # Fetch data from your local database
-        db_results = StockSymbol.query.filter(
-            StockSymbol.symbol.ilike(f'%{keyword}%') |
-            StockSymbol.company.ilike(f'%{keyword}%')
-        ).order_by(
-            case(
-                (StockSymbol.symbol.startswith(keyword), 0),
-                (StockSymbol.company.startswith(keyword), 1),
-                else_=2
-            )
-        ).limit(7)
-        db_data = [{'symbol': item.symbol, 'name': item.company} for item in db_results]
-
-        # Combine and return the results from both sources
-        result = {
-            'alpha_vantage_data': alpha_vantage_data,
-            'database_data': db_data
-        }
-
-        return jsonify(result)
-    except Exception as e:
-        print(f"Error searching symbols: {e}")
-        return jsonify({'error': 'An error occurred while searching symbols'}), 500
+    return jsonify(result)
 #    try:
 #         url = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={key}'
 #         r = requests.get(url)
