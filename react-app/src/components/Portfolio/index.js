@@ -473,7 +473,7 @@ function PortfolioChart({ current }) {
             {stocksIsLoaded
               ? daily
                 ? "Today"
-                : "As of " + createdAt.slice(0, 16)
+                : "As of " + (createdAt?.slice(0, 16) ? createdAt.slice(0, 16) : 'Today')
               : ""}
           </h3>
         </div>

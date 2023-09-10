@@ -19,7 +19,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const [tickerSymbol, setTickerSymbol] = useState("");
   const [called, setCalled] = useState(false);
   const [quantity, setQuantity] = useState("");
-  const [avgPrice, setAvgPrice] = useState(0);
+  const [avgPrice, setAvgPrice] = useState('');
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
   const [backendErrors, setBackendErrors] = useState(false);
