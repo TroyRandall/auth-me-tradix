@@ -24,6 +24,7 @@ function PortfolioChart({ current }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
+  const [toggle, setToggle] = useState(false);
   const [hoverPrice, setHoverPrice] = useState(false);
   const [stockData, setStockData] = useState(false);
   const [daily, setDaily] = useState(true);
@@ -79,7 +80,7 @@ function PortfolioChart({ current }) {
           return <Redirect to={`/portfolios/${userId}`} />;
         }
       });
-  }, [dispatch, userId, daily, monthly, weekly]);
+  }, [dispatch, userId, daily, monthly, weekly, toggle]);
 
   function formattedData(ticker, state) {
     let data2 =
@@ -192,6 +193,7 @@ function PortfolioChart({ current }) {
         .slice(idx - 30);
     }
 
+    if(Object.values(newData)[0] === 0 && portfolios !== null) return formattedDataPortfolio(state)
     return Object.values(newData).reverse();
   };
 
