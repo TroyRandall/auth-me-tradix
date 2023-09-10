@@ -48,7 +48,7 @@ def seed_portfolios():
     )
 
     portfolio7 = Portfolio(
-        user_id=3,
+        user_id=1,
         symbol='TSLA',
         name = 'Tesla',
         quantity=100,
@@ -57,7 +57,7 @@ def seed_portfolios():
     )
 
     portfolio8 = Portfolio(
-        user_id=3,
+        user_id=1,
         symbol='FORD',
         name = 'Ford',
         quantity=35,
@@ -66,7 +66,7 @@ def seed_portfolios():
     )
 
     portfolio9 = Portfolio(
-        user_id=3,
+        user_id=1,
         symbol='GM',
         name = 'General Motors',
         quantity=100,

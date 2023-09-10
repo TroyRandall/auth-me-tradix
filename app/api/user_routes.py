@@ -86,6 +86,15 @@ def find_username(username):
     else:
         return jsonify(user), 200
 
+@user_routes.route('/updateBP', methods=['PUT'])
+def updateBP():
+    currentUser = User.query.get(current_user.id)
+    value = request.body['value']
+    currentUser.buying_power = currentUser.buyingPower + value
+    db.session.commit()
+    return {'Success': 'Successfully updated buying power'}
+
+
 @user_routes.route("/transaction", methods=["PUT"])
 def update_buying_power():
     data = request.get_json()

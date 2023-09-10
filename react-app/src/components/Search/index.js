@@ -34,7 +34,6 @@ const Search = () => {
   }
   const handleSearch = async(keyword) => {
     let test = await dispatch(stockTickerSearch(keyword));
-    console.log(test)
 
   };
   // const tickerSymbol = res["1. symbol"];

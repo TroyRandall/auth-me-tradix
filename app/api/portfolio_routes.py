@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from app.models import Portfolio, db, User
 from app.forms.sell_portfolio import PortfolioSellForm
-from app.forms.delete_portfolio import PortfolioDeleteForm
+from app.forms.deletePortfolio import PortfolioDeleteForm
 from app.forms import PortfolioForm
 from flask_login import login_required, current_user
 from datetime import datetime
@@ -101,18 +101,11 @@ def portfolio_update(id):
 
 
 @portfolio_routes.route('/<int:id>', methods=['DELETE'])
-@login_required
 def portfolio_delete(id):
-    currentUser = User.query.get(current_user.id)
-    form = PortfolioDeleteForm()
-    form["csrf_token"].data = request.cookies["csrf_token"]
-    if form.validate():
-        userPortfolios = Portfolio.query.filter(Portfolio.user_id == id).all()
-        if userPortfolios:
+
+    userPortfolios = Portfolio.query.filter(Portfolio.user_id == id).all()
+    if userPortfolios:
            [db.session.delete(portfolio) for portfolio in userPortfolios]
            db.session.commit()
-           currentUser.buying_power = currentUser.buying_power + form.data['value']
            return {'message': 'Successfully delete'}
-        else: return {'error': 'Unable to Locate Any Portfolios Related To This Account'}
-    if form.errors:
-        return {'error': form.errors}
+    else: return {'error': 'Unable to Locate Any Portfolios Related To This Account'}

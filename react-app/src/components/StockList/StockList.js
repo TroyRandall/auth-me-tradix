@@ -5,8 +5,6 @@ import * as watchlistAction from '../../store/watchlist';
 
 function StockList({ assetID, assetSymbol }) {
     const dispatch = useDispatch();
-    // console.log(assetID)
-    // console.log("----------------" +assetSymbol)
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
     const [newEditName, setNewEditName] = useState("");
