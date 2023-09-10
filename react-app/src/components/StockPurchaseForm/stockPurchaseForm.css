@@ -7,7 +7,7 @@
   align-items: start;
   /* justify-items: center;
   align-items: start; */
-
+  /* position: fixed; */
   grid-template-columns: repeat(1, 100%);
   grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(8%/12, max(40px, 10%/10)), 1fr));
   box-sizing: content-box;
@@ -25,7 +25,7 @@
   line-height: 20px;
   margin-left: -12px;
   margin-right: -400px;
-
+  /* z-index: 999; */
   outline-width: 1px;
   padding-bottom: 24px;
   padding-left: 24px;
@@ -74,7 +74,8 @@
     grid-column: 1/3;
   display: grid;
   grid-template-columns: repeat(1, 100%);
-  grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr));
+   grid-template-rows: repeat(8, 40px) 60px repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr));
+  /* grid-template-rows: repeat(8, 40px) repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr)); */
   box-sizing: content-box;
   color: rgb(0, 0, 0);
   border: 1px solid #e1e1e1;
@@ -224,9 +225,14 @@
   width: 8vw;
   border: 1px solid #cccccc;
   border-radius: 2px;
-} */
 
-#form-submit-button {
+}
+.AddtoPortoliobtn{
+  padding-bottom: 40px;
+}
+
+
+/* #form-submit-button {
   grid-row: 7/9;
   grid-column: 1/2;
   justify-self: center;
@@ -237,13 +243,27 @@
   width: 13vw;
   height: 35px;
 
-}
+} */
 #form-submit-button span {
   font-size: 1.3rem;
 }
 
 #form-submit-button {
-  padding: 10px 40px;
+  background-color: #00C805; /* Robinhood's green button color */
+  color: #FFFFFF; /* Text color */
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+
+  /* padding: 10px 40px;
   font-size: 1.25em;
   background-color: #008542;
   color: #fff;
@@ -262,10 +282,16 @@
   padding: 0.8rem 1.5rem;
   text-decoration: none;
   font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
+  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99); */
+}
+#form-submit-button:hover {
+  background-color: #008554;
+}
+#form-submit-button:focus {
+  box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.4);
 }
 
-#form-submit-button:before {
+/* #form-submit-button:before {
   position: absolute;
   pointer-events: none;
   top: 0;
@@ -310,18 +336,29 @@
 
 #form-submit-button:active:after {
   box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
-}
+} */
 #form-submit-button-minus span {
   font-size: 1.3rem;
 }
 #form-submit-button-minus {
-    grid-row: 7/9;
+  background-color: #ff2d2d; /* Robinhood's green button color */
+  color: #FFFFFF; /* Text color */
+  border-radius: 50px;
+  padding: 12px 24px;
+  /* font-size: 18px; */
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* grid-row: 7/9;
     grid-column: 1/2;
     justify-self: center;
     align-self: center;
     font-size: 1.25em;
     background-color: rgba(7, 255, 69, 0.2);
-    /* border: 2px solid rgb(131, 131, 131); */
+
     width: 13vw;
     height: 35px;
     padding: 10px 40px;
@@ -341,17 +378,23 @@
     white-space: unset;
     padding: .8rem 1.5rem;
     text-decoration: none;
-    font-weight: 900;
-    transition: all 0.7s cubic-bezier(0,.8,.26,.99);
+    font-weight: 900; */
+    /* transition: all 0.7s cubic-bezier(0,.8,.26,.99); */
   }
+  #form-submit-button-minus:hover{
+    background-color: #FF6600 ;
+  }
+
   .form-con{
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+
+
   }
 
-  #form-submit-button-minus:before {
+  /* #form-submit-button-minus:before {
     position: absolute;
     pointer-events: none;
     top: 0;
@@ -393,17 +436,17 @@
 
   #form-submit-button-minus:active:after {
     box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
-  }
+  } */
 
   #form-buying-power-available {
     grid-row: 9/11;
     grid-column: 1/2;
     justify-self: center;
     align-self: flex-end;
-    font-size: 18px;
+    font-size: 16px;
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
-    padding-top: 35px;
+    padding-top: 20px;
     padding-bottom: 25px;
   }
 
