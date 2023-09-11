@@ -42,8 +42,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
         console.log(ticker.toLowerCase())
-        console.log(tickerSymbol.toLowerCase())
-        if (tickerSymbol.toLowerCase() !== ticker.toLowerCase() && !newErrors.ticker)
+        if (tickerSymbol.toLowerCase() !== ticker.toLowerCase() && newErrors?.ticker !== "Ticker Symbol is required")
           newErrors.ticker =
             "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
         if (avgPrice <= 0) newErrors.price = "Price is Required";
@@ -73,7 +72,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       return () => document.removeEventListener("click", closeModal);
     }
-  }, [avgPrice, quantity, submitToggle, modalToggle]);
+  }, [avgPrice, quantity, submitToggle, modalToggle, tickerSymbol]);
 
   const handleSubmit =  (e) => {
     const submitButton = document.getElementById('form-submit-button')
@@ -116,7 +115,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             <div id="successful-purchase">
               <h3 id="purchase-title">Congratulations ! </h3>
               <p id="purchase-message-success">
-                Your Market Order for {quantity} Shares of {tickerSymbol} for $
+                Your Market Order for {quantity} Shares of {tickerSymbol.toUpperCase()} for $
                 {avgPrice} Is Completed
               </p>
             </div>
