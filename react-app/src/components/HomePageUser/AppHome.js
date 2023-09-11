@@ -1,7 +1,7 @@
 import React from "react";
 import AppMainNavBar from "../MainUserNav/MainUserNav";
 import { useSelector } from "react-redux";
-import Watchlist from "../Watchlist";
+
 import AllNews from "../News/GetAllNews";
 import PortfolioChart from "../Portfolio";
 import List from "../Watchlist2/Watchlist2";
@@ -45,7 +45,7 @@ const AppHome = () => {
             </div>
             <div className="app-home-right">
               <List />
-              <Watchlist />
+
             </div>
           </div>
         </div>

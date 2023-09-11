@@ -149,7 +149,7 @@ function SellStockForm({ portfolio }) {
       <div className="stock-asset-item2">
         {portfolio.sold_at ? portfolio.sold_at : ""}
       </div>
-      <button className="stock-asset-item2" onClick={toggleModal}>
+      <button className="stock-asset-item3" onClick={toggleModal}>
         Sell Stock
       </button>
       {checkModal()}

@@ -3,17 +3,18 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import * as watchlistAction from '../../store/watchlist';
 
-function StockList({ assetID, assetSymbol }) {
+function StockList({ assetSymbol }) {
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
-    const [newEditName, setNewEditName] = useState("");
+    // const [newEditName, setNewEditName] = useState("");
     const [mainWatchlist, setMainWatchlist] = useState("");
     const [newWatchlist, setNewWatchlist] = useState("");
     const [additionComplete, setAdditionComplete] = useState(false);
     const createListForm = useRef(null);
     const CRL = useRef("");
     const [checked, setChecked] = useState(false);
+    const [showNewWatchlist, setShowNewWatchlist] = useState(false);
 
     useEffect(() => {
       if (sessionUser) {
@@ -21,19 +22,23 @@ function StockList({ assetID, assetSymbol }) {
       }
     }, [dispatch, sessionUser, mainWatchlist]);
 
-    const submitWatchlist = async e => {
+    /// right here. i dont know whats wrong?
+    const submitWatchlist = async(e) => {
       e.preventDefault();
-      if (!sessionUser) return;
 
-      dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() =>
-        dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id))
-      );
-    };
+      if(!sessionUser) return;
+      await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
+      console.log("watchlist created?>>>>")
+  }
+  if (!watchlists){
+      return null
+  }
 
     const submitAddAsset = async e => {
       dispatch(watchlistAction.addToWatchlist(mainWatchlist,assetSymbol)).then(() =>
         dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id))
       );
+
 
       setAdditionComplete(true);
       await setTimeout(() => {
@@ -51,15 +56,21 @@ function StockList({ assetID, assetSymbol }) {
       setNewWatchlist("");
     };
 
-    const hideAddListForm2 = () => {
+    const hideAddListFormCreate = () => {
       createListForm.current.classList.add("hidden");
       CRL.current.classList.remove("hidden");
     };
 
     const showAddListForm = () => {
-      createListForm.current.classList.remove("hidden");
+      if (createListForm.current) {
+        createListForm.current.classList.remove("hidden");
+      // createListForm.current.classList.remove("hidden");
       CRL.current.classList.add("hidden");
     };
+  }
+    // const handleCancelButton = e => {
+    //     setShowNewWatchlist()
+    // }
 
     if (sessionUser && watchlists) {
       return (
@@ -71,6 +82,7 @@ function StockList({ assetID, assetSymbol }) {
                 + Create New List
               </h2>
             </div>
+
             <form
               onSubmit={submitWatchlist}
               ref={createListForm}
@@ -78,7 +90,7 @@ function StockList({ assetID, assetSymbol }) {
             >
               <input
                 value={newWatchlist}
-                onChange={e => setNewWatchlist(e.target.value)}
+                onChange={(e) => setNewWatchlist(e.target.value)}
                 required
                 placeholder="List Name"
                 className="addWatchListInput"
@@ -86,13 +98,13 @@ function StockList({ assetID, assetSymbol }) {
               ></input>
               <button
                 type="submit"
-                onClick={hideAddListForm2}
+                onClick={hideAddListFormCreate}
                 className="btn-submit-form"
               >
                 Create List
               </button>
               <button
-                type="submit1"
+                type="button"
                 onClick={hideAddListForm}
                 className="btn-cancel-form1"
               >

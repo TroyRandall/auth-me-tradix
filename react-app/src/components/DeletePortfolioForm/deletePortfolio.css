@@ -1,0 +1,26 @@
+#delete-portfolio-form {
+    width: 400px;
+    height: 250px;
+    position: sticky;
+    top: 48vh;
+    left: 48vw;
+    background-color: whitesmoke;
+    font-size: 22px;
+    display: flex;
+    flex-flow: column;
+    /* align-items: revert; */
+    border-radius: 20px;
+    /* border: 2px solid #1dfd1d; */
+    justify-content: space-between;
+  }
+  .resetbtn button{
+
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .resetbtn button:hover {
+    color: white;
+    background-color:rgb(0, 243, 0)
+  }
