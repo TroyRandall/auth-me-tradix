@@ -77,6 +77,7 @@ export const deletePortfolioItem = (id, value) => async (dispatch) => {
       }),
     })
    await dispatch(deletePortfolio(id));
+   
   } else {
     const data = await response.json();
     if(data.error) return data
