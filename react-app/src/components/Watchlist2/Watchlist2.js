@@ -19,7 +19,7 @@ const List = () => {
             dispatch(watchlistAction.fetchUserWatchlists())
 
         }
-    },[dispatch, sessionUser, mainWatchlist])
+    },[dispatch, sessionUser, mainWatchlist, validationError])
     const submitWatchlist = async (e) => {
     e.preventDefault();
     setValidationError('');
@@ -27,7 +27,7 @@ const List = () => {
     setValidationError('List name must be less than 64 characters');
     return;
     }
-        if (newWatchlist.trim() === "") {
+        if (newWatchlist.trim().length < 1) {
         setValidationError('List name cannot be blank!!!');
         return;
   }
@@ -72,7 +72,6 @@ console.log(validationError, "-----")
 
                     ></input>
                      {validationError && <li className='newform-error'>{validationError}</li>}
-                    <div className="newform-error">{validationError}</div>
                      <div className='newform-button'>
                     <button type='button' className='btn-cancel-form'onClick={handleCancelButton}>Cancel</button>
                     <button className='btn-submit'type='submit'>Create List</button>
