@@ -1,6 +1,5 @@
 #delete-portfolio {
     width: 400px;
-    height: 250px;
     position: sticky;
     top: 48vh;
     left: 48vw;
@@ -151,4 +150,16 @@
 
    #reset-button:focus:not(:focus-visible) {
     outline: none;
+   }
+
+   #errors-errors-delete {
+    display: flex;
+    flex-flow: column;
+    font-size: 0.9em;
+    align-items: inherit;
+    list-style-type: none;
+    width: 100%;
+    justify-content: center;
+    margin-right: 10px;
+    color: red;
    }
