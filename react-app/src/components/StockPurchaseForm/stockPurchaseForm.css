@@ -170,7 +170,7 @@
   border: 1px solid #cccccc;
   border-radius: 2px;
 }
-*/ #form-submit-button {
+ #form-submit-button {
   grid-row: 7/9;
   grid-column: 1/2;
   justify-self: center;
