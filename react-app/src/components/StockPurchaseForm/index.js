@@ -38,11 +38,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
       if (currentUser === null)
         newErrors.user = "You Must Be Logged In To Purchase Stock";
       if (currentUser !== null) {
-        if (currentUser?.buyingPower < estimate)
+        if (currentUser.buyingPower < estimate)
           newErrors.buyingPower = "You Do Not Have Enough Buying Power";
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
-        console.log(ticker.toLowerCase())
         if (tickerSymbol.toLowerCase() !== ticker.toLowerCase() && newErrors?.ticker !== "Ticker Symbol is required")
           newErrors.ticker =
             "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
@@ -54,7 +53,10 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       setErrors({ ...newErrors });
       if (errors.length > 0 || Object.values(newErrors).length > 0) return errors;
-      else setBackendToggle(true)
+      else if(!errors.length > 0 && Object.values(newErrors).length === 0) {
+        setBackendToggle(true)
+      }
+
     }
 
 
@@ -91,6 +93,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
+        return null;
       });
 
       await dispatch(authenticate())

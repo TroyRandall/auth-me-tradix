@@ -70,7 +70,8 @@ function SellStockForm({ portfolio }) {
     }
   };
 
-  const cancelModal = (e) => {
+  const cancelModal = async (e) => {
+    e?.preventDefault()
     const overlay = document.getElementById("overlay");
     const yesButton = document.getElementById("yes-button");
     const noButton = document.getElementById("no-button");
@@ -92,7 +93,29 @@ function SellStockForm({ portfolio }) {
 
       setErrors({ ...newErrors });
       if (errors && Object.values(newErrors).length > 0) return errors;
-      else return handleSubmit();
+      else {
+        let id = currentUser?.id;
+        let sold_at = new Date();
+        let portfolio = {
+          id,
+          tickerSymbol,
+          quantity,
+          avgPrice,
+          sold_at,
+          portfolioId,
+        };
+        if (!errors.length) {
+          const response = await dispatch(
+            portfolioActions.updatePortfolioItem(portfolio)
+          ).catch(async (res) => {
+            const data = res;
+            if (data && data.errors) setErrors(data.errors);
+          });
+          await dispatch(portfolioActions.getPortfoliosByUser(userId));
+          await dispatch(authenticate());
+          return response;
+        }
+      };
     }
   };
 
@@ -162,7 +185,7 @@ function SellStockForm({ portfolio }) {
                 </span>
                 <div>
                   {" "}
-                  <button onClick={handleSubmit} id="yes-button">
+                  <button onClick={cancelModal} id="yes-button">
                     Yes
                   </button>{" "}
                   <button onClick={cancelModal} id="no-button">
