@@ -41,34 +41,34 @@ function SellStockForm({ portfolio }) {
     }
   }, [avgPrice, quantity, submitToggle, portfolios]);
 
-  const handleSubmit = async (e) => {
-    e?.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e?.preventDefault();
 
-    setSubmitToggle(true);
-    if (backendToggle) {
-      let id = currentUser?.id;
-      let sold_at = new Date();
-      let portfolio = {
-        id,
-        tickerSymbol,
-        quantity,
-        avgPrice,
-        sold_at,
-        portfolioId,
-      };
-      if (!errors.length) {
-        const response = await dispatch(
-          portfolioActions.updatePortfolioItem(portfolio)
-        ).catch(async (res) => {
-          const data = res;
-          if (data && data.errors) setErrors(data.errors);
-        });
-        await dispatch(portfolioActions.getPortfoliosByUser(userId));
-        await dispatch(authenticate());
-        return response;
-      }
-    }
-  };
+  //   setSubmitToggle(true);
+  //   if (backendToggle) {
+  //     let id = currentUser?.id;
+  //     let sold_at = new Date();
+  //     let portfolio = {
+  //       id,
+  //       tickerSymbol,
+  //       quantity,
+  //       avgPrice,
+  //       sold_at,
+  //       portfolioId,
+  //     };
+  //     if (!errors.length) {
+  //       const response = await dispatch(
+  //         portfolioActions.updatePortfolioItem(portfolio)
+  //       ).catch(async (res) => {
+  //         const data = res;
+  //         if (data && data.errors) setErrors(data.errors);
+  //       });
+  //       await dispatch(portfolioActions.getPortfoliosByUser(userId));
+  //       await dispatch(authenticate());
+  //       return response;
+  //     }
+  //   }
+  // };
 
   const cancelModal = async (e) => {
     e?.preventDefault()
