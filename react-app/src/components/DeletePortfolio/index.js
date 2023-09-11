@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import './deletePortfolio.css'
 import * as portfolioActions from "../../store/portfolio";
 import './deletePortfolio.css'
+import { authenticate } from "../../store/session";
 
 function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const dispatch = useDispatch();
