@@ -2,12 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
-<<<<<<< HEAD:react-app/src/components/DeletePortfolioForm/index.js
 import './deletePortfolio.css'
-=======
 import { authenticate } from "../../store/session";
 
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2:react-app/src/components/DeletePortfolio/index.js
 import * as portfolioActions from "../../store/portfolio";
 import './deletePortfolio.css'
 
@@ -97,16 +94,11 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   };
 
   return (
-<<<<<<< HEAD:react-app/src/components/DeletePortfolioForm/index.js
-    <div className="resetbtn">
-      <button onClick={changeToggle}>Reset Portfolio</button>
-=======
     <div id="reset-portfolio" >
       <button id='reset-button'onClick={changeToggle}><span class="shadow"></span>
   <span class="edge"></span>
   <span class="front text">Reset Portfolio
   </span></button>
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2:react-app/src/components/DeletePortfolio/index.js
       <div>{checkModal()}</div>
     </div>
   );
