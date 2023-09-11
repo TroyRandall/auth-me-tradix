@@ -1,5 +1,4 @@
 #purchase-form {
-<<<<<<< HEAD
   /* grid-row: 1/2;
   grid-column: 1/3; */
   display: grid;
@@ -11,13 +10,6 @@
   /* position: fixed; */
   grid-template-columns: repeat(1, 100%);
   grid-template-rows: repeat(9, 40px)repeat(auto-fit, minmax(min(8%/12, max(40px, 10%/10)), 1fr));
-=======
-  display: flex;
-  justify-content: unset;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: unset;
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
   box-sizing: content-box;
   color: rgb(0, 0, 0);
   color-scheme: light;
@@ -97,15 +89,8 @@
   grid-column: 1/3;
   display: grid;
   grid-template-columns: repeat(1, 100%);
-<<<<<<< HEAD
    grid-template-rows: repeat(8, 40px) 60px repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr));
   /* grid-template-rows: repeat(8, 40px) repeat(auto-fit, minmax(min(8%/12, max(40px, 8%/13)), 1fr)); */
-=======
-  grid-template-rows: repeat(9, 40px) repeat(
-      auto-fit,
-      minmax(min(8%/12, max(40px, 8%/13)), 1fr)
-    );
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
   box-sizing: content-box;
   color: rgb(0, 0, 0);
   border: 1px solid #e1e1e1;
@@ -255,7 +240,6 @@
   width: 8vw;
   border: 1px solid #cccccc;
   border-radius: 2px;
-<<<<<<< HEAD
 
 }
 .AddtoPortoliobtn{
@@ -264,10 +248,6 @@
 
 
 /* #form-submit-button {
-=======
-}
-*/ #form-submit-button {
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
   grid-row: 7/9;
   grid-column: 1/2;
   justify-self: center;
@@ -277,12 +257,8 @@
   border: 1px solid #00c805;
   width: 13vw;
   height: 35px;
-<<<<<<< HEAD
 
 } */
-=======
-}
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
 #form-submit-button span {
   font-size: 1.3rem;
 }
@@ -382,7 +358,6 @@
   font-size: 1.3rem;
 }
 #form-submit-button-minus {
-<<<<<<< HEAD
   background-color: #ff2d2d; /* Robinhood's green button color */
   color: #FFFFFF; /* Text color */
   border-radius: 50px;
@@ -563,7 +538,7 @@
     transition: .5s;
     font-weight: 400;
     font-size: 17px;
-    border: 1px solid;
+    border: 1px solid #cccccc;
     font-family: inherit;
     text-transform: uppercase;
     color: white;
@@ -641,378 +616,6 @@
     bottom: 0px;
     left: 0px;
     right: 0px;
-=======
-  grid-row: 7/9;
-  grid-column: 1/2;
-  justify-self: center;
-  align-self: center;
-  font-size: 1.25em;
-  background-color: rgba(7, 255, 69, 0.2);
-  /* border: 2px solid rgb(131, 131, 131); */
-  width: 13vw;
-  height: 35px;
-  padding: 10px 40px;
-  font-size: 1.25em;
-  background-color: #c95555;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 0;
-  z-index: 1;
-  user-select: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: unset;
-  padding: 0.8rem 1.5rem;
-  text-decoration: none;
-  font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-.form-con {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-#form-submit-button-minus:before {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-  z-index: -1;
-  background-color: #ff0000 !important;
-  box-shadow: 0 -4px rgb(21 0 0 / 50%) inset, 0 4px rgb(100 0 0 / 99%) inset,
-    -4px 0 rgb(100 0 0 / 50%) inset, 4px 0 rgb(21 0 0 / 50%) inset;
-}
-
-#form-submit-button-minus:after {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-
-#form-submit-button-minus:hover:before {
-  box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset,
-    -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
-}
-
-#form-submit-button-minus:hover:after {
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-}
-
-#form-submit-button-minus:active {
-  transform: translateY(4px);
-}
-
-#form-submit-button-minus:active:after {
-  box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
-} #form-submit-button {
-  padding: 10px 40px;
-  font-size: 1.25em;
-  background-color: #008542;
-  color: #fff;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
-  display: inline-flex;
-  align-self: center;
-  justify-content: center;
-  position: relative;
-  border: 0;
-  z-index: 1;
-  width: 13vw;
-  height: 35px;
-  user-select: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: unset;
-  padding: 0.8rem 1.5rem;
-  text-decoration: none;
-  font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-
-#form-submit-button:before {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-  z-index: -1;
-  background-color: #008542 !important;
-  box-shadow: 0 -4px rgb(21 108 0 / 50%) inset,
-    0 4px rgb(100 253 31 / 99%) inset, -4px 0 rgb(100 253 31 / 50%) inset,
-    4px 0 rgb(21 108 0 / 50%) inset;
-}
-
-#form-submit-button:after {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-
-#form-submit-button:hover:before {
-  box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset,
-    -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
-}
-
-#form-submit-button:hover:after {
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-}
-
-#form-submit-button:active {
-  transform: translateY(4px);
-}
-
-#form-submit-button:active:after {
-  box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
-}
-#form-submit-button-minus span {
-  font-size: 1.3rem;
-}
-
-#form-submit-button-minus-disabled {
-  grid-row: 7/9;
-  grid-column: 1/2;
-  justify-self: center;
-  align-self: center;
-  font-size: 1.25em;
-  background-color: rgba(7, 255, 69, 0.2);
-  /* border: 2px solid rgb(131, 131, 131); */
-  width: 13vw;
-  height: 35px;
-  padding: 10px 40px;
-  font-size: 1.25em;
-  background-color: #c95555;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 0;
-  z-index: 1;
-  user-select: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: unset;
-  padding: 0.8rem 1.5rem;
-  text-decoration: none;
-  font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-
-#form-submit-button-disabled {
-  grid-row: 7/9;
-  grid-column: 1/2;
-  justify-self: center;
-  align-self: center;
-  font-size: 1.25em;
-  background-color: rgba(7, 255, 69, 0.2);
-  /* border: 2px solid rgb(131, 131, 131); */
-  width: 13vw;
-  height: 35px;
-  padding: 10px 40px;
-  font-size: 1.25em;
-  background-color: #c95555;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 0;
-  z-index: 1;
-  user-select: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: unset;
-  padding: 0.8rem 1.5rem;
-  text-decoration: none;
-  font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-#form-buying-power-available {
-  font-size: 18px;
-  border-bottom: 1px solid #cccccc;
-  padding-top: 35px;
-  padding-bottom: 25px;
-}
-
-.form-add-to-watchlist {
-  --color: #00bb1f;
-  padding: 0.8em 1.7em;
-  background-color: var(--color);
-  border-radius: 0.3em;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.5s;
-  font-weight: 400;
-  font-size: 17px;
-  border: 1px solid;
-  font-family: inherit;
-  text-transform: uppercase;
-  color: white;
-  z-index: 100;
-  grid-row: 11/13;
-  grid-column: 1/2;
-  justify-self: center;
-  align-self: center;
-  width: 10vw;
-  height: 5vh;
-}
-
-.form-add-to-watchlist::before,
-.form-add-to-watchlist::after {
-  content: "";
-  display: block;
-  width: 50px;
-  height: 50px;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  border-radius: 50%;
-  z-index: -1;
-  background-color: var(--color);
-  transition: 1s ease;
-}
-
-.form-add-to-watchlist::before {
-  top: -1em;
-  left: -1em;
-}
-
-.form-add-to-watchlist::after {
-  left: calc(100% + 1em);
-  top: calc(100% + 1em);
-}
-
-.form-add-to-watchlist:hover::before,
-.form-add-to-watchlist:hover::after {
-  height: 410px;
-  width: 410px;
-}
-
-.form-add-to-watchlist:hover {
-  color: rgb(255, 255, 255);
-}
-
-.form-add-to-watchlist:active {
-  filter: brightness(0.8);
-}
-
-.form-add-to-watchlist-minus {
-  --color: #ff2d2d;
-  padding: 0.8em 1.7em;
-  background-color: var(--color);
-  border-radius: 0.3em;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.5s;
-  font-weight: 400;
-  font-size: 17px;
-  border: 1px solid;
-  font-family: inherit;
-  text-transform: uppercase;
-  color: white;
-  z-index: 100;
-  grid-row: 11/13;
-  grid-column: 1/2;
-  justify-self: center;
-  align-self: center;
-  width: 10vw;
-  height: 5vh;
-}
-
-.form-add-to-watchlist-minus::before,
-.form-add-to-watchlist-minus::after {
-  content: "";
-  display: block;
-  width: 50px;
-  height: 50px;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  border-radius: 50%;
-  z-index: -1;
-  background-color: var(--color);
-  transition: 1s ease;
-}
-
-.form-add-to-watchlist-minus::before {
-  top: -1em;
-  left: -1em;
-}
-
-.form-add-to-watchlist-minus::after {
-  left: calc(100% + 1em);
-  top: calc(100% + 1em);
-}
-
-.form-add-to-watchlist-minus:hover::before,
-.form-add-to-watchlist-minus:hover::after {
-  height: 410px;
-  width: 410px;
-}
-
-.form-add-to-watchlist-minus:hover {
-  color: rgb(255, 255, 255);
-}
-
-.form-add-to-watchlist-minus:active {
-  filter: brightness(0.8);
-}
-
-#form-estimated-price {
-  font-size: 1.25em;
-  padding-top: 10px;
-  border-top: 1px solid #cccccc;
-  margin-top: 15px;
-}
-
-#errors-errors {
-  grid-row: 1/2;
-  grid-column: 1/2;
-  justify-self: center;
-  display: flex;
-  flex-flow: column;
-  font-size: 1.25em;
-  align-items: inherit;
-  list-style-type: none;
-  width: 100%;
-  color: #636363;
-}
-
-#error-item {
-  color: red;
-
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
 }
 
 .overlay {
