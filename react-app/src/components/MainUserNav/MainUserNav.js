@@ -17,10 +17,10 @@ const AppMainNavBar = () => {
             <Search />
             <div className="header__menuContainer">
             <div className="header__menuItems">
-                <a href="">Free Stocks</a>
+                {/* <a href="">Free Stocks</a> */}
                 <Link to={`/portfolios/${sessionUser?.id}`}>Portfolio</Link>
-                <a href="">Cash</a>
-                <a href="">Messages</a>
+                {/* <a href="">Cash</a>
+                <a href="">Messages</a> */}
 
             </div>
             </div>
