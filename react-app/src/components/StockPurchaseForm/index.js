@@ -69,6 +69,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     };
 
     if (modalToggle) {
+      setErrors({});
+      setSubmitToggle(false);
+      setBackendToggle(false);
       document.addEventListener("click", closeModal);
 
       return () => document.removeEventListener("click", closeModal);
@@ -89,9 +92,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
-      setAvgPrice('');
-      setQuantity('');
-      setTickerSymbol('')
+
       await dispatch(authenticate())
       setModalToggle(true)
       return response;
@@ -134,11 +135,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
       <>
       <div className="form-con">
         <form
-          id={
-            Object.values(errors).length > 0
-              ? "purchase-form-errors"
-              : "purchase-form"
-          }
+          id='purchase-form'
         >
           <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {

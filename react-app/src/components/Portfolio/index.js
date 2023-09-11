@@ -8,7 +8,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
-import DeletePortfolioForm from "../DeletePortfolioForm"
+import DeletePortfolioForm from "../DeletePortfolio"
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
