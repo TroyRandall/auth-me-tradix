@@ -46,6 +46,7 @@ const Onelist = ({watchlist}) => {
 		setShow(false);
 		setNewEditName("");
 
+
 	};
 
     return (
@@ -60,7 +61,9 @@ const Onelist = ({watchlist}) => {
 					value={newEditName}
 
 				></input>
+
 				 <div className="validation-error">{validationError}</div>
+
                 <div className="button-style-watchlist">
 
                 <button className='btn-openstock-watchlist-btn'
