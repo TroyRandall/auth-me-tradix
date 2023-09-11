@@ -78,6 +78,8 @@ function SellStockForm({ portfolio }) {
       setToggle(false);
       setSubmitToggle(false);
       setErrors(false)
+      setQuantity('')
+      setAvgPrice('')
     return null}
     else if (e.target === yesButton) {
       let newErrors = {};

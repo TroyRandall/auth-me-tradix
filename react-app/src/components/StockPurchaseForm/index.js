@@ -89,6 +89,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
+      setAvgPrice('');
+      setQuantity('');
+      setTickerSymbol('')
       await dispatch(authenticate())
       setModalToggle(true)
       return response;
