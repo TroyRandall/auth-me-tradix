@@ -232,15 +232,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             <button onClick={() => setShow(true)} className="addTolist">
               <span>Add to Watchlist</span>
             </button>
-            <Modal
-              title={`Add ${ticker} to a Watchlist ?`}
-              show={show}
-              onClose={() => setShow(false)}
-            >
-              <>
-                <StockList assetID={stockId} assetSymbol={ticker} />
-              </>
-            </Modal>
+
             {/* <button
             className={
               change === "+"
@@ -251,6 +243,15 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Add To watchlist
           </button> */}
           </form>
+          <Modal
+              title={`Add ${ticker} to a Watchlist ?`}
+              show={show}
+              onClose={() => setShow(false)}
+            >
+              <>
+                <StockList assetID={stockId} assetSymbol={ticker} />
+              </>
+            </Modal>
         </div>
       </>
     )
