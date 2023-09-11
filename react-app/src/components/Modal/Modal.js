@@ -7,7 +7,7 @@ function Modal(props) {
         <div className={`modal ${props.show?'show':''}`} onClick={props.onClose}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
-                    <p id="editlist1">Edit List</p>
+                    {/* <p id="editlist1">Edit List</p> */}
                     <h4 className="modal-title">{props.title}</h4>
                     <svg className="xbutton" onClick={props.onClose} fill="none" height="24" role="img" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13.4143 12L19.7072 5.70706L18.293 4.29285L12.0001
