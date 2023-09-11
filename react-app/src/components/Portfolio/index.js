@@ -8,7 +8,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
-import DeletePortfolioForm from "../DeletePortfolioForm";
+import DeletePortfolioForm from "../DeletePortfolio";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -20,10 +20,12 @@ function PortfolioChart({ current }) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
+  const [seed, setSeed] = useState(1);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
+  const [toggle, setToggle] = useState(false);
   const [hoverPrice, setHoverPrice] = useState(false);
   const [stockData, setStockData] = useState(false);
   const [daily, setDaily] = useState(true);
@@ -46,12 +48,13 @@ function PortfolioChart({ current }) {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
       const newTickers = {};
+      console.log(tickers[0]);
       tickers.forEach((ticker) => {
         if (!newTickers[ticker.symbol])
           newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];
       });
       if (tickers.length > 0) {
-        setTickerData(tickers);
+        setTickerData([...tickers]);
         let created = tickers[0]?.created_at;
         Object.values(newTickers).forEach(async (ticker) => {
           if (isBefore(new Date(ticker[1]), new Date(created))) {
@@ -65,24 +68,24 @@ function PortfolioChart({ current }) {
         });
         setCreatedAt(created);
       } else {
-        await dispatch(stockActions.stockDataDaily('tsla'));
-          await dispatch(monthlyActions.stockDataMonthly('tsla'));
-          await dispatch(weeklyActions.stockDataWeekly('tsla'));
-
+        await dispatch(stockActions.stockDataDaily("tsla"));
+        await dispatch(monthlyActions.stockDataMonthly("tsla"));
+        await dispatch(weeklyActions.stockDataWeekly("tsla"));
       }
     };
+    reset(async () => {
+      await setSeed(Math.random);
+    });
 
     getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 5000))
+      .then(setTimeout(() => setStocksIsLoaded(true), 8000))
       .then(() => {
         if (!current) history.push("/login");
         else if (current?.id !== userId) {
           return <Redirect to={`/portfolios/${userId}`} />;
         }
-
       });
-
-  }, [dispatch, userId, daily, monthly, weekly]);
+  }, [dispatch, userId, daily, monthly, weekly, toggle, data]);
 
   function formattedData(ticker, state) {
     let data2 =
@@ -93,11 +96,12 @@ function PortfolioChart({ current }) {
         ? Object.values(state[ticker]["Weekly Time Series"])
         : Object.values(state[ticker]["Monthly Time Series"]));
     const newData = [];
-    if (data2.length) {
+    if (data2?.length) {
       data2.forEach((dataPoint) => {
         newData.push(dataPoint["4. close"]);
       });
     }
+
     return newData;
   }
 
@@ -120,12 +124,12 @@ function PortfolioChart({ current }) {
       return (
         stocksIsLoaded &&
         (daily
-          ? Object.keys(stockInfo["TSLA"]["Time Series (Daily)"])
+          ? Object.keys(stockInfo["tsla"]["Time Series (Daily)"])
           : weekly
-          ? Object.keys(weeklyInfo["TSLA"]["Weekly Time Series"]).slice(
+          ? Object.keys(weeklyInfo["tsla"]["Weekly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             )
-          : Object.keys(monthlyInfo["TSLA"]["Monthly Time Series"]).slice(
+          : Object.keys(monthlyInfo["tsla"]["Monthly Time Series"]).slice(
               idx ? idx - idx / 5 : 0
             ))
       );
@@ -135,48 +139,59 @@ function PortfolioChart({ current }) {
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
-    if (portfolios) {
-      Object.values(tickerData).forEach((stock) => {
-        let oldData = formattedData(stock.symbol, state).reverse();
-        let index = 0;
-        count = 0;
-        let labels = stocksIsLoaded && formattedLabels().reverse();
-        oldData.forEach((data) => {
-          if (!stock.sold_at) {
-            if (
-              !isBefore(
-                new Date(labels[`${count}`]),
-                new Date(stock.created_at)
-              )
-            ) {
-              newData[`${count}`]
-                ? (newData[`${count}`] =
-                    newData[`${count}`] + data * stock.quantity)
-                : (newData[`${count}`] = data * stock.quantity);
-            } else if (!newData[`${count}`]) newData[`${count}`] = 0;
-            count++;
-          } else {
-            if (
-              !isBefore(
-                new Date(labels[`${count}`]),
-                new Date(stock.created_at)
-              ) &&
-              isBefore(new Date(labels[`${count}`]), new Date(stock.sold_at))
-            ) {
-              newData[`${count}`]
-                ? (newData[`${count}`] =
-                    newData[`${count}`] + data * stock.quantity)
-                : (newData[`${count}`] = data * stock.quantity);
-            } else if (!newData[`${count}`]) newData[`${count}`] = 0;
-            else {
-              newData[`${count}`] = newData[`${count}`] - data * stock.quantity;
+    if (stocksIsLoaded) {
+      if (tickerData) {
+        Object.values(tickerData).forEach((stock) => {
+          let oldData = formattedData(stock.symbol, state).reverse();
+          let index = 0;
+          count = 0;
+          let labels = stocksIsLoaded && formattedLabels().reverse();
+          oldData.forEach((data) => {
+            if (!stock.sold_at) {
+              if (
+                !isBefore(
+                  new Date(labels[`${count}`]),
+                  new Date(stock.created_at)
+                )
+              ) {
+                newData[`${count}`]
+                  ? (newData[`${count}`] =
+                      newData[`${count}`] + data * stock.quantity)
+                  : (newData[`${count}`] = data * stock.quantity);
+              } else if (!newData[`${count}`]) newData[`${count}`] = 0;
+              count++;
+            } else {
+              if (
+                !isBefore(
+                  new Date(labels[`${count}`]),
+                  new Date(stock.created_at)
+                ) &&
+                isBefore(new Date(labels[`${count}`]), new Date(stock.sold_at))
+              ) {
+                newData[`${count}`]
+                  ? (newData[`${count}`] =
+                      newData[`${count}`] + data * stock.quantity)
+                  : (newData[`${count}`] = data * stock.quantity);
+              } else {
+                if (!newData[`${count}`]) newData[`${count}`] = 0;
+              }
+              count++;
             }
-            count++;
-          }
+          });
+          index++;
+          if (index === Object.values(tickerData).length - 1) setIdx(count);
         });
-        index++;
-        if (index === Object.values(tickerData).length - 1) setIdx(count);
-      });
+      } else {
+        newData = {};
+        let count = 0;
+        let labels = stocksIsLoaded && formattedLabels();
+        stocksIsLoaded &&
+          labels?.forEach((label) => {
+            newData[`${count}`] = 0;
+            count++;
+          });
+        return Object.values(newData);
+      }
     } else {
       newData = {};
       let count = 0;
@@ -250,7 +265,7 @@ function PortfolioChart({ current }) {
     ? "rgb(0, 243, 0)"
     : "rgb(255, 0, 0)";
 
-  let data = {
+  let data = stocksIsLoaded && {
     labels: formattedLabels(),
     datasets: [
       {
@@ -419,27 +434,35 @@ function PortfolioChart({ current }) {
           100
         ).toFixed(2));
 
+  const reset = () => {
+    setSeed(Math.random());
+  };
+
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
         <DeletePortfolioForm
-          price={data.datasets[0].data[data.datasets[0].data.length - 1]}
+          price={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
+          reset={reset}
+          setStocksIsLoaded={setStocksIsLoaded}
         />
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
             $
             {Number(hoverPrice).toLocaleString("en-US") ||
-              data.datasets[0].data[data.datasets[0].data.length - 1]
+              data?.datasets[0]?.data[data?.datasets[0]?.data?.length - 1]
                 .toFixed(2)
                 .toLocaleString("en-US")}
           </h2>
           <h3 id={changeId}>
             {formattedChange.toFixed(2).toLocaleString("en-US") >= 0
-              ? "+$" + formattedChange.toLocaleString("en-US")
-              : `-$${Math.abs(formattedChange).toLocaleString("en-US")}`}
+              ? "+$" +
+                Number(formattedChange.toFixed(2)).toLocaleString("en-US")
+              : "-$" +
+                Math.abs(formattedChange).toFixed(2).toLocaleString("en-US")}
             (
-            {tickerData
+            {stocksIsLoaded
               ? formattedPercentChange >= 0
                 ? formattedPercentChange >= 0
                   ? "+" + formattedPercentChange
@@ -447,15 +470,15 @@ function PortfolioChart({ current }) {
                 : 0
               : 0}
             %){" "}
-            {tickerData
+            {stocksIsLoaded
               ? daily
                 ? "Today"
-                : "As of " + createdAt.slice(0, 16)
+                : "As of " + (createdAt ? createdAt.slice(0, 16) : 'Today')
               : ""}
           </h3>
         </div>
         <div id="portfolioChart">
-          <Line data={data} options={options} id="portfolioChart2" />
+          <Line data={data} options={options} id="portfolioChart2" key={seed} />
         </div>
 
         <div id="chart-buttons">
@@ -506,7 +529,8 @@ function PortfolioChart({ current }) {
             <div className="stock-asset-item">Sell Stock Button</div>
           </div>
           {stocksIsLoaded &&
-            Object.values(portfolios).map((portfolio) => {
+            portfolios?.length > 0 &&
+            Object.values(portfolios)?.map((portfolio) => {
               return (
                 <SellStockForm
                   portfolio={portfolio}

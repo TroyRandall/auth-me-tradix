@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import { useDispatch, useSelector,   } from "react-redux";
 import { useParams } from "react-router-dom";
+import { authenticate } from "../../store/session";
 
 import * as portfolioActions from "../../store/portfolio";
 import './StockSellForm.css'
@@ -48,17 +49,19 @@ function SellStockForm({ portfolio }) {
     let id = currentUser?.id;
     let sold_at = new Date()
     let portfolio = { id, tickerSymbol, quantity, avgPrice, sold_at, portfolioId};
-    if (!Object.values(errors).length) {
-      const response = dispatch(
+    if (!errors.length) {
+      const response = await dispatch(
         portfolioActions.updatePortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = res;
         if (data && data.errors) setErrors(data.errors);
       });
-      if(!Object.values(errors).length){
+      if(errors.length){
         setToggle(false)
         setSubmitToggle(false);
       }
+      await dispatch(portfolioActions.getPortfoliosByUser(userId))
+      await dispatch(authenticate())
       return response;
     }
   };

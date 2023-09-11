@@ -7,6 +7,10 @@ class Portfolio(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
+    __mapper_arg__ = {
+        'confirm_deleted_rows': False
+    }
+    
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,
                         db.ForeignKey(add_prefix_for_prod("users.id")),

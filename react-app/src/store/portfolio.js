@@ -45,7 +45,7 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
   });
   if (response.ok) {
     const data = await response.json();
-    dispatch(addPortfolio(data));
+    await dispatch(addPortfolio(data));
     return data;
   } else if (response.status < 500) {
     const data = await response.json();
@@ -60,20 +60,23 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
 //still working on this route for the reducer will continue tomorrow
 
 export const deletePortfolioItem = (id, value) => async (dispatch) => {
-  const response = await fetch(`/api/portolfios/${id}`, {
+  const response = await fetch(`/api/portfolio/${id}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      value: value
-    }),
+
   });
 
   if(response.ok){
-    const data = await response.json();
-    dispatch(deletePortfolio(id));
-    return data;
+    await fetch(`/api/users/updateBP`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      hasBody: true,
+      body: JSON.stringify({
+        value: value
+      }),
+    })
+   await dispatch(deletePortfolio(id));
   } else {
     const data = await response.json();
     if(data.error) return data
@@ -100,8 +103,9 @@ export const updatePortfolioItem = (portfolio) => async (dispatch) => {
   });
   if (response.ok) {
     const data = await response.json();
-    dispatch(updatePortfolio(data));
-    console.log(data)
+
+    await dispatch(updatePortfolio(data));
+
     return data;
   } else if (response.status < 500) {
     const data = await response.json();
@@ -117,7 +121,7 @@ export const getPortfoliosByUser = (id) => async (dispatch) => {
   const response = await fetch(`/api/portfolio/${id}`);
   if (response.ok) {
     const data = await response.json();
-    dispatch(getTradixPortfolios(data, id));
+    await dispatch(getTradixPortfolios(data, id));
     return data;
   } else {
     throw new Error("Unable to complete request please try again");
@@ -145,6 +149,7 @@ const portfolioReducer = (state = initialState, action) => {
     case DELETE_TRADIX_PORTFOLIO:
       newState = Object.assign({}, state);
       delete newState[action.payload]
+      newState[action.payload] = null
       return newState
     default:
       return state;

@@ -52,7 +52,6 @@ const addAssestToList = watchlists => ({
     payload: watchlists,
   });
   export const addToWatchlist = (watchlistId, symbol) => async dispatch => {
-    console.log(watchlistId, symbol)
     const res = await fetch(`/api/watchlists/${watchlistId}/addAsset`, {
       method: "POST",
       headers: {
