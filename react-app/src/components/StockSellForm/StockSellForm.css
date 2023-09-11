@@ -1,55 +1,67 @@
 #stock-asset-container {
-    display: flex;
-    flex-flow:row;
-    width: 100%;
-    justify-content: center;
-    align-self: center;
-    width: 100%;
-    /* border: 1px solid #cccccc; */
-    border-radius: 3px;
-    margin: 10px;
-  }
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+  /* border: 1px solid #cccccc; */
+  border-radius: 3px;
+  margin: 10px;
+}
 
-  .stock-asset-item {
-    width: 100%;
-    align-self: center;
-    padding: 5px;
-    font-size: 13.5px;
-    font-weight: 666;
-  }
-  .stock-asset-item2{
-    width: 100%;
-    align-self: center;
-    padding: 5px;
-    font-size: 13.5px;
-  }
-  .stock-asset-item2:hover{
-    color:  #00C805;
-    cursor: pointer;
-  }
-  .stock-asset-item3{
-    width: 100%;
-    align-self: center;
-    padding: 5px;
-    font-size: 13.5px;
+.stock-asset-item {
+  width: 100%;
+  align-self: center;
+  padding: 5px;
+  font-size: 13.5px;
+  font-weight: 666;
+}
+.stock-asset-item2 {
+  width: 100%;
+  align-self: center;
+  padding: 5px;
+  font-size: 13.5px;
+}
+.stock-asset-item2:hover {
+  color: #00c805;
+  cursor: pointer;
+}
+.stock-asset-item3 {
+  width: 100%;
+  align-self: center;
+  padding: 5px;
+  font-size: 13.5px;
+}
+.stock-asset-item3:hover {
+  color: red;
+}
 
-  }
-  .stock-asset-item3:hover{
-    color: red
-  }
+#sell-stock-form-container {
+  width: 400px;
+  position: sticky;
+  top: 48vh;
+  left: 48vw;
+  background-color: whitesmoke;
+  font-size: 22px;
+  display: flex;
+  flex-flow: column;
+  /* align-items: revert; */
+  border-radius: 20px;
+  border: 2px solid #1dfd1d;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
 
-  #sell-stock-form {
-    width: 400px;
-    height: 250px;
-    position: sticky;
-    top: 48vh;
-    left: 48vw;
-    background-color: whitesmoke;
-    font-size: 22px;
-    display: flex;
-    flex-flow: column;
-    /* align-items: revert; */
-    border-radius: 20px;
-    /* border: 2px solid #1dfd1d; */
-    justify-content: space-between;
-  }
+input {
+  border: 2px solid darkgrey;
+  background-color: ghostwhite;
+}
+
+#sell-errors {
+  color: rgb(235, 4, 4);
+  font-size:18px;
+  
+}
