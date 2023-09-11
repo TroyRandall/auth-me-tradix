@@ -5,6 +5,7 @@ import StockList from "../StockList/StockList";
 import Modal from "../Modal/Modal";
 import * as portfolioActions from "../../store/portfolio";
 import "./stockPurchaseForm.css";
+import { authenticate } from "../../store/session";
 
 function PurchaseStockForm({ average, isLoaded, change }) {
   const { ticker } = useParams();
@@ -72,9 +73,9 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       return () => document.removeEventListener("click", closeModal);
     }
-  }, [avgPrice, quantity, submitToggle, modalToggle, tickerSymbol]);
+  }, [avgPrice, quantity, submitToggle, modalToggle, tickerSymbol, currentUser]);
 
-  const handleSubmit =  (e) => {
+  const handleSubmit = async (e) => {
     const submitButton = document.getElementById('form-submit-button')
     const submitButtonMinus = document.getElementById('form-submission-button-minus')
     setSubmitToggle(true);
@@ -82,12 +83,13 @@ function PurchaseStockForm({ average, isLoaded, change }) {
         let id = currentUser?.id;
     let portfolio = { id, tickerSymbol, quantity, avgPrice };
     if (!Object.values(errors).length) {
-      const response =  dispatch(
+      const response =  await dispatch(
         portfolioActions.addPortfolioItem(portfolio)
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setBackendErrors(data.errors);
       });
+      await dispatch(authenticate())
       setModalToggle(true)
       return response;
     }
