@@ -13,7 +13,8 @@ const AddStockForm = ({ symbol, closeModal }) => {
         dispatch(watchlistAction.fetchUserWatchlists());
     }, [dispatch]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
         checkedLists.forEach(element => {
             if (!element.watchlist_stocks.some(stock => stock.stock_symbol === symbol)) {
