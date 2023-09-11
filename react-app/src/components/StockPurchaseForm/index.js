@@ -195,7 +195,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
                 ? "purchase-form"
                 : "purchase-form"
             }
-          >
+          />
             <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {
               <p id="errors-errors" className='purchase-form-item'>
