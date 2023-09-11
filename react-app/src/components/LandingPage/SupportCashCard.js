@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-
+import './SupportCashCard.css';
 const CashCard = () => {
     const history = useHistory();
     return (

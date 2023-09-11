@@ -132,15 +132,15 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   return (
     isLoaded && (
       <>
-        <div className="form-con">
-          <form
-            id={
-              Object.values(errors).length > 0
-                ? "purchase-form"
-                : "purchase-form"
-            }
-          >
-            <h5 id="form-title">Buy {uppercaseTicker}</h5>
+      <div className="form-con">
+        <form
+          id={
+            Object.values(errors).length > 0
+              ? "purchase-form-errors"
+              : "purchase-form"
+          }
+        >
+          <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {
               <p id="errors-errors" className='purchase-form-item'>
                 {Object.values(errors).map((error) => (
@@ -232,15 +232,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             <button onClick={() => setShow(true)} className="addTolist">
               <span>Add to Watchlist</span>
             </button>
-            <Modal
-              title={`Add ${ticker} to a Watchlist ?`}
-              show={show}
-              onClose={() => setShow(false)}
-            >
-              <>
-                <StockList assetID={stockId} assetSymbol={ticker} />
-              </>
-            </Modal>
+
             {/* <button
             className={
               change === "+"
@@ -251,6 +243,15 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             Add To watchlist
           </button> */}
           </form>
+          <Modal
+              title={`Add ${ticker} to a Watchlist ?`}
+              show={show}
+              onClose={() => setShow(false)}
+            >
+              <>
+                <StockList assetID={stockId} assetSymbol={ticker} />
+              </>
+            </Modal>
         </div>
       </>
     )
