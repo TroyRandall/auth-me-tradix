@@ -8,7 +8,7 @@ export const addArticlesToStore = articles => {
 }
 
 export const getArticlesFromDb = () => async dispatch => {
-    const response = await fetch(`/api/news/liked`)
+    const response = await fetch(`/api/news`)
     if (response.ok) {
         const articles = await response.json()
         dispatch(addArticlesToStore(articles))

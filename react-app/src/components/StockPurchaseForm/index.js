@@ -178,7 +178,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               ? `Estimated Price is $${estimate.toLocaleString("en-US")}`
               : ""}
           </label>
-          <div
+          <div className="AddtoPortoliobtn"
             onClick={handleSubmit}
             id={
               change === "+" ? "form-submit-button" : "form-submit-button-minus"
