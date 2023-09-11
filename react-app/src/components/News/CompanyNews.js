@@ -26,7 +26,7 @@ const CompanyNews = () => {
   return(
     <div className="news-container">
             <div id="news-heading-container">
-                <div className="news-heading">News</div>
+                <div className="news-heading"><span>News</span></div>
             </div>
             {isLoaded ? (
                 articles.length ? articles.map(article => {
