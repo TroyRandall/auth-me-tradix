@@ -94,13 +94,16 @@ h1 {
 #portfolio-assets {
   grid-row: 6/7;
   grid-column: 1/2;
-  width: 50vw;
+  width: 53vw;
   display: flex;
   flex-flow: column;
   margin-right: 5px;
   margin-left: 5px;
   position: relative;
   bottom: 35px;
+  overflow-y: scroll;
+  height: 25vw;
+
 }
 
 #loader-portfolio {
