@@ -126,7 +126,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   return (
     isLoaded && (
       <>
-<<<<<<< HEAD
       <div className="form-con">
         <form
           id={
@@ -191,46 +190,12 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           </label>
           <div className="AddtoPortoliobtn"
             onClick={handleSubmit}
-=======
-        <div className="form-con">
-          <form
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
             id={
               Object.values(errors).length > 0
                 ? "purchase-form"
                 : "purchase-form"
             }
           >
-<<<<<<< HEAD
-            <span>Add to portfolio</span>
-          </div>
-          <p id="form-buying-power-available">
-            Buying Power Available $
-            {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
-          </p>
-          <div id="modal-form" ref={purchaseRef}>
-          <div>{checkModal()}</div>
-        </div>
-        <button onClick={() => setShow(true)} className="addTolist">
-          <span>Add to Watchlist</span>
-						</button>
-
-          <Modal
-							title={`Add ${ticker} to a Watchlist ?`}
-							show={show}
-							onClose={() => setShow(false)}
-						>
-							<>
-              <StockList />
-
-								{/* <StockList assetID={stockId} assetSymbol={ticker} /> */}
-							</>
-						</Modal>
-
-
-
-          {/* <button
-=======
             <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {
               <p id="errors-errors" className='purchase-form-item'>
@@ -333,7 +298,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               </>
             </Modal>
             {/* <button
->>>>>>> e353f373f339ba0f2d7ec2d8afff11b1b7d3b2c2
             className={
               change === "+"
                 ? "form-add-to-watchlist"
