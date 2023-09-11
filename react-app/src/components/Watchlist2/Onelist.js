@@ -14,6 +14,7 @@ const Onelist = ({watchlist}) => {
     const [show, setShow] = useState(false);
     const [newEditName, setNewEditName] = useState("");
     const [options, setOptions] = useState(false);
+	const [validationError, setValidationError] = useState('');
     const [mainWatchlist, setMainWatchlist] = useState("");
 	const [showDots, setShowDots] = useState(false);
 	const caret = showList ? "watchlist-opening" : "watchlist-closing";
@@ -29,6 +30,16 @@ const Onelist = ({watchlist}) => {
 	}
 	const submitEditWatchlist = async (e) => {
 		e.preventDefault();
+		setValidationError('')
+		if (newEditName.length > 64) {
+			setValidationError('List name must be less than 64 characters.');
+			return;
+		  }
+
+		  if (newEditName.trim() === "") {
+			setValidationError('List name cannot be blank.');
+			return;
+		  }
 		await dispatch(
 		watchlistAction.updateWatchlist({name: newEditName, id: watchlist.id})
 		);
@@ -49,6 +60,7 @@ const Onelist = ({watchlist}) => {
 					value={newEditName}
 
 				></input>
+				 <div className="validation-error">{validationError}</div>
                 <div className="button-style-watchlist">
 
                 <button className='btn-openstock-watchlist-btn'

@@ -14,7 +14,7 @@
   width: 100%;
   align-self: center;
   padding: 5px;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 666;
 }
 .stock-asset-item2 {
@@ -38,30 +38,48 @@
 }
 
 #sell-stock-form-container {
-  width: 400px;
-  position: sticky;
-  top: 48vh;
-  left: 48vw;
+  width: 500px; /* Set the desired width */
+  height: 220px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the container */
   background-color: whitesmoke;
   font-size: 22px;
   display: flex;
   flex-flow: column;
-  /* align-items: revert; */
-  border-radius: 20px;
-  border: 2px solid #1dfd1d;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
   justify-content: space-between;
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
+
 }
 
 input {
-  border: 2px solid darkgrey;
+  border: 1px solid darkgrey;
   background-color: ghostwhite;
+
 }
 
 #sell-errors {
   color: rgb(235, 4, 4);
   font-size:18px;
-  
+
+}
+.sellstockrow {
+  padding: 10px
+}
+#sell-stock-form > span {
+  font-size: 10px;
+}
+#yes-button:hover {
+  color:#00c805
+}
+#no-button:hover{
+  color: rgb(235, 4, 4);
+}
+.label-container {
+  margin-bottom: 20px;
 }

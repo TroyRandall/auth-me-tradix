@@ -134,9 +134,12 @@ function SellStockForm({ portfolio }) {
             })}
             How Many Shares of {portfolio.name} Would You Like To Sell?
             <form id="sell-stock-form">
+            <div className="label-container">
               <label>
                 {" "}
-                Quantity
+                <span>
+                Quantity :
+                </span>
                 <input
                   id="sell-form-quantity-input"
                   name="quantity"
@@ -144,13 +147,19 @@ function SellStockForm({ portfolio }) {
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                   required
+                  style={{fontSize: '17px' }}
                 ></input>
               </label>
+              </div>
+              <div>
               <label>
-                Price
+                <span  style={{ fontSize: '20px' }}>
+                Price :
+                </span>
                 <input
                   id="sell-form-price-input"
                   name="Average price"
+                  style={{ fontSize: '17px' }}
                   placeholder={
                     stockInfo[portfolio.symbol]["Time Series (Daily)"][
                       stockInfo[portfolio.symbol]["Time Series (Daily)"]
@@ -168,9 +177,12 @@ function SellStockForm({ portfolio }) {
                   }
                 ></input>
               </label>
+              </div>
               <div>
+              <span style={{ fontSize: '14px' }}>
                 Are You Sure You Would Like to Sell {quantity} shares of{" "}
                 {portfolio.name} for {estimate}?
+                </span>
                 <div>
                   {" "}
                   <button onClick={cancelModal} id="yes-button">

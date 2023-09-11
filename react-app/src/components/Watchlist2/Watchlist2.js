@@ -9,7 +9,7 @@ const List = () => {
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const watchlists = useSelector(state => state.watchlists.watchlists);
-
+    const [validationError, setValidationError] = useState('');
     const [showNewWatchlist, setShowNewWatchlist] = useState(false);
     const [mainWatchlist, setMainWatchlist] = useState("");
     const [newWatchlist, setNewWatchlist] = useState("");
@@ -20,16 +20,28 @@ const List = () => {
 
         }
     },[dispatch, sessionUser, mainWatchlist])
-
-    const submitWatchlist = async(e) => {
-        e.preventDefault();
-        setShowNewWatchlist(!showNewWatchlist)
-        if(!sessionUser) return;
-        await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
+    const submitWatchlist = async (e) => {
+    e.preventDefault();
+    setValidationError('');
+    if (newWatchlist.length > 64) {
+    setValidationError('List name must be less than 64 characters');
+    return;
     }
+        if (newWatchlist.trim() === "") {
+        setValidationError('List name cannot be blank!!!');
+        return;
+  }
+    await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id));
+    dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id));
+  setShowNewWatchlist(!showNewWatchlist);
+  setNewWatchlist('')
+}
+console.log(validationError, "-----")
+
     if (!watchlists){
         return null
     }
+
     const handleCancelButton = e => {
         setShowNewWatchlist()
     }
@@ -48,7 +60,9 @@ const List = () => {
 
             <div className="newform-info">
 
+
                 {showNewWatchlist?(<form onSubmit={submitWatchlist}>
+
                     <input
                         value={newWatchlist}
                         onChange={(e) => setNewWatchlist(e.target.value)}
@@ -57,6 +71,8 @@ const List = () => {
                         className="newfom-info"
 
                     ></input>
+                     {validationError && <li className='newform-error'>{validationError}</li>}
+                    <div className="newform-error">{validationError}</div>
                      <div className='newform-button'>
                     <button type='button' className='btn-cancel-form'onClick={handleCancelButton}>Cancel</button>
                     <button className='btn-submit'type='submit'>Create List</button>
