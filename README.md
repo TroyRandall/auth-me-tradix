@@ -9,7 +9,7 @@ Tradix is a website clone that draws inspiration from Robinhood, designed and de
 
 # Features of Tradix:
 1: HomePage for all users
-![homepage](assets/tradixfront.PNG)
+![homepage](Tradix-projects/auth-me-traidx/react-app/src/assets/tradixfront.PNG)
 
 # Live Website Link:
 https://tradix.onrender.com/
