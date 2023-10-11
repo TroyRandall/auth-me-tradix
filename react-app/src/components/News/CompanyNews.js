@@ -11,7 +11,7 @@ const CompanyNews = () => {
     const dispatch = useDispatch();
     const [isLoaded, setIsLoaded] = useState(false)
     const { ticker } = useParams();
-    console.log(ticker)
+    // console.log(ticker)
     useEffect(() => {
         dispatch(getArticlesFromDb())
 

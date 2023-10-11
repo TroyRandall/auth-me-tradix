@@ -36,7 +36,7 @@ const List = () => {
   setShowNewWatchlist(!showNewWatchlist);
   setNewWatchlist('')
 }
-console.log(validationError, "-----")
+// console.log(validationError, "-----")
 
     if (!watchlists){
         return null
