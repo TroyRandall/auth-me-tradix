@@ -48,7 +48,6 @@ function PortfolioChart({ current }) {
       const res = await dispatch(portfolioActions.getPortfoliosByUser(userId));
       let tickers = Object.values(res[`${userId}`]);
       const newTickers = {};
-      console.log(tickers[0]);
       tickers.forEach((ticker) => {
         if (!newTickers[ticker.symbol])
           newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];

@@ -26,7 +26,6 @@ export const setSymbol = (symbol, name) => ({
 //     dispatch(setSymbol(symbol, name, data))
 //   }
 //   catch (err) {
-//     console.log('There is some error', err);
 //   }
 // }
 

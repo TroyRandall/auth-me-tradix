@@ -35,8 +35,6 @@ export default tickerReducer
 //   export const searchSymbolData = (keyword) => async (dispatch) => {
 //     try {
 //       const response = await fetch(`/api/search/${keyword}`);
-//       console.log(keyword + "-----right here")
-
 //       if (!response.ok) {
 //         throw new Error('Network response was not ok');
 //       }
@@ -58,7 +56,6 @@ export default tickerReducer
 //   const searchReducer = (state = initialState, action) => {
 //     switch (action.type) {
 //       case SET_SYMBOL:
-//         console.log('SET_SYMBOL action received:', action);
 //         return {
 //           ...state,
 //           keyword: action.keyword,

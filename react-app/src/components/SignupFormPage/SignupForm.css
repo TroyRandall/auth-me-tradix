@@ -10,7 +10,6 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    width: 50%;
     background-color: #002615;
     overflow: hidden;
 }
@@ -68,9 +67,9 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 50%;
-    overflow: hidden;
-    justify-content: space-between;
+    width: 50vw;
+    /* overflow: hidden; */
+    /* justify-content: space-between; */
 }
 
 #signup-id-warning {
@@ -111,7 +110,7 @@
 }
 
 .signup-names-inner {
-    width: 60%;
+    width: 48%;
 }
 
 #signup-form input:hover {

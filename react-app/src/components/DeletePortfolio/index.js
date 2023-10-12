@@ -35,9 +35,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
   const cancelModal = async (e) => {
     e.preventDefault()
-    console.log(e.target)
-    console.log(deleteToggle)
-    console.log(errors)
     const overlay = document.getElementById("overlay");
     const yesButton = document.getElementById("confirm-portfolio-reset");
     const noButton = document.getElementById("deny-portfolio-reset");
@@ -61,7 +58,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
           setToggle(false);
           setDeleteToggle(false);
         }
-        console.log(currentUser);
         await dispatch(portfolioActions.getPortfoliosByUser(userId));
         await dispatch(authenticate());
         reset();

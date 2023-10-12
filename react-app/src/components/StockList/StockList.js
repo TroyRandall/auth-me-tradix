@@ -28,7 +28,7 @@ function StockList({ assetSymbol }) {
 
       if(!sessionUser) return;
       await dispatch(watchlistAction.createWatchlist(newWatchlist, sessionUser.id)).then(() => dispatch(watchlistAction.fetchUserWatchlists(sessionUser.id)))
-      // console.log("watchlist created?>>>>")
+
   }
   if (!watchlists){
       return null

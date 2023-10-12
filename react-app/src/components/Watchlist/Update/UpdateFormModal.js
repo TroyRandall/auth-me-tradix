@@ -8,7 +8,6 @@ const UpdateFormModal = ({ watchlist}) => {
     // useEffect(() => {
 
     //     const closeModal = (e) => {
-    //         console.log(modalRef.current)
     //         if(!(modalRef.current.contains(e.target))) {
     //             setToggle(false)
     //             }
