@@ -33,7 +33,8 @@ return (
                         <NavLink to="/learn">
                             <li className="landing-page-navlink" id="landing-page-learn-button">Learn</li>
                         </NavLink>
-                            <a className="landing-page-navlink" href="https://sherwoodmedia.com/snacks" id="landing-page-CashCard-button">Snacks</a>
+                            <a className="landing-page-navlink" href="https://sherwoodmedia.com/snacks" id="landing-page-CashCard-button"
+                            target="_blank" rel="noopener noreferrer">Snacks</a>
                         <NavLink to='/support'>
                         <li className="landing-page-navlink" target="_blank" rel="noopener noreferrer">Support</li>
                         </NavLink>

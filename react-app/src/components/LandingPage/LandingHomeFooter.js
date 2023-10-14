@@ -23,16 +23,16 @@ const LandingHomeFooter = () => {
                     <div id="footer-bottom-left-content">
                         <div className="names" id="name-container">
                             Troy Randall
-                            <a href="https://github.com/TroyRandall">
+                            <a href="https://github.com/TroyRandall" target="_blank" rel="noopener noreferrer">
                                 Github
                             </a>
-                            <a href="">
+                            <a href="https://www.linkedin.com/in/troy-randall-a493ab17a/" target="_blank" rel="noopener noreferrer">
                                 LinkedIn
                             </a>
                         </div>
                         <div className="names" id="name-container">
                             Vi Truong
-                            <a href="https://github.com/vivitruong">
+                            <a href="https://github.com/vivitruong" target="_blank" rel="noopener noreferrer">
                                 Github
                             </a>
                             <a href="https://www.linkedin.com/in/vi-truong-421698253/">
