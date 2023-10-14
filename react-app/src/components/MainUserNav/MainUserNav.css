@@ -92,6 +92,7 @@
 
 #app-nav-bar-account-submenu {
     position: absolute;
+    z-index: 1;
     width: 30rem;
     right: 2.4rem;
     line-height: 2rem;
