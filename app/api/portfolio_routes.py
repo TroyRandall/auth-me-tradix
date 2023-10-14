@@ -59,8 +59,8 @@ def portfolio_update(id):
     form = PortfolioSellForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     if form.validate():
-        print(form.data['id'])
-        userPortfolio = Portfolio.query.get(form.data['id'])
+        print(form.data["id"])
+        userPortfolio = Portfolio.query.get(form.data["id"])
         print(userPortfolio.to_dict())
         if userPortfolio:
             if userPortfolio.quantity > form.data["quantity"]:
@@ -68,7 +68,7 @@ def portfolio_update(id):
                     user_id=id,
                     symbol=form.data["symbol"],
                     name=form.data["symbol"],
-                    quantity=userPortfolio.quantity - form.data['quantity'],
+                    quantity=userPortfolio.quantity - form.data["quantity"],
                     avg_price=userPortfolio.avg_price,
                     created_at=userPortfolio.created_at,
                 )
@@ -78,10 +78,12 @@ def portfolio_update(id):
                 print(currentUser.to_dict())
                 currentUser.buying_power = currentUser.buying_power + (
                     form.data["avg_price"] * form.data["quantity"]
-            )
+                )
                 print(currentUser.to_dict())
 
-                allPortfolios = Portfolio.query.filter(Portfolio.user_id == userPortfolio.user_id).all()
+                allPortfolios = Portfolio.query.filter(
+                    Portfolio.user_id == userPortfolio.user_id
+                ).all()
                 db.session.add(newPortfolio)
                 db.session.commit()
                 return {id: [portfolio.to_dict() for portfolio in allPortfolios]}
@@ -90,8 +92,10 @@ def portfolio_update(id):
                 userPortfolio.sold_at = datetime.now()
                 currentUser.buying_power = currentUser.buying_power + (
                     form.data["avg_price"] * form.data["quantity"]
-            )
-                allPortfolios = Portfolio.query.filter(Portfolio.user_id == userPortfolio.user_id).all()
+                )
+                allPortfolios = Portfolio.query.filter(
+                    Portfolio.user_id == userPortfolio.user_id
+                ).all()
                 print(allPortfolios)
                 db.session.commit()
                 return {id: [portfolio.to_dict() for portfolio in allPortfolios]}
@@ -100,12 +104,12 @@ def portfolio_update(id):
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 
-@portfolio_routes.route('/<int:id>', methods=['DELETE'])
+@portfolio_routes.route("/<int:id>", methods=["DELETE"])
 def portfolio_delete(id):
-
     userPortfolios = Portfolio.query.filter(Portfolio.user_id == id).all()
     if userPortfolios:
-           [db.session.delete(portfolio) for portfolio in userPortfolios]
-           db.session.commit()
-           return {'message': 'Successfully delete'}
-    else: return {'error': 'Unable to Locate Any Portfolios Related To This Account'}
+        [db.session.delete(portfolio) for portfolio in userPortfolios]
+        db.session.commit()
+        return {"message": "Successfully delete"}
+    else:
+        return {"error": "Unable to Locate Any Portfolios Related To This Account"}

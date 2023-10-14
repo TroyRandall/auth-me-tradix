@@ -59,7 +59,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       setErrors({ ...newErrors });
 
-      if (errors.length > 0 || Object.values(newErrors).length > 0) {
+      if (Object.values(errors).length > 0 || Object.values(newErrors).length > 0) {
         setModalToggle(false);
         return errors;
       } else if (!errors.length > 0 && Object.values(newErrors).length === 0) {
@@ -102,16 +102,14 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     if (backendToggle && submitRef.current.contains(e.target)) {
       let id = currentUser?.id;
       let portfolio = { id, tickerSymbol, quantity, avgPrice };
-      if (!Object.values(errors).length) {
+      if (Object.values(errors).length < 1) {
         dispatch(portfolioActions.addPortfolioItem(portfolio)).then(
           async (res) => {
             if (res) {
               const data = res;
-              console.log(data);
               if (data) {
                 let newErrors = {};
                 data.forEach((error) => {
-                  console.log(error.slice(11));
                   if (newErrors["quantity"]) {
                     newErrors["quantity"] = [
                       newErrors["quantity"],
@@ -143,8 +141,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
               <h3 id="purchase-title"> Order Not Executed</h3>
 
               {Object.values(backendErrors?.quantity)?.map((error) => {
-                console.log(error);
-                console.log("this is an error");
                 return <li id="purchase-message-failed"> {error} </li>;
               })}
             </div>
