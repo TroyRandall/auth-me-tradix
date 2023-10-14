@@ -17,17 +17,17 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const uppercaseTicker = ticker.toUpperCase();
   const dispatch = useDispatch();
   const submitRef = useRef();
-  const [tickerSymbol, setTickerSymbol] = useState("");
+  const [tickerSymbol, setTickerSymbol] = useState(ticker ? ticker : "");
   const [backendToggle, setBackendToggle] = useState(false);
-  const[modalToggle, setModalToggle] = useState(false);
+  const [modalToggle, setModalToggle] = useState(false);
   const [quantity, setQuantity] = useState("");
-  const [avgPrice, setAvgPrice] = useState('');
+  const [avgPrice, setAvgPrice] = useState("");
   const [estimate, setEstimate] = useState("");
   const [submitToggle, setSubmitToggle] = useState(false);
   const [backendErrors, setBackendErrors] = useState(false);
   const [errors, setErrors] = useState({});
   const currentUser = useSelector((state) => state.session.user);
-  const stockInfo = useSelector((state) => state.stocks)
+  const stockInfo = useSelector((state) => state.stocks);
 
   useEffect(() => {
     setEstimate((avgPrice * quantity).toFixed(2));
@@ -42,35 +42,41 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           newErrors.buyingPower = "You Do Not Have Enough Buying Power";
         if (quantity <= 0) newErrors.quantity = "Quantity is Required";
         if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
-        if (tickerSymbol.toLowerCase() !== ticker.toLowerCase() && newErrors?.ticker !== "Ticker Symbol is required")
+        if (
+          tickerSymbol.toLowerCase() !== ticker.toLowerCase() &&
+          newErrors?.ticker !== "Ticker Symbol is required"
+        )
           newErrors.ticker =
             "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
         if (avgPrice <= 0) newErrors.price = "Price is Required";
-        if (Number(avgPrice) < average && newErrors.price !== "Price is Required")
+        if (
+          Number(avgPrice) < average &&
+          newErrors.price !== "Price is Required"
+        )
           newErrors.price =
             "Orders with a Price below the Average Stock Price Will Not Be Filled";
       }
 
       setErrors({ ...newErrors });
-      if (errors.length > 0 || Object.values(newErrors).length > 0) return errors;
-      else if(!errors.length > 0 && Object.values(newErrors).length === 0) {
-        setBackendToggle(true)
+
+      if (errors.length > 0 || Object.values(newErrors).length > 0) {
+        setModalToggle(false);
+        return errors;
+      } else if (!errors.length > 0 && Object.values(newErrors).length === 0) {
+        setBackendToggle(true);
       }
-
     }
-
 
     const closeModal = (e) => {
       setSubmitToggle(false);
       setModalToggle(false);
       setBackendToggle(false);
-      setAvgPrice('');
-      setQuantity('');
-      setTickerSymbol('')
-
+      setAvgPrice("");
+      setQuantity("");
+      setTickerSymbol("");
     };
 
-    if (modalToggle) {
+    if (modalToggle && Object.values(backendErrors).length < 1) {
       setErrors({});
       setSubmitToggle(false);
       setBackendToggle(false);
@@ -78,31 +84,52 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
       return () => document.removeEventListener("click", closeModal);
     }
-  }, [avgPrice, quantity, submitToggle, modalToggle, tickerSymbol, currentUser]);
+  }, [
+    avgPrice,
+    quantity,
+    submitToggle,
+    modalToggle,
+    tickerSymbol,
+    currentUser,
+  ]);
 
-  const handleSubmit = async (e) => {
-    const submitButton = document.getElementById('form-submit-button')
-    const submitButtonMinus = document.getElementById('form-submission-button-minus')
+  const handleSubmit = (e) => {
+    const submitButton = document.getElementById("form-submit-button");
+    const submitButtonMinus = document.getElementById(
+      "form-submission-button-minus"
+    );
     setSubmitToggle(true);
-    if(backendToggle && (submitRef.current.contains(e.target))) {
-        let id = currentUser?.id;
-    let portfolio = { id, tickerSymbol, quantity, avgPrice };
-    if (!Object.values(errors).length) {
-      const response =  await dispatch(
-        portfolioActions.addPortfolioItem(portfolio)
-      ).catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setBackendErrors(data.errors);
-        return null;
-      });
+    if (backendToggle && submitRef.current.contains(e.target)) {
+      let id = currentUser?.id;
+      let portfolio = { id, tickerSymbol, quantity, avgPrice };
+      if (!Object.values(errors).length) {
+        dispatch(portfolioActions.addPortfolioItem(portfolio)).then(
+          async (res) => {
+            if (res) {
+              const data = res;
+              console.log(data);
+              if (data) {
+                let newErrors = {};
+                data.forEach((error) => {
+                  console.log(error.slice(11));
+                  if (newErrors["quantity"]) {
+                    newErrors["quantity"] = [
+                      newErrors["quantity"],
+                      error.slice(11),
+                    ];
+                  } else newErrors["quantity"] = error.slice(11);
+                });
+                setBackendErrors(newErrors);
+                return null;
+              }
+            } else setBackendErrors({})
+          }
+        );
 
-      await dispatch(authenticate())
-      setModalToggle(true)
-      return response;
-    }
-
-    }
-    else return null;
+        dispatch(authenticate());
+        setModalToggle(true);
+      }
+    } else return null;
   };
 
   const UlClassName = "overlay" + (modalToggle ? "" : "hidden");
@@ -110,22 +137,23 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   const checkModal = () => {
     if (modalToggle) {
       return (
-        <div >
-          {Object.values(backendErrors).length ? (
+        <div>
+          {Object.values(backendErrors).length > 0 ? (
             <div id="failed-purchase">
               <h3 id="purchase-title"> Order Not Executed</h3>
-              <p>
-                {Object.values(backendErrors)?.map((error) => {
-                  return <p id="purchase-message-failed"> {error} </p>;
-                })}
-              </p>
+
+              {Object.values(backendErrors?.quantity)?.map((error) => {
+                console.log(error);
+                console.log("this is an error");
+                return <li id="purchase-message-failed"> {error} </li>;
+              })}
             </div>
           ) : (
             <div id="successful-purchase">
               <h3 id="purchase-title">Congratulations ! </h3>
               <p id="purchase-message-success">
-                Your Market Order for {quantity} Shares of {tickerSymbol.toUpperCase()} for $
-                {avgPrice} Is Completed
+                Your Market Order for {quantity} Shares of{" "}
+                {tickerSymbol.toUpperCase()} for ${avgPrice} Is Completed
               </p>
             </div>
           )}
@@ -136,15 +164,13 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   return (
     isLoaded && (
       <>
-      <div className="form-con">
-        <form
-          id='purchase-form'
-        >
-          <h5 id="form-title">Buy {uppercaseTicker}</h5>
+        <div className="form-con">
+          <form id="purchase-form">
+            <h5 id="form-title">Buy {uppercaseTicker}</h5>
             {
-              <p id="errors-errors" className='purchase-form-item'>
+              <p id="errors-errors" className="purchase-form-item">
                 {Object.values(errors).map((error) => (
-                  <li id='error-item'>{error}</li>
+                  <li id="error-item">{error}</li>
                 ))}
               </p>
             }
@@ -209,7 +235,8 @@ function PurchaseStockForm({ average, isLoaded, change }) {
                 change === "+"
                   ? "form-submit-button"
                   : "form-submit-button-minus"
-              } className='purchase-form-item'
+              }
+              className="purchase-form-item"
             >
               <span>Add to portfolio</span>
             </div>{" "}
@@ -232,7 +259,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
             <button onClick={() => setShow(true)} className="addTolist">
               <span>Add to Watchlist</span>
             </button>
-
             {/* <button
             className={
               change === "+"
@@ -244,14 +270,14 @@ function PurchaseStockForm({ average, isLoaded, change }) {
           </button> */}
           </form>
           <Modal
-              title={`Add ${ticker} to a Watchlist ?`}
-              show={show}
-              onClose={() => setShow(false)}
-            >
-              <>
-                <StockList assetID={stockId} assetSymbol={ticker} />
-              </>
-            </Modal>
+            title={`Add ${ticker} to a Watchlist ?`}
+            show={show}
+            onClose={() => setShow(false)}
+          >
+            <>
+              <StockList assetID={stockId} assetSymbol={ticker} />
+            </>
+          </Modal>
         </div>
       </>
     )

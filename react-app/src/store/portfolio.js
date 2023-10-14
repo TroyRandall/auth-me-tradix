@@ -46,9 +46,10 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     await dispatch(addPortfolio(data));
-    return data;
+    return null;
   } else if (response.status < 500) {
     const data = await response.json();
+    console.log(data.errors);
     if (data.errors) {
       return data.errors;
     }
@@ -77,7 +78,7 @@ export const deletePortfolioItem = (id, value) => async (dispatch) => {
       }),
     })
    await dispatch(deletePortfolio(id));
-   
+
   } else {
     const data = await response.json();
     if(data.error) return data

@@ -669,8 +669,9 @@
 }
 
 #failed-purchase {
-  width: 400px;
   height: 130px;
+  margin-top:15px;
+  padding: 10px;
   position: sticky;
   top: 48vh;
   left: 48vw;
@@ -681,16 +682,28 @@
   z-index: 100;
   background-color: whitesmoke;
   border-radius: 25px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ff4949;
   align-items: center;
   justify-content: center;
 }
 
 #purchase-title {
-  font-size: 35px;
+  font-size: 32px;
   /* font-family: cursive; */
   font-style: italic;
   padding: 5px;
+  padding: 15px 5px;
+  margin-bottom: 15px;
+}
+
+#purchase-message-failed {
+  display: flex;
+  flex-flow: column;
+  font-size: 18px;
+  color: red;
+  margin-right: 15px;
+  margin-left: 15px;
+  justify-self: space-between;
 }
 
 #purchase-message-success {
