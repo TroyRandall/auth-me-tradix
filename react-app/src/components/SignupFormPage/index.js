@@ -25,6 +25,8 @@ function SignupFormPage() {
   const [usernameError, setUsernameError] = useState('');
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [phone, setPhone] = useState("")
+  const [phoneError, setPhoneError] = useState('');
+
   const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
   const [state, setState] = useState("")
@@ -52,7 +54,7 @@ function SignupFormPage() {
 
   const usernameCheck = async (e) => {
     e.preventDefault();
-
+    const errors = {};
     if (username.length < 3 || username.length > 20) {
       setUsernameError('Your username must be between 3 and 20 characters long.');
       setShowUsernameError(true);
@@ -61,23 +63,40 @@ function SignupFormPage() {
       setUsernameError('Your username can only have letters, numbers, and underscores.');
       setShowUsernameError(true);
       return;
+    } else if (phone.length === 0) {
+      setUsernameError('Phone number is requiresd')
+      setShowUsernameError(true);
+      return
+    } else if( address.length === 0) {
+      setUsernameError('A valid address is required')
+      setShowUsernameError(true);
+      return
+    } else if( city.length === 0) {
+      setUsernameError('Please enter your city')
+      setShowUsernameError(true);
+      return
+    } else if( state.length === 0) {
+      setUsernameError('Please enter your state')
+      setShowUsernameError(true)
+      return
     }
-    // setLoading(true);
-    // const success = await fetch(`/api/users/check-username/${username}`)
-    //   .then(res => {
-    //     setLoading(false);
-    //     return res.ok;
-    //   })
-    //   .catch(e => {
-    //     setLoading(false);
-    //   });
 
-    // if (success) setSignupStage(signupStage + 1);
     setSignupStage(signupStage + 1);
-      setUsernameError('Username duplicated. Please try again');
+      setUsernameError(errors);
       setShowUsernameError(true);
 
   }
+  // const addressCheck  = async (e) => {
+  //   e.preventDefault();
+  //   const errors = {};
+  //   if(address.length === 0) errors.address = "Please enter your address";
+  //   if(city.length === 0) errors.city = "Please enter your city";
+  //   if(state.length === 0) errors.state = "please enter your state";
+  //   if(phone.length === 0) errors.phone = "Please enter your phone number"
+  //   setSignupStage(signupStage + 1);
+  //     setUsernameError(errors)
+  //     setShowUsernameError(true)
+  //  }
   const handleSubmit1 = async (e) => {
     const errors = {};
     e.preventDefault();
