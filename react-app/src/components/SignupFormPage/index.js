@@ -56,34 +56,31 @@ function SignupFormPage() {
     e.preventDefault();
     const errors = {};
     if (username.length < 3 || username.length > 20) {
-      setUsernameError('Your username must be between 3 and 20 characters long.');
+      errors.username = 'Your username must be between 3 and 20 characters long.'
+    }
+     if (/[^a-zA-Z\d\_]+/.test(username)) {
+      errors.username = 'Your username can only have letters, numbers, and underscores.';
+    }
+     if (phone.length < 10) {
+      errors.phone = 'Phone number must be a minimum of 10 numbers'
+    }
+     if( address.length < 8) {
+      errors.address = 'An Address Must Have A Minimum of 8 Characters'
+    }
+     if( city.length < 2) {
+      errors.city = 'A City Must Have A Minimum of 2 Characters'
+    }
+    if( state.length < 2) {
+      errors.state = 'State Must Have A Minimum of 2 Letters'
+    }
+    if(Object.keys(errors).length > 0){
       setShowUsernameError(true);
+      setUsernameError(errors)
       return;
-    } else if (/[^a-zA-Z\d\_]+/.test(username)) {
-      setUsernameError('Your username can only have letters, numbers, and underscores.');
-      setShowUsernameError(true);
-      return;
-    } else if (phone.length === 0) {
-      setUsernameError('Phone number is requiresd')
-      setShowUsernameError(true);
-      return
-    } else if( address.length === 0) {
-      setUsernameError('A valid address is required')
-      setShowUsernameError(true);
-      return
-    } else if( city.length === 0) {
-      setUsernameError('Please enter your city')
-      setShowUsernameError(true);
-      return
-    } else if( state.length === 0) {
-      setUsernameError('Please enter your state')
-      setShowUsernameError(true)
-      return
+    }else {
+          setSignupStage(signupStage + 1);
     }
 
-    setSignupStage(signupStage + 1);
-      setUsernameError(errors);
-      setShowUsernameError(true);
 
   }
   // const addressCheck  = async (e) => {
@@ -265,6 +262,7 @@ function SignupFormPage() {
               onChange={(e) => {setUsername(e.target.value)}}
               placeholder='Username'
             />
+             {usernameError.username ? <p className='error-label'>{usernameError?.username}</p> : null}
           </div>
           <div>
             <input
@@ -274,6 +272,7 @@ function SignupFormPage() {
               onChange={(e) => {setAddress(e.target.value)}}
               placeholder='Address'
             />
+             {usernameError.address ? <p className='error-label'>{usernameError?.address}</p> : null}
           </div>
           <div>
             <input
@@ -283,6 +282,7 @@ function SignupFormPage() {
               onChange={(e) => {setCity(e.target.value)}}
               placeholder='City'
             />
+             {usernameError.city ? <p className='error-label'>{usernameError?.city}</p> : null}
           </div>
           <div>
             <input
@@ -292,6 +292,7 @@ function SignupFormPage() {
               onChange={(e) => {setState(e.target.value)}}
               placeholder='State'
             />
+             {usernameError.state ? <p className='error-label'>{usernameError?.state}</p> : null}
           </div>
           <div>
             <input
@@ -301,10 +302,13 @@ function SignupFormPage() {
               onChange={(e) => {setPhone(e.target.value)}}
               placeholder='Phone number'
             />
+            {usernameError.phone ? <p className='error-label'>{usernameError?.phone}</p> : null}
           </div>
-          <p className='error-label'>
-            {showUsernameError && usernameError}
-          </p>
+          {/* <p className='error-label'>
+            {showUsernameError && usernameError ? Object.values(usernameError).map((error) => {
+              return <p className='error-label'>{error}</p>
+            }) : null}
+          </p> */}
         </form>
       }
       {signupStage === 3 &&
