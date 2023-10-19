@@ -71,14 +71,14 @@ function PortfolioChart({ current }) {
     };
 
     getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 4000))
+      .then(setTimeout(() => setStocksIsLoaded(true), 2000))
       .then(() => {
         if (!current) history.push("/login");
         else if (current?.id !== userId) {
           return <Redirect to={`/portfolios/${userId}`} />;
         }
       });
-  }, [dispatch, userId, daily, monthly, weekly, toggle, data]);
+  }, [dispatch, userId]);
 
   function formattedData(ticker, state) {
     let data2 =
@@ -145,7 +145,7 @@ function PortfolioChart({ current }) {
                 !isBefore(
                   new Date(labels[`${count}`]),
                   new Date(stock.created_at)
-                ) 
+                )
               ) {
                 newData[`${count}`]
                   ? (newData[`${count}`] =

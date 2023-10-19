@@ -22,16 +22,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
   if (!currentUser) history.push("/login");
 
-  useEffect(() => {
-    if (deleteToggle) {
-        let newErrors = {}
-      if (!portfolios?.length) {
-        newErrors.error = "You Have No Assets or History To Delete"
-      }
-      setErrors({...newErrors});
-      if (errors.length > 0 || Object.values(newErrors).length > 0) return errors;
-    }
-  }, [toggle, deleteToggle]);
 
   const cancelModal =  (e) => {
     e.preventDefault()
