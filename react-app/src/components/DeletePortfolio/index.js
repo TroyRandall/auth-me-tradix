@@ -60,7 +60,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         }
         await dispatch(portfolioActions.getPortfoliosByUser(userId));
         await dispatch(authenticate());
-        reset();
         setDeleteToggle(false);
         setToggle(false);
         return response;

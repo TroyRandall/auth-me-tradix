@@ -32,40 +32,40 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   useEffect(() => {
     setEstimate((avgPrice * quantity).toFixed(2));
 
-    if (submitToggle) {
-      let newErrors = {};
+    // if (submitToggle) {
+    //   let newErrors = {};
 
-      if (currentUser === null)
-        newErrors.user = "You Must Be Logged In To Purchase Stock";
-      if (currentUser !== null) {
-        if (currentUser.buyingPower < estimate)
-          newErrors.buyingPower = "You Do Not Have Enough Buying Power";
-        if (quantity <= 0) newErrors.quantity = "Quantity is Required";
-        if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
-        if (
-          tickerSymbol.toLowerCase() !== ticker.toLowerCase() &&
-          newErrors?.ticker !== "Ticker Symbol is required"
-        )
-          newErrors.ticker =
-            "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
-        if (avgPrice <= 0) newErrors.price = "Price is Required";
-        if (
-          Number(avgPrice) < average &&
-          newErrors.price !== "Price is Required"
-        )
-          newErrors.price =
-            "Orders with a Price below the Average Stock Price Will Not Be Filled";
-      }
+    //   if (currentUser === null)
+    //     newErrors.user = "You Must Be Logged In To Purchase Stock";
+    //   if (currentUser !== null) {
+    //     if (currentUser.buyingPower < estimate)
+    //       newErrors.buyingPower = "You Do Not Have Enough Buying Power";
+    //     if (quantity <= 0) newErrors.quantity = "Quantity is Required";
+    //     if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+    //     if (
+    //       tickerSymbol.toLowerCase() !== ticker.toLowerCase() &&
+    //       newErrors?.ticker !== "Ticker Symbol is required"
+    //     )
+    //       newErrors.ticker =
+    //         "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
+    //     if (avgPrice <= 0) newErrors.price = "Price is Required";
+    //     if (
+    //       Number(avgPrice) < average &&
+    //       newErrors.price !== "Price is Required"
+    //     )
+    //       newErrors.price =
+    //         "Orders with a Price below the Average Stock Price Will Not Be Filled";
+    //   }
 
-      setErrors({ ...newErrors });
+    //   setErrors({ ...newErrors });
 
-      if (Object.values(errors).length > 0 || Object.values(newErrors).length > 0) {
-        setModalToggle(false);
-        return errors;
-      } else if (!errors.length > 0 && Object.values(newErrors).length === 0) {
-        setBackendToggle(true);
-      }
-    }
+    //   if (Object.values(errors).length > 0 || Object.values(newErrors).length > 0) {
+    //     setModalToggle(false);
+    //     return errors;
+    //   } else if (!errors.length > 0 && Object.values(newErrors).length === 0) {
+    //     setBackendToggle(true);
+    //   }
+    // }
 
     const closeModal = (e) => {
       setSubmitToggle(false);
@@ -94,39 +94,59 @@ function PurchaseStockForm({ average, isLoaded, change }) {
   ]);
 
   const handleSubmit = (e) => {
-    const submitButton = document.getElementById("form-submit-button");
-    const submitButtonMinus = document.getElementById(
-      "form-submission-button-minus"
-    );
-    setSubmitToggle(true);
-    if (backendToggle && submitRef.current.contains(e.target)) {
+    e.preventDefault();
+    let newErrors = {};
+
+    if (currentUser === null)
+      newErrors.user = "You Must Be Logged In To Purchase Stock";
+    if (currentUser !== null) {
+      if (currentUser.buyingPower < estimate)
+        newErrors.buyingPower = "You Do Not Have Enough Buying Power";
+      if (quantity <= 0) newErrors.quantity = "Quantity is Required";
+      if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
+      if (
+        tickerSymbol.toLowerCase() !== ticker.toLowerCase() &&
+        newErrors?.ticker !== "Ticker Symbol is required"
+      )
+        newErrors.ticker =
+          "Ticker Symbol Must Be The Symbol Assosicated With This Stock";
+      if (avgPrice <= 0) newErrors.price = "Price is Required";
+      if (Number(avgPrice) < average && newErrors.price !== "Price is Required")
+        newErrors.price =
+          "Orders with a Price below the Average Stock Price Will Not Be Filled";
+    }
+
+    setErrors({ ...newErrors });
+    console.log(Object.values(newErrors).length > 0);
+    if (Object.values(newErrors).length > 0) {
+      setModalToggle(false);
+      return errors;
+    } else if (Object.values(newErrors).length === 0) {
       let id = currentUser?.id;
       let portfolio = { id, tickerSymbol, quantity, avgPrice };
-      if (Object.values(errors).length < 1) {
-        dispatch(portfolioActions.addPortfolioItem(portfolio)).then(
-          async (res) => {
-            if (res) {
-              const data = res;
-              if (data) {
-                let newErrors = {};
-                data.forEach((error) => {
-                  if (newErrors["quantity"]) {
-                    newErrors["quantity"] = [
-                      newErrors["quantity"],
-                      error.slice(11),
-                    ];
-                  } else newErrors["quantity"] = error.slice(11);
-                });
-                setBackendErrors(newErrors);
-                return null;
-              }
-            } else setBackendErrors({})
-          }
-        );
+      dispatch(portfolioActions.addPortfolioItem(portfolio)).then(
+        async (res) => {
+          if (res) {
+            const data = res;
+            if (data) {
+              let newErrors = {};
+              data.forEach((error) => {
+                if (newErrors["quantity"]) {
+                  newErrors["quantity"] = [
+                    newErrors["quantity"],
+                    error.slice(11),
+                  ];
+                } else newErrors["quantity"] = error.slice(11);
+              });
+              setBackendErrors(newErrors);
+              return null;
+            }
+          } else setBackendErrors({});
+        }
+      );
 
-        dispatch(authenticate());
-        setModalToggle(true);
-      }
+      dispatch(authenticate());
+      setModalToggle(true);
     } else return null;
   };
 

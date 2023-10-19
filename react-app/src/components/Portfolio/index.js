@@ -8,7 +8,7 @@ import { isBefore, isAfter } from "date-fns";
 
 import LoadingSymbol from "../LoadingSymbol";
 import SellStockForm from "../StockSellForm";
-import DeletePortfolioForm from "../DeletePortfolio"
+import DeletePortfolioForm from "../DeletePortfolio";
 import * as stockActions from "../../store/stocks";
 import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
@@ -20,14 +20,12 @@ function PortfolioChart({ current }) {
   const [idx, setIdx] = useState(false);
   const [stocksIsLoaded, setStocksIsLoaded] = useState(false);
   const [createdAt, setCreatedAt] = useState(false);
-  const [seed, setSeed] = useState(1);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
   const [toggle, setToggle] = useState(false);
   const [hoverPrice, setHoverPrice] = useState(false);
-  const [stockData, setStockData] = useState(false);
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -36,7 +34,6 @@ function PortfolioChart({ current }) {
   const stockInfo = useSelector((state) => state.stocks);
   const weeklyInfo = useSelector((state) => state.weekly);
   const monthlyInfo = useSelector((state) => state.monthly);
-  const currentUser = useSelector((state) => state.session.user);
   const buyingPower = useSelector((state) => state.session.user?.buyingPower);
   const usDollar = Intl.NumberFormat("en-us", {
     maximumFractionDigits: 2,
@@ -72,12 +69,9 @@ function PortfolioChart({ current }) {
         await dispatch(weeklyActions.stockDataWeekly("tsla"));
       }
     };
-    reset(async () => {
-      await setSeed(Math.random);
-    });
 
     getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 8000))
+      .then(setTimeout(() => setStocksIsLoaded(true), 4000))
       .then(() => {
         if (!current) history.push("/login");
         else if (current?.id !== userId) {
@@ -151,7 +145,7 @@ function PortfolioChart({ current }) {
                 !isBefore(
                   new Date(labels[`${count}`]),
                   new Date(stock.created_at)
-                )
+                ) 
               ) {
                 newData[`${count}`]
                   ? (newData[`${count}`] =
@@ -433,16 +427,11 @@ function PortfolioChart({ current }) {
           100
         ).toFixed(2));
 
-  const reset = () => {
-    setSeed(Math.random());
-  };
-
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
         <DeletePortfolioForm
           price={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
-          reset={reset}
           setStocksIsLoaded={setStocksIsLoaded}
         />
         <div id="portfolio_info_container">
@@ -472,12 +461,12 @@ function PortfolioChart({ current }) {
             {stocksIsLoaded
               ? daily
                 ? "Today"
-                : "As of " + (createdAt ? createdAt.slice(0, 16) : 'Today')
+                : "As of " + (createdAt ? createdAt.slice(0, 16) : "Today")
               : ""}
           </h3>
         </div>
         <div id="portfolioChart">
-          <Line data={data} options={options} id="portfolioChart2" key={seed} />
+          <Line data={data} options={options} id="portfolioChart2" />
         </div>
 
         <div id="chart-buttons">
