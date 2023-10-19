@@ -33,8 +33,9 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     }
   }, [toggle, deleteToggle]);
 
-  const cancelModal = async (e) => {
+  const cancelModal =  (e) => {
     e.preventDefault()
+    e.stopPropagation();
     const overlay = document.getElementById("overlay");
     const yesButton = document.getElementById("confirm-portfolio-reset");
     const noButton = document.getElementById("deny-portfolio-reset");
@@ -48,7 +49,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       if (!portfolios?.length) {
         return null;
       } else if (portfolios?.length) {
-        const response = await dispatch(
+        const response =  dispatch(
           portfolioActions.deletePortfolioItem(userId, price)
         ).catch(async (res) => {
           const data = res;
@@ -58,8 +59,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
           setToggle(false);
           setDeleteToggle(false);
         }
-        await dispatch(portfolioActions.getPortfoliosByUser(userId));
-        await dispatch(authenticate());
+         dispatch(portfolioActions.getPortfoliosByUser(userId));
         setDeleteToggle(false);
         setToggle(false);
         return response;
