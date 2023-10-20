@@ -24,7 +24,6 @@ function PortfolioChart({ current }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
-  const [toggle, setToggle] = useState(false);
   const [hoverPrice, setHoverPrice] = useState(false);
   const [daily, setDaily] = useState(true);
   const [monthly, setMonthly] = useState(false);
@@ -46,10 +45,14 @@ function PortfolioChart({ current }) {
       let tickers = Object.values(res[`${userId}`]);
       const newTickers = {};
       tickers.forEach((ticker) => {
+        console.log(newTickers[ticker.symbol]);
         if (!newTickers[ticker.symbol])
           newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];
       });
+      console.log('this is for tickers')
+      console.log(tickers)
       if (tickers.length > 0) {
+        console.log(newTickers);
         setTickerData([...tickers]);
         let created = tickers[0]?.created_at;
         Object.values(newTickers).forEach(async (ticker) => {
@@ -58,7 +61,7 @@ function PortfolioChart({ current }) {
           }
 
           // await dispatch(stockActions.stockDataDaily(ticker.symbol));
-          let test = await dispatch(stockActions.stockDataDaily(ticker[0]));
+          await dispatch(stockActions.stockDataDaily(ticker[0]));
           await dispatch(monthlyActions.stockDataMonthly(ticker[0]));
           await dispatch(weeklyActions.stockDataWeekly(ticker[0]));
         });
@@ -69,15 +72,23 @@ function PortfolioChart({ current }) {
         await dispatch(weeklyActions.stockDataWeekly("tsla"));
       }
     };
+    if(userId){
+       getData().then(() => {
+      if (!current) history.push("/login");
+      else if (current?.id !== userId) {
+        return <Redirect to={`/portfolios/${userId}`} />;
+      }
+    });
+      const delayLoad = setTimeout(() => {
+        setStocksIsLoaded(true);
+      }, 4000);
+      return () => {
+        clearTimeout(delayLoad);
+      };
 
-    getData()
-      .then(setTimeout(() => setStocksIsLoaded(true), 2000))
-      .then(() => {
-        if (!current) history.push("/login");
-        else if (current?.id !== userId) {
-          return <Redirect to={`/portfolios/${userId}`} />;
-        }
-      });
+    }
+
+
   }, [dispatch, userId]);
 
   function formattedData(ticker, state) {

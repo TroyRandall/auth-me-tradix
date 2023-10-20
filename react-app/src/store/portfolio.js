@@ -62,22 +62,18 @@ export const addPortfolioItem = (portfolio) => async (dispatch) => {
 export const deletePortfolioItem = (id, value) => async (dispatch) => {
   const response = await fetch(`/api/portfolio/${id}`, {
     method: "DELETE",
-
+    headers: {
+      "Content-Type": "application/json",
+    },
+    hasBody: true,
+    body: JSON.stringify({
+      value: value
+    }),
   });
 
   if(response.ok){
-    await fetch(`/api/users/updateBP`, {
-      method: 'PUT',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      hasBody: true,
-      body: JSON.stringify({
-        value: value
-      }),
-    })
    await dispatch(deletePortfolio(id));
-
+   return null;
   } else {
     const data = await response.json();
     if(data.error) return data
@@ -135,8 +131,8 @@ const portfolioReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case GET_TRADIX_PORTFOLIOS:
-      newState = Object.assign({}, state);
-      newState = action.payload.data;
+      newState = {...state};
+      newState = {...action.payload.data};
       return newState;
     case ADD_PORTFOLIO_ITEM:
       newState = Object.assign({}, state);
@@ -148,7 +144,7 @@ const portfolioReducer = (state = initialState, action) => {
       newState = action.payload;
       return newState
     case DELETE_TRADIX_PORTFOLIO:
-      newState = Object.assign({}, state);
+      newState = {...state};
       delete newState[action.payload]
       newState[action.payload] = null
       return newState

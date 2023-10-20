@@ -24,8 +24,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
 
   const cancelModal =  (e) => {
-    e.preventDefault()
-    e.stopPropagation();
     const overlay = document.getElementById("overlay");
     const yesButton = document.getElementById("confirm-portfolio-reset");
     const noButton = document.getElementById("deny-portfolio-reset");
@@ -34,31 +32,32 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         setDeleteToggle(false);
         setErrors(false)
     }
-    else if (e.target === yesButton) {
-        setDeleteToggle(true);
-      if (!portfolios?.length) {
-        return null;
-      } else if (portfolios?.length) {
-        const response =  dispatch(
-          portfolioActions.deletePortfolioItem(userId, price)
-        ).catch(async (res) => {
-          const data = res;
-          if (data && data.errors) setErrors(data.errors);
-        });
-        if (!Object.values(errors).length) {
-          setToggle(false);
-          setDeleteToggle(false);
-        }
-         dispatch(portfolioActions.getPortfoliosByUser(userId));
-         dispatch(authenticate());
-        setDeleteToggle(false);
-        setToggle(false);
-        return response;
-      } else {
-        setToggle(false);
-      }
-    }
+
   };
+
+  const handleDelete = async(e) => {
+    e.preventDefault()
+      setDeleteToggle(true);
+      if(!portfolios?.length){
+        setErrors({...errors, 'size': 'You Have No Stocks To Sell, Your Portfolio Is Brand New'})
+        return null;
+      }
+      const response =  dispatch(
+        portfolioActions.deletePortfolioItem(userId, price)
+      ).then(async (res) => {
+        const data = res;
+
+        if (data && data.errors) {
+          setErrors(data.errors);
+          return null;
+        }
+      });
+       dispatch(portfolioActions.getPortfoliosByUser(userId));
+       dispatch(authenticate());
+      setDeleteToggle(false);
+      setToggle(false);
+      return response;
+   }
 
   const changeToggle = (e) => {
     e.preventDefault();
@@ -99,7 +98,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
               <button
                 className="delete-portfolio-items"
                 id="confirm-portfolio-reset"
-                onClick={cancelModal}
+                onClick={handleDelete}
               >
                 Yes
               </button>{" "}

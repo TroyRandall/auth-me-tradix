@@ -1,8 +1,8 @@
 #delete-portfolio {
     width: 400px;
     position: sticky;
-    top: 48vh;
-    left: 48vw;
+    top: 38vh;
+    left: 38vw;
     background-color: whitesmoke;
     font-size: 22px;
     display: flex;
@@ -158,8 +158,9 @@
     font-size: 0.9em;
     align-items: inherit;
     list-style-type: none;
-    width: 100%;
     justify-content: center;
     margin-right: 10px;
     color: red;
+    padding: 7px;
+    text-align: center;
    }
