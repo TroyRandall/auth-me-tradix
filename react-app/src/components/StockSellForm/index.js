@@ -15,7 +15,6 @@ function SellStockForm({ portfolio }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState({});
-  const [backendToggle, setBackendToggle] = useState(false);
   const [portfolioId, setPortfolioId] = useState(portfolio.id);
   const [tickerSymbol, setTickerSymbol] = useState(portfolio.symbol);
   const [quantity, setQuantity] = useState("");
@@ -25,21 +24,9 @@ function SellStockForm({ portfolio }) {
 
   useEffect(() => {
     setEstimate((avgPrice * quantity).toFixed(2));
-    if (portfolio.symbol) setIsLoaded(true);
-    if (submitToggle) {
-      let newErrors = {};
+    if (portfolio?.symbol) setIsLoaded(true);
 
-      if (quantity <= 0) newErrors.quantity = "Quantity is Required";
-      if (quantity > portfolio.quantity && !newErrors.quantity)
-        newErrors.quantity = "You cannot Sell More Shares Than You Own";
-      if (tickerSymbol === "") newErrors.ticker = "Ticker Symbol is required";
-      if (Number(avgPrice) <= 0) newErrors.price = "Price is Required";
-
-      setErrors({ ...newErrors });
-      if (errors && Object.values(newErrors).length > 0) return errors;
-      setBackendToggle(true);
-    }
-  }, [avgPrice, quantity, submitToggle, portfolios]);
+  }, [avgPrice, quantity, portfolios]);
 
   // const handleSubmit = async (e) => {
   //   e?.preventDefault();
@@ -70,20 +57,9 @@ function SellStockForm({ portfolio }) {
   //   }
   // };
 
-  const cancelModal = async (e) => {
-    e?.preventDefault()
-    const overlay = document.getElementById("overlay");
-    const yesButton = document.getElementById("yes-button");
-    const noButton = document.getElementById("no-button");
-    if (e.target === overlay || e.target === noButton) {
-      setToggle(false);
-      setSubmitToggle(false);
-      setErrors(false)
-      setQuantity('')
-      setAvgPrice('')
-    return null}
-    else if (e.target === yesButton) {
-      let newErrors = {};
+  const handleSell = async(e) => {
+    e.preventDefault();
+    let newErrors = {};
 
       if (quantity <= 0) newErrors.quantity = "Quantity is Required";
       if (quantity > portfolio.quantity && !newErrors.quantity)
@@ -107,16 +83,28 @@ function SellStockForm({ portfolio }) {
         if (!errors.length) {
           const response = await dispatch(
             portfolioActions.updatePortfolioItem(portfolio)
-          ).catch(async (res) => {
+          ).then(async (res) => {
             const data = res;
             if (data && data.errors) setErrors(data.errors);
           });
-          await dispatch(portfolioActions.getPortfoliosByUser(userId));
           await dispatch(authenticate());
           return response;
         }
       };
-    }
+  }
+
+  const cancelModal = async (e) => {
+    e?.preventDefault()
+    const overlay = document.getElementById("overlay");
+    const yesButton = document.getElementById("yes-button");
+    const noButton = document.getElementById("no-button");
+    if (e.target === overlay || e.target === noButton) {
+      setToggle(false);
+      setSubmitToggle(false);
+      setErrors(false)
+      setQuantity('')
+      setAvgPrice('')
+    return null}
   };
 
   const UlClassName = "overlay" + (toggle ? "" : "hidden");
@@ -185,7 +173,7 @@ function SellStockForm({ portfolio }) {
                 </span>
                 <div>
                   {" "}
-                  <button onClick={cancelModal} id="yes-button">
+                  <button onClick={handleSell} id="yes-button">
                     Yes
                   </button>{" "}
                   <button onClick={cancelModal} id="no-button">
