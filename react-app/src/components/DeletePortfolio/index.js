@@ -31,7 +31,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     })
     let count = 0;
     formatted.forEach((ticker) => {
-      if(stockInfo[ticker?.name]['Time Series (Daily)']){
+      if(stockInfo?.[ticker?.name]){
            count = count + (Object.values(stockInfo[ticker?.name]['Time Series (Daily)']).reverse()[0]['4. close'] * ticker?.quantity)
       }
 
