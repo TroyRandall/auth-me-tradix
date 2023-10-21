@@ -80,7 +80,7 @@ function PortfolioChart({ current }) {
     });
       const delayLoad = setTimeout(() => {
         setStocksIsLoaded(true);
-      }, 6000);
+      }, 4000);
       return () => {
         clearTimeout(delayLoad);
       };
