@@ -75,15 +75,14 @@ function PortfolioChart({ current }) {
         }
       });
 
-
       const delayLoad = setTimeout(() => {
         setStocksIsLoaded(true);
-      const chartContainer = document.getElementById("portfolioChart");
-      console.log(chartContainer);
-      let chart = chartContainer?.childNodes[0];
-      chartContainer.addEventListener("mouseleave", () => {
-        setHoverPrice(false);
-      });
+        const chartContainer = document.getElementById("portfolioChart");
+        console.log(chartContainer);
+        let chart = chartContainer?.childNodes[0];
+        chartContainer.addEventListener("mouseleave", () => {
+          setHoverPrice(false);
+        });
       }, 5000);
       return () => {
         clearTimeout(delayLoad);
@@ -344,16 +343,27 @@ function PortfolioChart({ current }) {
     },
 
     scales: {
-      y: portfolios?.length < 3
-        ? {
-            grid: {
-              display: false,
-            },
-            min: -4000,
-            ticks: {
-              display: false,
-            },
-          }
+      y: portfolios
+        ? Object.values(portfolios).length > 3 && tickerData
+          ? {
+              grid: {
+                display: false,
+              },
+              min: -4000,
+              ticks: {
+                display: false,
+              },
+            }
+          : {
+              grid: {
+                display: false,
+              },
+              max: 1000,
+              min: -1000,
+              ticks: {
+                display: false,
+              },
+            }
         : {
             grid: {
               display: false,
@@ -489,7 +499,10 @@ function PortfolioChart({ current }) {
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
-            ${hoverPrice ? Number(hoverPrice).toLocaleString("en-US") : formatValue().toLocaleString("en-US")}
+            $
+            {hoverPrice
+              ? Number(hoverPrice).toLocaleString("en-US")
+              : formatValue().toLocaleString("en-US")}
           </h2>
           <h3 id={changeId}>
             {formattedChange.toFixed(2).toLocaleString("en-US") >= 0
