@@ -44,14 +44,10 @@ function PortfolioChart({ current }) {
       let tickers = Object.values(res[`${userId}`]);
       const newTickers = {};
       tickers.forEach((ticker) => {
-        console.log(newTickers[ticker.symbol]);
         if (!newTickers[ticker.symbol])
           newTickers[ticker.symbol] = [ticker.symbol, ticker.created_at];
       });
-      console.log('this is for tickers')
-      console.log(tickers)
       if (tickers.length > 0) {
-        console.log(newTickers);
         setTickerData([...tickers]);
         let created = tickers[0]?.created_at;
         Object.values(newTickers).forEach(async (ticker) => {

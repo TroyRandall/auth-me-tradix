@@ -20,7 +20,8 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const [errors, setErrors] = useState(false);
 
   useEffect(() => {
-    if (Object.values(stockInfo).length > 1) {
+    console.log(stockInfo);
+    if (Object.values(stockInfo).length > 1 && userId) {
       let formatted = [];
       Object.values(portfolios).forEach((portfolio) => {
         if (!portfolio?.sold_at) {
@@ -41,7 +42,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       });
       setValue(count);
     }
-  }, [stockInfo]);
+  }, [stockInfo,]);
 
   if (!currentUser) history.push("/login");
 
