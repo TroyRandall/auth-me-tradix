@@ -117,7 +117,6 @@ function PurchaseStockForm({ average, isLoaded, change }) {
     }
 
     setErrors({ ...newErrors });
-    console.log(Object.values(newErrors).length > 0);
     if (Object.values(newErrors).length > 0) {
       setModalToggle(false);
       return errors;

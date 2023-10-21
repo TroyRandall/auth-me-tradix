@@ -67,27 +67,34 @@ function PortfolioChart({ current }) {
         await dispatch(weeklyActions.stockDataWeekly("tsla"));
       }
     };
-    if(userId){
-       getData().then(() => {
-      if (!current) history.push("/login");
-      else if (current?.id !== userId) {
-        return <Redirect to={`/portfolios/${userId}`} />;
-      }
-    });
+    if (userId) {
+      getData().then(() => {
+        if (!current) history.push("/login");
+        else if (current?.id !== userId) {
+          return <Redirect to={`/portfolios/${userId}`} />;
+        }
+      });
+
+
       const delayLoad = setTimeout(() => {
         setStocksIsLoaded(true);
-      }, 4000);
+      const chartContainer = document.getElementById("portfolioChart");
+      console.log(chartContainer);
+      let chart = chartContainer?.childNodes[0];
+      chartContainer.addEventListener("mouseleave", () => {
+        setHoverPrice(false);
+      });
+      }, 5000);
       return () => {
         clearTimeout(delayLoad);
       };
-
     }
-
   }, []);
 
   function formattedData(ticker, state) {
     let data2 =
-      stocksIsLoaded && tickerData &&
+      stocksIsLoaded &&
+      tickerData &&
       (daily
         ? Object.values(state[ticker]["Time Series (Daily)"])
         : weekly
@@ -155,20 +162,21 @@ function PortfolioChart({ current }) {
             ticker?.quantity;
       });
       return count;
-    } else return 0
-  }
+    } else return 0;
+  };
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
     if (stocksIsLoaded) {
-      if (tickerData) {
+      if (tickerData && portfolios) {
         Object.values(portfolios).forEach((stock) => {
-          console.log(stock);
           let oldData = formattedData(stock.symbol, state).reverse();
           let index = 0;
           count = 0;
           let labels = stocksIsLoaded && formattedLabels().reverse();
           oldData.forEach((data) => {
+            const createdDate = new Date(stock.created_at);
+            const today = new Date();
             if (!stock.sold_at) {
               if (
                 !isBefore(
@@ -336,7 +344,7 @@ function PortfolioChart({ current }) {
     },
 
     scales: {
-      y: tickerData
+      y: portfolios?.length < 3
         ? {
             grid: {
               display: false,
@@ -384,13 +392,18 @@ function PortfolioChart({ current }) {
           item[0]["element"]["$context"]["parsed"]["y"].toFixed(2) || false
         );
       } else setHoverPrice(false);
-      if (e.type === "mouseout") {
+      if (e.type === "mouseleave") {
         setHoverPrice(false);
       }
     },
     onmouseout: function (e, item) {
+      console.log(e.type);
       setHoverPrice(false);
-    }
+    },
+    onmouseleave: function (e, item) {
+      console.log(e.type);
+      setHoverPrice(false);
+    },
   };
 
   const dailyToggle = () => {
@@ -462,6 +475,13 @@ function PortfolioChart({ current }) {
   return stocksIsLoaded ? (
     <>
       <div id="portfolio_container">
+        <p class="portfolio-chart-warning">
+          {" "}
+          The Portfolio Chart Will Not Update In Real-Time, and Will Not Update
+          before 8am and After 4:30pm Eastern Time Monday-Friday or On The
+          Weekends. It Will Update With New Information The Next Time The Market
+          Is Open.
+        </p>
         <DeletePortfolioForm
           price={formatValue()}
           setStocksIsLoaded={setStocksIsLoaded}
@@ -469,11 +489,7 @@ function PortfolioChart({ current }) {
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
-            $
-            {Number(hoverPrice).toLocaleString("en-US") || formatValue() ||
-              data?.datasets[0]?.data[data?.datasets[0]?.data?.length - 1]
-                .toFixed(2)
-                .toLocaleString("en-US")}
+            ${hoverPrice ? Number(hoverPrice).toLocaleString("en-US") : formatValue().toLocaleString("en-US")}
           </h2>
           <h3 id={changeId}>
             {formattedChange.toFixed(2).toLocaleString("en-US") >= 0

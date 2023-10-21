@@ -25,7 +25,7 @@ def portfolio_details(user_id):
     userPortfolio = Portfolio.query.filter(Portfolio.user_id == user_id).all()
     if(len(userPortfolio) < 3):
         newPortfolio = Portfolio(
-            user_id=id,
+            user_id=user_id,
             symbol='TSLA',
             name='TSLA',
             quantity=100,
@@ -34,7 +34,7 @@ def portfolio_details(user_id):
             sold_at=datetime.now()
         )
         newPortfolio2 = Portfolio(
-            user_id=id,
+            user_id=user_id,
             symbol='TSLA',
             name='TSLA',
             quantity=100,
@@ -43,7 +43,7 @@ def portfolio_details(user_id):
             sold_at=datetime.now()
         )
         newPortfolio3 = Portfolio(
-            user_id=id,
+            user_id=user_id,
             symbol='TSLA',
             name='TSLA',
             quantity=100,
@@ -55,6 +55,8 @@ def portfolio_details(user_id):
         db.session.add(newPortfolio2)
         db.session.add(newPortfolio3)
         db.session.commit()
+        userPortfolio = Portfolio.query.filter(Portfolio.user_id == user_id).all()
+        return {user_id: [portfolio.to_dict() for portfolio in userPortfolio]}
     return {user_id: [portfolio.to_dict() for portfolio in userPortfolio]}
 
 
@@ -135,43 +137,9 @@ def portfolio_delete(id):
     userPortfolios = Portfolio.query.filter(Portfolio.user_id == id).all()
     if userPortfolios:
         [db.session.delete(portfolio) for portfolio in userPortfolios]
-        newPortfolio = Portfolio(
-            user_id=id,
-            symbol='TSLA',
-            name='TSLA',
-            quantity=100,
-            avg_price=210,
-            created_at=datetime.now(),
-            sold_at=datetime.now()
-        )
-        newPortfolio2 = Portfolio(
-            user_id=id,
-            symbol='TSLA',
-            name='TSLA',
-            quantity=100,
-            avg_price=210,
-            created_at=datetime.now(),
-            sold_at=datetime.now()
-        )
-        newPortfolio3 = Portfolio(
-            user_id=id,
-            symbol='TSLA',
-            name='TSLA',
-            quantity=100,
-            avg_price=210,
-            created_at=datetime.now(),
-            sold_at=datetime.now()
-        )
         currentUser = User.query.get(id)
-        print(currentUser.to_dict())
-        print(currentUser.buying_power)
-        print(currentUser.buying_power + val)
         currentUser.buying_power = currentUser.buying_power + val
-        db.session.add(newPortfolio)
-        db.session.add(newPortfolio2)
-        db.session.add(newPortfolio3)
         db.session.commit()
-        print(currentUser.to_dict())
         return {"message": "Successfully delete"}
     else:
         return {"error": "Unable to Locate Any Portfolios Related To This Account"}

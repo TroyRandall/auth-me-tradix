@@ -13,9 +13,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const history = useHistory();
   const { userId } = useParams();
   const currentUser = useSelector((state) => state.session.user);
-  const portfolios = useSelector((state) => state.portfolios[userId]);
-  const stockInfo = useSelector((state) => state.stocks);
-  const [value, setValue] = useState(0);
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState(false);
 
@@ -39,7 +36,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       });
       return null;
     }
-    const response = dispatch(
+    const response = await dispatch(
       portfolioActions.deletePortfolioItem(userId, price)
     ).then(async (res) => {
       const data = res;
@@ -49,7 +46,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
         return null;
       }
     });
-    dispatch(authenticate());
+    await dispatch(authenticate());
     setToggle(false);
     return response;
   };

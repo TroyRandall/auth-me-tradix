@@ -8,6 +8,7 @@ def seed_portfolios():
         name = 'Tesla',
         quantity=100,
         avg_price=(120 * 100) / 1,
+        created_at= datetime(2023, 3, 12)
 
     )
     portfolio2 = Portfolio(
@@ -15,28 +16,32 @@ def seed_portfolios():
         symbol='GME',
         name='Game Stop',
         quantity = 50,
-        avg_price=(35*50)/50
+        avg_price=(35*50)/50,
+        created_at= datetime(2023, 4, 22)
     )
     portfolio3 = Portfolio(
         user_id=1,
         symbol='AAPL',
         name='Apple',
         quantity = 20,
-        avg_price=(112 * 20) / 20
+        avg_price=(112 * 20) / 20,
+        created_at= datetime(2023, 8, 14)
     )
     portfolio4 = Portfolio(
         user_id=2,
         symbol='F',
         name='Ford',
         quantity = 200,
-        avg_price = (6 * 200) / 200
+        avg_price = (6 * 200) / 200,
+        created_at= datetime(2023, 6, 6)
     )
     portfolio5 = Portfolio(
         user_id=3,
         symbol='SPY',
         name='S&P 500',
         quantity = 66,
-        avg_price = (300 * 66) / 66
+        avg_price = (300 * 66) / 66,
+        created_at= datetime(2023, 6, 6)
     )
 
     portfolio6 = Portfolio(
@@ -44,7 +49,8 @@ def seed_portfolios():
         symbol='AAPL',
         name='Apple',
         quantity = 20,
-        avg_price=(112 * 20) / 20
+        avg_price=(112 * 20) / 20,
+        created_at= datetime(2023, 6, 6)
     )
 
     portfolio7 = Portfolio(
@@ -87,7 +93,6 @@ def seed_portfolios():
     db.session.add(portfolio9)
     db.session.commit()
 
-    db.session.commit()
 
 def undo_portfolios():
     if environment == "production":
