@@ -141,7 +141,7 @@ function PortfolioChart({ current }) {
       Object.values(portfolios).forEach((portfolio) => {
         if (!portfolio?.sold_at) {
           formatted.push({
-            name: portfolio?.name,
+            symbol: portfolio?.symbol,
             quantity: portfolio?.quantity,
           });
         }
@@ -152,7 +152,7 @@ function PortfolioChart({ current }) {
         count =
           count +
           Object.values(
-            stockInfo[ticker?.name]?.["Time Series (Daily)"]
+            stockInfo[ticker?.symbol]?.["Time Series (Daily)"]
           )?.reverse()[0]?.["4. close"] *
             ticker?.quantity;
       });
