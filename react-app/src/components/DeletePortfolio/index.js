@@ -19,15 +19,10 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState(false);
 
-  useEffect(() => {
-   console.log(price);
-  }, []);
-
   if (!currentUser) history.push("/login");
 
   const cancelModal = (e) => {
     const overlay = document.getElementById("overlay");
-    const yesButton = document.getElementById("confirm-portfolio-reset");
     const noButton = document.getElementById("deny-portfolio-reset");
     if (e.target === overlay || e.target === noButton) {
       setToggle(false);
@@ -70,7 +65,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     if (toggle) {
       return (
         <div className={UlClassName} onClick={cancelModal} id="overlay">
-          <div id="delete-portfolio">
+          <div class="delete-portfolio-card">
             <div>
               {Object.values(errors).map((error) => {
                 return (
@@ -83,37 +78,30 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
                 );
               })}
             </div>
-            <h3 className="delete-portfolio-items" id="delete-form-title">
-              !!!ATTENTION!!!{" "}
-            </h3>
-            <h3 className="delete-portfolio-items">
-              You Are About To Delete Your Portfolio
-            </h3>
-            <p
-              className="delete-portfolio-items"
-              id="delete-portfolio-paragraph"
-            >
-              Doing So Will Liquidate All of Your Assets and Erase All History
-              Of Your Account.
-            </p>
-            <p className="delete-portfolio-items" id="delete-confirm">
-              Would You Like To Continue?
-            </p>
-            <div className="delete-portfolio-items">
-              <button
-                className="delete-portfolio-items"
-                id="confirm-portfolio-reset"
+            <div class="delete-portfolio-card__warning">
+              <div className='delete-portfolio-card__warning-red'>
+              Warning
+              </div>
+              <div class="delete-portfolio-card__warning-text">
+                Deleting your entire portfolio is irreversible. Are you
+                sure you want to proceed?
+              </div>
+            </div>
+            <div class="delete-portfolio-card__buttons">
+              <div
+                class="delete-portfolio-card__button delete-portfolio-card__button--yes"
                 onClick={handleDelete}
+                id="confirm-portfolio-reset"
               >
                 Yes
-              </button>{" "}
-              <button
-                className="delete-portfolio-items"
+              </div>
+              <div
+                class="delete-portfolio-card__button delete-portfolio-card__button--no"
                 onClick={cancelModal}
                 id="deny-portfolio-reset"
               >
                 No
-              </button>
+              </div>
             </div>
           </div>
         </div>

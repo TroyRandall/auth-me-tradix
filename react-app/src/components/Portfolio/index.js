@@ -201,7 +201,7 @@ function PortfolioChart({ current }) {
             }
           });
           index++;
-          if (index === Object.values(tickerData).length - 1) setIdx(count);
+          if (index === Object.values(portfolios).length - 1) setIdx(count);
         });
       } else {
         newData = {};
