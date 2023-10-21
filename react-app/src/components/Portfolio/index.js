@@ -14,7 +14,6 @@ import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
 import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
-import { object } from "prop-types";
 
 function PortfolioChart({ current }) {
   const [idx, setIdx] = useState(false);
@@ -88,12 +87,11 @@ function PortfolioChart({ current }) {
 
     }
 
-
-  }, [dispatch, userId]);
+  }, []);
 
   function formattedData(ticker, state) {
     let data2 =
-      stocksIsLoaded &&
+      stocksIsLoaded && tickerData &&
       (daily
         ? Object.values(state[ticker]["Time Series (Daily)"])
         : weekly

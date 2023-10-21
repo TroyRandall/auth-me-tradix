@@ -12,13 +12,29 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { userId } = useParams();
-  const [deleteToggle, setDeleteToggle] = useState(false);
   const currentUser = useSelector((state) => state.session.user);
   const portfolios = useSelector((state) => state.portfolios[userId]);
   const stockInfo = useSelector((state) => state.stocks);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
   const [toggle, setToggle] = useState(false);
   const [errors, setErrors] = useState(false);
+
+  useEffect(() => {
+    let formatted = []
+    Object.values(portfolios).forEach((portfolio) => {
+      if(!portfolio?.sold_at){
+        formatted.push({
+          'name': portfolio?.name,
+          'quantity': portfolio?.quantity
+        })
+      }
+    })
+    let count = 0;
+    formatted.forEach((ticker) => {
+      count = count + (Object.values(stockInfo[ticker?.name]['Time Series (Daily)']).reverse()[0]['4. close'] * ticker?.quantity)
+    })
+    setValue(count);
+  }, [])
 
   if (!currentUser) history.push("/login");
 
@@ -29,7 +45,6 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
     const noButton = document.getElementById("deny-portfolio-reset");
     if (e.target === overlay || e.target === noButton){
         setToggle(false)
-        setDeleteToggle(false);
         setErrors(false)
     }
 
@@ -37,13 +52,12 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
   const handleDelete = async(e) => {
     e.preventDefault()
-      setDeleteToggle(true);
       if(!portfolios?.length){
         setErrors({...errors, 'size': 'You Have No Stocks To Sell, Your Portfolio Is Brand New'})
         return null;
       }
       const response =  dispatch(
-        portfolioActions.deletePortfolioItem(userId, price)
+        portfolioActions.deletePortfolioItem(userId, value)
       ).then(async (res) => {
         const data = res;
 
@@ -52,9 +66,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
           return null;
         }
       });
-       dispatch(portfolioActions.getPortfoliosByUser(userId));
-       dispatch(authenticate());
-      setDeleteToggle(false);
+      dispatch(authenticate());
       setToggle(false);
       return response;
    }

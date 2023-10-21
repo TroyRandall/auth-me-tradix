@@ -23,7 +23,7 @@ const stocksMonthlyReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case GET_MONTHLY_DATA:
-      newState = Object.assign({}, state);
+      newState = {...state};
       newState[action.payload["Meta Data"]["2. Symbol"]] = action.payload;
       return newState;
     default:
