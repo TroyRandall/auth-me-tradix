@@ -345,15 +345,26 @@ function PortfolioChart({ current }) {
     scales: {
       y: portfolios
         ? Object.values(portfolios).length > 3 && tickerData
-          ? {
-              grid: {
-                display: false,
-              },
-              min: -4000,
-              ticks: {
-                display: false,
-              },
-            }
+          ? data?.datasets[0].data[data?.datasets[0].data.length - 1] > 1000
+            ? {
+                grid: {
+                  display: false,
+                },
+                min: -4000,
+                ticks: {
+                  display: false,
+                },
+              }
+            : {
+                grid: {
+                  display: false,
+                },
+                max: 1000,
+                min: -1000,
+                ticks: {
+                  display: false,
+                },
+              }
           : {
               grid: {
                 display: false,
