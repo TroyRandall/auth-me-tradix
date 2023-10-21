@@ -162,7 +162,8 @@ function PortfolioChart({ current }) {
     let count;
     if (stocksIsLoaded) {
       if (tickerData) {
-        Object.values(tickerData).forEach((stock) => {
+        Object.values(portfolios).forEach((stock) => {
+          console.log(stock);
           let oldData = formattedData(stock.symbol, state).reverse();
           let index = 0;
           count = 0;
@@ -387,6 +388,9 @@ function PortfolioChart({ current }) {
         setHoverPrice(false);
       }
     },
+    onmouseout: function (e, item) {
+      setHoverPrice(false);
+    }
   };
 
   const dailyToggle = () => {
