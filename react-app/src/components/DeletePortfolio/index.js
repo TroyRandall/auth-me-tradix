@@ -37,10 +37,10 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    if (!portfolios?.length) {
+    if (price === 0) {
       setErrors({
         ...errors,
-        size: "You Have No Stocks To Sell, Your Portfolio Is Brand New",
+        size: "You Have No Stocks To Sell, Please Purchase Some Stocks To Perform This Action",
       });
       return null;
     }

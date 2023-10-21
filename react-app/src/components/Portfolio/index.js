@@ -136,7 +136,8 @@ function PortfolioChart({ current }) {
 
   const formatValue = () => {
     console.log(stockInfo);
-    if (Object.values(stockInfo).length > 1 && userId) {
+    console.log(portfolios)
+    if (Object.values(stockInfo).length > 1 && portfolios) {
       let formatted = [];
       Object.values(portfolios).forEach((portfolio) => {
         if (!portfolio?.sold_at) {
@@ -157,7 +158,7 @@ function PortfolioChart({ current }) {
             ticker?.quantity;
       });
       return count;
-    }
+    } else return 0
   }
   const formattedDataPortfolio = (state) => {
     let newData = {};
