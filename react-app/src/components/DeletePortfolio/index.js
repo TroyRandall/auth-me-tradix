@@ -33,11 +33,12 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       });
       let count = 0;
       formatted.forEach((ticker) => {
+        console.log(ticker);
         count =
           count +
           Object.values(
-            stockInfo[ticker?.name]["Time Series (Daily)"]
-          ).reverse()[0]["4. close"] *
+            stockInfo[ticker?.name]?.["Time Series (Daily)"]
+          )?.reverse()[0]?.["4. close"] *
             ticker?.quantity;
       });
       setValue(count);
