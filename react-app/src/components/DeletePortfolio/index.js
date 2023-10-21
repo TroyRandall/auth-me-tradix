@@ -20,29 +20,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
   const [errors, setErrors] = useState(false);
 
   useEffect(() => {
-    console.log(stockInfo);
-    if (Object.values(stockInfo).length > 1 && userId) {
-      let formatted = [];
-      Object.values(portfolios).forEach((portfolio) => {
-        if (!portfolio?.sold_at) {
-          formatted.push({
-            name: portfolio?.name,
-            quantity: portfolio?.quantity,
-          });
-        }
-      });
-      let count = 0;
-      formatted.forEach((ticker) => {
-        console.log(ticker);
-        count =
-          count +
-          Object.values(
-            stockInfo[ticker?.name]?.["Time Series (Daily)"]
-          )?.reverse()[0]?.["4. close"] *
-            ticker?.quantity;
-      });
-      setValue(count);
-    }
+   console.log(price);
   }, [stockInfo,]);
 
   if (!currentUser) history.push("/login");
@@ -67,7 +45,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
       return null;
     }
     const response = dispatch(
-      portfolioActions.deletePortfolioItem(userId, value)
+      portfolioActions.deletePortfolioItem(userId, price)
     ).then(async (res) => {
       const data = res;
 

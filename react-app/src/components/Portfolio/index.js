@@ -134,6 +134,31 @@ function PortfolioChart({ current }) {
     }
   };
 
+  const formatValue = () => {
+    console.log(stockInfo);
+    if (Object.values(stockInfo).length > 1 && userId) {
+      let formatted = [];
+      Object.values(portfolios).forEach((portfolio) => {
+        if (!portfolio?.sold_at) {
+          formatted.push({
+            name: portfolio?.name,
+            quantity: portfolio?.quantity,
+          });
+        }
+      });
+      let count = 0;
+      formatted.forEach((ticker) => {
+        console.log(ticker);
+        count =
+          count +
+          Object.values(
+            stockInfo[ticker?.name]?.["Time Series (Daily)"]
+          )?.reverse()[0]?.["4. close"] *
+            ticker?.quantity;
+      });
+      return count;
+    }
+  }
   const formattedDataPortfolio = (state) => {
     let newData = {};
     let count;
@@ -436,14 +461,14 @@ function PortfolioChart({ current }) {
     <>
       <div id="portfolio_container">
         <DeletePortfolioForm
-          price={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
+          price={formatValue()}
           setStocksIsLoaded={setStocksIsLoaded}
         />
         <div id="portfolio_info_container">
           {<h1>My Portfolio</h1>}
           <h2 id="portfolio_price">
             $
-            {Number(hoverPrice).toLocaleString("en-US") ||
+            {Number(hoverPrice).toLocaleString("en-US") || formatValue() ||
               data?.datasets[0]?.data[data?.datasets[0]?.data?.length - 1]
                 .toFixed(2)
                 .toLocaleString("en-US")}
