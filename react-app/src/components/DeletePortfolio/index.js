@@ -21,7 +21,7 @@ function DeletePortfolioForm({ price, reset, setStocksIsLoaded }) {
 
   useEffect(() => {
    console.log(price);
-  }, [stockInfo,]);
+  }, []);
 
   if (!currentUser) history.push("/login");
 
