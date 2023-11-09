@@ -38,12 +38,10 @@ function App() {
         <Route path="/" exact={true}>
           <LandingPageNav />
           <LandingHomePage />
-          <LandingHomeFooter />
         </Route>
         <Route path="/learn">
           <LandingPageNav />
           <LearnHomePage />
-          <LandingHomeFooter />
         </Route>
         <Route path='/offer' >
         <LandingPageNav />
@@ -85,7 +83,7 @@ function App() {
           </Route>
           <Route path="/sign-up" exact={true}>
             <SignupFormPage />
-            <LandingHomeFooter />
+
           </Route>
           <ProtectedRoute path="/profile" exact>
             <ProfilePage />
