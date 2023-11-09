@@ -14,6 +14,7 @@ import * as portfolioActions from "../../store/portfolio";
 import * as monthlyActions from "../../store/monthly";
 import * as weeklyActions from "../../store/weekly";
 import "./portfolio.css";
+import LandingHomeFooter from "../LandingPage/LandingHomeFooter";
 
 function PortfolioChart({ current }) {
   const [idx, setIdx] = useState(false);

@@ -7,7 +7,7 @@ import CompanyNews from "../News/CompanyNews";
 // eslint-disable-next-line
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import LoadingSymbol from '../LoadingSymbol'
+import LoadingSymbol from "../LoadingSymbol";
 
 import * as stockActions from "../../store/stocks";
 import * as tickerActions from "../../store/tickers";
@@ -16,6 +16,7 @@ import * as monthlyActions from "../../store/monthly";
 import * as weeklyActions from "../../store/weekly";
 import PurchaseStockForm from "../StockPurchaseForm";
 import "./stockDetails.css";
+import LandingHomeFooter from "../LandingPage/LandingHomeFooter";
 
 function StockDetails() {
   const { ticker } = useParams();
@@ -34,14 +35,14 @@ function StockDetails() {
 
   useEffect(() => {
     const loadData = async () => {
-      if(ticker) {
-          await dispatch(stockActions.stockDataDaily(ticker));
-      await dispatch(companyActions.companyDataFetch(ticker));
-      await dispatch(tickerActions.stockTickerInfo(ticker));
-      await dispatch(monthlyActions.stockDataMonthly(ticker));
-      await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() =>
-        setIsLoaded(true)
-      );
+      if (ticker) {
+        await dispatch(stockActions.stockDataDaily(ticker));
+        await dispatch(companyActions.companyDataFetch(ticker));
+        await dispatch(tickerActions.stockTickerInfo(ticker));
+        await dispatch(monthlyActions.stockDataMonthly(ticker));
+        await dispatch(weeklyActions.stockDataWeekly(ticker)).then(() =>
+          setIsLoaded(true)
+        );
       }
     };
 
@@ -60,14 +61,14 @@ function StockDetails() {
     else return Object.keys(monthlyInfo["Monthly Time Series"]);
   };
 
- function formattedData  ()  {
+  function formattedData() {
     data = Object.values(stockInfo[ticker]["Time Series (Daily)"]);
     const newData = [];
     data.forEach((dataPoint) => {
       newData.push(dataPoint["4. close"]);
     });
     return newData;
-  };
+  }
 
   const formattedDataMonthly = () => {
     data = Object.values(monthlyInfo["Monthly Time Series"]);
@@ -101,7 +102,7 @@ function StockDetails() {
     return avg / count > 1000000000 ? "N/A" : avg / count + "M";
   };
 
- const formattedChange =
+  const formattedChange =
     isLoaded &&
     Object.values(stockInfo[ticker]["Time Series (Daily)"])[
       Object.values(stockInfo[ticker]["Time Series (Daily)"]).length - 1
@@ -198,17 +199,16 @@ function StockDetails() {
         },
       },
     },
-    events: ['mouseenter', 'mouseleave', 'mouseout', 'mousemove'],
+    events: ["mouseenter", "mouseleave", "mouseout", "mousemove"],
     onHover: function (e, item) {
       if (item.length) {
         setHoverPrice(item[0]["element"]["$context"]["parsed"]["y"] || false);
       }
-      if(e.type === 'mouseout'){
-        setHoverPrice(false)
+      if (e.type === "mouseout") {
+        setHoverPrice(false);
       }
     },
-    }
-
+  };
 
   const formattedPercentChange =
     isLoaded &&
@@ -261,17 +261,19 @@ function StockDetails() {
     }
     return;
   };
-  let change = isLoaded && (daily
-    ? formattedChange.toFixed(2).toLocaleString('en-US') > 0
-      ? "+" + formattedChange.toFixed(2).toLocaleString('en-US')
-      : `${formattedChange.toFixed(2).toLocaleString('en-US')}`
-    : weekly
-    ? formattedChangeWeekly.toFixed(2).toLocaleString('en-US') > 0
-      ? `+${formattedChangeWeekly.toFixed(2).toLocaleString('en-US')}`
-      : formattedChangeWeekly.toFixed(2).toLocaleString('en-US')
-    : formattedChangeMonthly > 0
-    ? `+${(formattedChangeMonthly).toFixed(2).toLocaleString('en-US')}`
-    : formattedChangeMonthly.toFixed(2).toLocaleString('en-US'));
+  let change =
+    isLoaded &&
+    (daily
+      ? formattedChange.toFixed(2).toLocaleString("en-US") > 0
+        ? "+" + formattedChange.toFixed(2).toLocaleString("en-US")
+        : `${formattedChange.toFixed(2).toLocaleString("en-US")}`
+      : weekly
+      ? formattedChangeWeekly.toFixed(2).toLocaleString("en-US") > 0
+        ? `+${formattedChangeWeekly.toFixed(2).toLocaleString("en-US")}`
+        : formattedChangeWeekly.toFixed(2).toLocaleString("en-US")
+      : formattedChangeMonthly > 0
+      ? `+${formattedChangeMonthly.toFixed(2).toLocaleString("en-US")}`
+      : formattedChangeMonthly.toFixed(2).toLocaleString("en-US"));
 
   const dailyToggle = () => {
     return setDaily(true), setWeekly(false), setMonthly(false);
@@ -284,196 +286,209 @@ function StockDetails() {
   const monthlyToggle = () => {
     return setMonthly(true), setWeekly(false), setDaily(false);
   };
-  return (
-    (isLoaded ? (
-      <>
-        <div id="company-grid-container">
-          <PurchaseStockForm
-            average={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
-            isLoaded={isLoaded}
-            change={change > 0 ? "+" : "-"}
-          />
-          <div id="company-info-container">
-            {
-              <h1>
-                {tickerInfo["2. name"].length > 15
-                  ? tickerInfo["1. symbol"]
-                  : tickerInfo["2. name"]}
-              </h1>
-            }
-            <h2 id="stock_details_price">
+  return isLoaded ? (
+    <>
+      <div id="company-grid-container">
+        <PurchaseStockForm
+          average={data?.datasets[0]?.data[data?.datasets[0]?.data.length - 1]}
+          isLoaded={isLoaded}
+          change={change > 0 ? "+" : "-"}
+        />
+        <div id="company-info-container">
+          {
+            <h1>
+              {tickerInfo["2. name"].length > 15
+                ? tickerInfo["1. symbol"]
+                : tickerInfo["2. name"]}
+            </h1>
+          }
+          <h2 id="stock_details_price">
+            $
+            {hoverPrice ||
+              Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                Object.values(stockInfo[ticker]["Time Series (Daily)"]).length -
+                  1
+              ]["4. close"].slice(0, 6)}
+          </h2>
+          <h3 id={changeId}>
+            {daily
+              ? formattedChange.toFixed(2) > 0
+                ? "+" + formattedChange.toFixed(2)
+                : `${formattedChange.toFixed(2)}`
+              : weekly
+              ? formattedChangeWeekly.toFixed(2) > 0
+                ? `+${formattedChangeWeekly.toFixed(2)}`
+                : formattedChangeWeekly.toFixed(2)
+              : formattedChangeMonthly > 0
+              ? `+${formattedChangeMonthly.toFixed(2)}`
+              : formattedChangeMonthly.toFixed(2)}
+            (
+            {formattedPercentChange > 0
+              ? "+" + formattedPercentChange
+              : `${formattedPercentChange}`}
+            %) {daily ? "Today" : "As of " + formattedLabels()[0]}
+          </h3>
+        </div>
+
+        <div id="lineChart">
+          <Line data={data} options={options} id="lineChart2" />
+        </div>
+        <div id="chart-buttons-stocks">
+          <label className="chart-radio-stocks">
+            <input
+              type="radio"
+              name="radio"
+              onClick={dailyToggle}
+              checked={daily || false}
+            />
+            <span className="name">Daily</span>
+          </label>
+          <label className="chart-radio-stocks">
+            <input
+              type="radio"
+              name="radio"
+              onClick={weeklyToggle}
+              checked={weekly || false}
+            />
+            <span className="name">Weekly</span>
+          </label>
+
+          <label className="chart-radio-stocks">
+            <input
+              type="radio"
+              name="radio"
+              onClick={monthlyToggle}
+              checked={monthly || false}
+            />
+            <span className="name">Monthly</span>
+          </label>
+        </div>
+        <h3 id="stock-lending-title" className="info-div-title">
+          Stock Lending
+        </h3>
+        <p id="stock-lending-info" className="info-div-data">
+          You're currently not taking advantage of an income opportunity. You
+          could change that today.
+        </p>
+        <h3 id="company-description-title" className="info-div-title">
+          About
+        </h3>
+        <p id="company-description" className="info-div-data">
+          {companyInfo !== undefined ? companyInfo["Description"] : ""}
+        </p>
+        <div id="company-financial-data-container">
+          <div className="info-div">
+            <label id="market-share-label" className="info-div-title">
+              Market cap{" "}
+            </label>{" "}
+            <p id="market-cap-data" className="info-div-data">
+              {" "}
+              {formattedMarketCap()}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="PEratio-label" className="info-div-title">
+              Price-Earnings Ratio
+            </label>
+            <p id="PEratio-data" className="info-div-data">
+              {" "}
+              {companyInfo !== undefined ? companyInfo["PERatio"] : ""}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="dividend-yield-label" className="info-div-title">
+              Dividend Yield
+            </label>
+            <p id="dividend-yield-data" className="info-div-data">
+              {companyInfo !== undefined ? "N/A" : ""}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="avg-volume-label" className="info-div-title">
+              Average Volume
+            </label>
+            <p id="avg-volume-data" className="info-div-data">
+              {formattedVolume()}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="high-today-label" className="info-div-title">
+              High Today
+            </label>
+            <p id="high-today-data" className="info-div-data">
               $
-              {hoverPrice ||
+              {
                 Object.values(stockInfo[ticker]["Time Series (Daily)"])[
                   Object.values(stockInfo[ticker]["Time Series (Daily)"])
                     .length - 1
-                ]["4. close"].slice(0, 6)}
-            </h2>
-            <h3 id={changeId}>
-              {daily
-                ? formattedChange.toFixed(2) > 0
-                  ? "+" + formattedChange.toFixed(2)
-                  : `${formattedChange.toFixed(2)}`
-                : weekly
-                ? formattedChangeWeekly.toFixed(2) > 0
-                  ? `+${formattedChangeWeekly.toFixed(2)}`
-                  : formattedChangeWeekly.toFixed(2)
-                : formattedChangeMonthly > 0
-                ? `+${formattedChangeMonthly.toFixed(2)}`
-                : formattedChangeMonthly.toFixed(2)}
-              (
-              {formattedPercentChange > 0
-                ? "+" + formattedPercentChange
-                : `${formattedPercentChange}`}
-              %) {daily ? "Today" : "As of " + formattedLabels()[0]}
-            </h3>
+                ]["2. high"]
+              }
+            </p>
           </div>
-
-          <div id="lineChart">
-            <Line data={data} options={options} id='lineChart2'/>
-          </div>
-          <div id="chart-buttons-stocks">
-            <label className="chart-radio-stocks">
-              <input type="radio" name="radio" onClick={dailyToggle} checked={daily || false}/>
-              <span className="name">Daily</span>
+          <div className="info-div">
+            <label id="low-today-label" className="info-div-title">
+              Low Today
             </label>
-            <label className="chart-radio-stocks">
-              <input type="radio" name="radio" onClick={weeklyToggle} checked={weekly || false} />
-              <span className="name">Weekly</span>
-            </label>
-
-            <label className="chart-radio-stocks">
-              <input type="radio" name="radio" onClick={monthlyToggle} checked={monthly || false} />
-              <span className="name">Monthly</span>
-            </label>
+            <p id="low-today-data" className="info-div-data">
+              $
+              {
+                Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                  Object.values(stockInfo[ticker]["Time Series (Daily)"])
+                    .length - 1
+                ]["3. low"]
+              }
+            </p>
           </div>
-          <h3 id="stock-lending-title" className="info-div-title">
-            Stock Lending
-          </h3>
-          <p id="stock-lending-info" className="info-div-data">
-            You're currently not taking advantage of an income opportunity. You
-            could change that today.
-          </p>
-          <h3 id="company-description-title" className="info-div-title">
-            About
-          </h3>
-          <p id="company-description" className="info-div-data">
-            {companyInfo !== undefined ? companyInfo["Description"] : ""}
-          </p>
-          <div id="company-financial-data-container">
-            <div className="info-div">
-              <label id="market-share-label" className="info-div-title">
-                Market cap{" "}
-              </label>{" "}
-              <p id="market-cap-data" className="info-div-data">
-                {" "}
-                {formattedMarketCap()}
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="PEratio-label" className="info-div-title">
-                Price-Earnings Ratio
-              </label>
-              <p id="PEratio-data" className="info-div-data">
-                {" "}
-                {companyInfo !== undefined ? companyInfo["PERatio"] : ""}
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="dividend-yield-label" className="info-div-title">
-                Dividend Yield
-              </label>
-              <p id="dividend-yield-data" className="info-div-data">
-                {companyInfo !== undefined ? "N/A" : ""}
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="avg-volume-label" className="info-div-title">
-                Average Volume
-              </label>
-              <p id="avg-volume-data" className="info-div-data">
-                {formattedVolume()}
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="high-today-label" className="info-div-title">
-                High Today
-              </label>
-              <p id="high-today-data" className="info-div-data">
-                $
-                {
-                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-                    Object.values(stockInfo[ticker]["Time Series (Daily)"])
-                      .length - 1
-                  ]["2. high"])
-                }
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="low-today-label" className="info-div-title">
-                Low Today
-              </label>
-              <p id="low-today-data" className="info-div-data">
-                $
-                {
-                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-                    Object.values(stockInfo[ticker]["Time Series (Daily)"])
-                      .length - 1
-                  ]["3. low"])
-                }
-              </p>
-            </div>
-            <div className="info-div">
-              <label label id="open-price-label" className="info-div-title">
-                Open Price
-              </label>
-              <p id="open-price-data" className="info-div-data">
-                $
-
-                  {(Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-                    Object.values(stockInfo[ticker]["Time Series (Daily)"])
-                      .length - 1
-                  ]["1. open"])}
-
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="daily-volume-label" className="info-div-title">
-                Volume
-              </label>
-              <p id="daily-volume-data" className="info-div-data">
-                {
-                  (Object.values(stockInfo[ticker]["Time Series (Daily)"])[
-                    Object.values(stockInfo[ticker]["Time Series (Daily)"])
-                      .length - 1
-                  ]["5. volume"]).toLocaleString('en-US')
-                }
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="fiftytwo-week-low-label" className="info-div-title">
-                52 Week Low
-              </label>
-              <p id="fiftytwo-week-low-data" className="info-div-data">
-                {companyInfo !== undefined ? companyInfo["52WeekLow"] : ""}
-              </p>
-            </div>
-            <div className="info-div">
-              <label id="fiftytwo-week-high-label" className="info-div-title">
-                52 Week High
-              </label>
-              <p id="fiftytwo-week-high-data" className="info-div-data">
-                {companyInfo !== undefined ? companyInfo["52WeekHigh"] : ""}
-              </p>
-            </div>
+          <div className="info-div">
+            <label label id="open-price-label" className="info-div-title">
+              Open Price
+            </label>
+            <p id="open-price-data" className="info-div-data">
+              $
+              {
+                Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                  Object.values(stockInfo[ticker]["Time Series (Daily)"])
+                    .length - 1
+                ]["1. open"]
+              }
+            </p>
           </div>
-
+          <div className="info-div">
+            <label id="daily-volume-label" className="info-div-title">
+              Volume
+            </label>
+            <p id="daily-volume-data" className="info-div-data">
+              {Object.values(stockInfo[ticker]["Time Series (Daily)"])[
+                Object.values(stockInfo[ticker]["Time Series (Daily)"]).length -
+                  1
+              ]["5. volume"].toLocaleString("en-US")}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="fiftytwo-week-low-label" className="info-div-title">
+              52 Week Low
+            </label>
+            <p id="fiftytwo-week-low-data" className="info-div-data">
+              {companyInfo !== undefined ? companyInfo["52WeekLow"] : ""}
+            </p>
+          </div>
+          <div className="info-div">
+            <label id="fiftytwo-week-high-label" className="info-div-title">
+              52 Week High
+            </label>
+            <p id="fiftytwo-week-high-data" className="info-div-data">
+              {companyInfo !== undefined ? companyInfo["52WeekHigh"] : ""}
+            </p>
+          </div>
         </div>
-        <div className="news-container">
-                            <CompanyNews />
-                        </div>
-      </>
-    ) : <LoadingSymbol />)
+      </div>
+      <div className="news-container">
+        <CompanyNews />
+      </div>
+      <LandingHomeFooter />
+    </>
+  ) : (
+    <LoadingSymbol />
   );
 }
 

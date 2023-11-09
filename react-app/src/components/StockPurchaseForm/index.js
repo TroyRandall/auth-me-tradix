@@ -265,7 +265,7 @@ function PurchaseStockForm({ average, isLoaded, change }) {
 
               <p id="form-buying-power-available">
                 Buying Power Available $
-                {currentUser?.buyingPower ? currentUser?.buyingPower : 0}
+                {currentUser?.buyingPower ? currentUser?.buyingPower.toLocaleString("en-US") : 0}
               </p>
             </div>
             <div id="modal-form">

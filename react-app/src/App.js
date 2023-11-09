@@ -38,6 +38,7 @@ function App() {
         <Route path="/" exact={true}>
           <LandingPageNav />
           <LandingHomePage />
+          <LandingHomeFooter />
         </Route>
         <Route path="/learn">
           <LandingPageNav />
@@ -51,9 +52,11 @@ function App() {
         </Route>
         <Route path="/login" exact={true}>
           <LoginFormPage />
+          <LandingHomeFooter />
         </Route>
         <Route path="/sign-up" exact={true}>
           <SignupFormPage />
+          <LandingHomeFooter />
         </Route>
         {/* <Route path="/app" exact={true}>
           <AppHome />
@@ -69,6 +72,7 @@ function App() {
         </Route>
         <Route path="/portfolios/:userId">
           <AppHome />
+          <LandingHomeFooter />
         </Route>
         <Route path='/support'>
           <LandingPageNav />
@@ -77,9 +81,11 @@ function App() {
         </Route>
           <Route path="/login" exact={true} >
             <LoginFormPage />
+            <LandingHomeFooter />
           </Route>
           <Route path="/sign-up" exact={true}>
             <SignupFormPage />
+            <LandingHomeFooter />
           </Route>
           <ProtectedRoute path="/profile" exact>
             <ProfilePage />
@@ -87,6 +93,7 @@ function App() {
 
 
         </Switch>
+
       {/* )} */}
     </>
   );
